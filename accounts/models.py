@@ -91,3 +91,6 @@ class UserRole(models.Model):
         unique_together = ('user', 'role')
         verbose_name = 'ユーザー種別'
         verbose_name_plural = 'ユーザー種別'
+
+    def __str__(self):
+        return str(self.user.username+ ': ' + self.role)

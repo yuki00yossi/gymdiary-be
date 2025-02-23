@@ -13,18 +13,20 @@ class CustomUserAdmin(UserAdmin):
     ordering = ('created_at', 'username',)
     search_fields = ('username',)
     fieldsets = (
-        (None, {'fields': ('username', 'name', 'password')}),
-        ("権限", {'fields': ('is_staff', 'is_superuser')}),
+        ('ユーザー情報', {'fields': ('username', 'name', 'password')}),
+        ("権限", {'fields': ('is_staff', 'is_superuser', 'groups', 'user_permissions')}),
         ('その他', {'fields': ('is_active', 'created_at')}),
     )
     add_fieldsets = (
-        (None, {
+        ('ユーザー作成', {
             'classes': ('wide',),
             'fields': (
                 'username', 'name', 'password1', 'password2',
                 'is_active', 'is_staff', 'is_superuser')
-        })
+        }),
     )
+
+    readonly_fields = ('created_at',)
 
 
 admin.site.register(CustomUser, CustomUserAdmin)

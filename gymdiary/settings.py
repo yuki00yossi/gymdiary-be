@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'accounts',
+    'weight',  # 体重管理
 ]
 
 MIDDLEWARE = [

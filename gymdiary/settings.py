@@ -52,6 +52,8 @@ INSTALLED_APPS = [
     'accounts',
     'weight',  # 体重管理
     'training',  # トレーニング管理
+
+    'drf_spectacular',
 ]
 
 MIDDLEWARE = [
@@ -92,6 +94,17 @@ REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.IsAuthenticated",
     ],
+
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
+
+# APIドキュメント設定
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Gym Diary API',
+    'DESCRIPTION': 'Gym DiaryのAPIドキュメントです。',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
 }
 
 SESSION_ENGINE = "django.contrib.sessions.backends.db"

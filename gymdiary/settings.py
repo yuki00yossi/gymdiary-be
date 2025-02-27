@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'accounts',
     'weight',  # 体重管理
+    'training',  # トレーニング管理
 ]
 
 MIDDLEWARE = [

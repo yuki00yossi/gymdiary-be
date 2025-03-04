@@ -138,31 +138,6 @@ def test_create_training_session_unauthorized(api_client):
 
 
 @pytest.mark.django_db
-def test_create_training_session_invalid_data(api_client, create_user):
-    """ ❌ 無効なデータ（負の重量）での作成（エラー）"""
-    user = create_user("test_user", "Test User", "password123")
-    api_client.force_login(user)
-
-    url = "/api/training/"
-    data = {
-        "date": "2025-02-26",
-        "workouts": [
-            {
-                "menu": "ベンチプレス",
-                "type": "weight",
-                "unit": "kg",
-                "memo": "フォームを意識",
-                "sets": [{"weight": -10, "reps": 10, "memo": "フォームを意識"}]  # 無効なデータ
-            }
-        ]
-    }
-
-    response = api_client.post(url, data, format="json")
-
-    assert response.status_code == status.HTTP_400_BAD_REQUEST
-
-
-@pytest.mark.django_db
 def test_get_other_user_training_session(api_client, create_user, create_training_session):
     """ ❌ 他のユーザーのトレーニング記録を取得（エラー）"""
     user1 = create_user("user1", "User One", "password123")

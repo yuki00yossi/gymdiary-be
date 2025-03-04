@@ -52,9 +52,11 @@ INSTALLED_APPS = [
     'accounts',
     'weight',  # 体重管理
     'training',  # トレーニング管理
+    'meal',  # 食事管理
 
     'drf_spectacular',
     'corsheaders',
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -167,7 +169,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
+# STATIC_URL = 'static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
@@ -196,8 +198,6 @@ CSRF_TRUSTED_ORIGINS = [
     "http://localhost:5173",
 ]
 
-import os
-from logging.handlers import RotatingFileHandler
 
 LOG_DIR = os.path.join(BASE_DIR, "logs")
 if not os.path.exists(LOG_DIR):
@@ -218,7 +218,7 @@ LOGGING = {
     },
     "handlers": {
         "console": {
-            "level": "DEBUG",
+            "level": "INFO",
             "class": "logging.StreamHandler",
             "formatter": "simple",
         },
@@ -239,3 +239,36 @@ LOGGING = {
         },
     },
 }
+
+# if DEBUG:
+#     STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+
+# AWSの設定
+AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME')
+AWS_S3_REGION_NAME = env('AWS_S3_REGION_NAME')
+
+AWS_S3_CUSTOM_DOMAIN = env('AWS_S3_CUSTOM_DOMAIN')
+AWS_QUERYSTRING_AUTH = False
+
+AWS_LOCATION = 'static'
+
+STATIC_ROOT = 'static'
+STATIC_URL = '/static/'
+
+MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_LOCATION}/media/'
+MEDIA_ROOT = 'media'
+
+if not DEBUG:
+    STORAGES = {
+        "default": {
+            "BACKEND": "storages.backends.s3.S3Storage",
+            "OPTIONS": {
+                "location": "media/images",
+            }
+        },
+        "staticfiles": {
+            "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+        }
+    }

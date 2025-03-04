@@ -1,4 +1,5 @@
-from rest_framework import generics, permissions
+from rest_framework import generics, permissions, status
+from rest_framework.response import Response
 from .models import WeightRecord
 from .serializers import WeightRecordSerializer
 
@@ -14,6 +15,19 @@ class WeightRecordListCreateView(generics.ListCreateAPIView):
         return WeightRecord.objects.filter(user=self.request.user)
 
     def perform_create(self, serializer):
-        """ 自分の体重を保存 """
-        serializer.save(user=self.request.user)
+        """ 自分の体重を保存。既存のデータがある場合は更新 """
+        user = self.request.user
+        date = serializer.validated_data.get('record_date')
 
+        existing_record = WeightRecord.objects.filter(user=user, record_date=date).first()
+
+        if existing_record:
+            existing_record.weight = serializer.validated_data.get('weight', existing_record.weight)
+            existing_record.fat = serializer.validated_data.get('fat', existing_record.fat)
+            existing_record.save()
+
+            # 更新したデータを返す
+            return Response(WeightRecordSerializer(existing_record).data, status=status.HTTP_200_OK)
+        else:
+            # 新規作成
+            serializer.save(user=user)

@@ -25,4 +25,3 @@ class TrainingSessionDetailView(generics.RetrieveDestroyAPIView):
 
     def get_queryset(self):
         return TrainingSession.objects.filter(user=self.request.user)
-

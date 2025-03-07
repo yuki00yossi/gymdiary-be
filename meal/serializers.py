@@ -8,7 +8,8 @@ class MealItemSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = MealItem
-        fields = ("id", "name", "calories", "protein", "fat", "carbs", "unit")
+        fields = ("id", "name", "calories", "protein", "fat", "carbs", "unit", "base_quantity")
+        read_only_fields = ('created_by',)
 
     def validate_calories(self, value):
         if value < 0:

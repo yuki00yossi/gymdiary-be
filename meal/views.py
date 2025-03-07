@@ -10,7 +10,7 @@ class MealRecordViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         """ ログインユーザーの食事記録のみ取得 """
-        if self.request.GET['date']:
+        if self.request.GET.get('date'):
             return MealRecord.objects.filter(user=self.request.user, date=self.request.GET['date']).order_by("-date")
         return MealRecord.objects.filter(user=self.request.user).order_by("-date")
 
@@ -26,11 +26,11 @@ class MealItemViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         """ 全ての食品データを取得 """
-        return MealItem.objects.all().order_by("name")
+        return MealItem.objects.all()
 
     def perform_create(self, serializer):
         """ 新しい食品データを作成 """
-        serializer.save(created_by=self.request.user)
+        serializer.save()
 
     def update(self, request, *args, **kwargs):
         """ 食品データの更新は禁止 """

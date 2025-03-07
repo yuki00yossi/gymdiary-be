@@ -2,6 +2,7 @@ from django.db import models
 from django.conf import settings
 from accounts.models import CustomUser
 
+
 class MealItem(models.Model):
     """ 共有可能な食品データ """
     name = models.CharField(max_length=100, unique=False)
@@ -10,8 +11,10 @@ class MealItem(models.Model):
     fat = models.FloatField()
     carbs = models.FloatField()
     unit = models.CharField(max_length=10, choices=[
-        ("g", "グラム"), ("ml", "ミリリットル"), ("個", "個"), ("杯", "杯")
+        ("g", "グラム"), ("ml", "ミリリットル"), ("個", "個"), ("杯", "杯"),
+        ("枚", "枚"), ("本", "本"), ("カップ", "カップ"), ("人前", "人前"),
     ])
+
     base_quantity = models.FloatField(default=100)  # 100g, 1個, 200mlなど
     created_by = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="meal_items")
 

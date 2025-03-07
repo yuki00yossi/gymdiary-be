@@ -7,8 +7,8 @@ class WeightRecord(models.Model):
     """ 体重記録モデル """
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='weight_records')
-    weight = models.DecimalField(verbose_name='体重', max_digits=5, decimal_places=2)
-    fat = models.DecimalField(verbose_name='体脂肪率', max_digits=5, decimal_places=2)
+    weight = models.FloatField(verbose_name='体重')
+    fat = models.FloatField(verbose_name='体脂肪率', null=True, blank=True)
     record_date = models.DateTimeField(verbose_name='日付')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

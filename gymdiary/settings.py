@@ -115,6 +115,8 @@ SESSION_ENGINE = "django.contrib.sessions.backends.db"
 SESSION_COOKIE_NAME = "gymdiary_session"
 SESSION_COOKIE_HTTPONLY = False
 SESSION_COOKIE_SECURE = not DEBUG
+if DEBUG:
+    SESSION_COOKIE_DOMAIN = ".gymdiary.tokyo"
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 SESSION_COOKIE_AGE = 60 * 60 * 24 * 90  # 90日有効
 
@@ -200,6 +202,7 @@ CSRF_TRUSTED_ORIGINS = [
     "https://app.gymdiary.tokyo",
 ]
 
+CSRF_COOKIE_DOMAIN = ".gymdiary.tokyo"
 
 LOG_DIR = os.path.join(BASE_DIR, "logs")
 if not os.path.exists(LOG_DIR):

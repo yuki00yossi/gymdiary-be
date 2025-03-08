@@ -36,7 +36,7 @@ SECRET_KEY = env('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DEBUG')
 
-ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['localhost', '127.0.0.1'])
+ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['localhost', '127.0.0.1', 'gymdiary.tokyo'])
 
 
 # Application definition
@@ -114,7 +114,7 @@ SPECTACULAR_SETTINGS = {
 SESSION_ENGINE = "django.contrib.sessions.backends.db"
 SESSION_COOKIE_NAME = "gymdiary_session"
 SESSION_COOKIE_HTTPONLY = True
-SESSION_COOKIE_SECURE = env('DEBUG')  # 本番はTrueにする
+SESSION_COOKIE_SECURE = not DEBUG
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 SESSION_COOKIE_AGE = 60 * 60 * 24 * 90  # 90日有効
 
@@ -181,6 +181,7 @@ AUTH_USER_MODEL = 'accounts.CustomUser'
 # CORS設定
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
+    "https://app.gymdiary.tokyo",
 ]
 
 CORS_ALLOW_CREDENTIALS = True
@@ -196,6 +197,7 @@ CORS_ALLOW_METHODS = [
 
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:5173",
+    "https://app.gymdiary.tokyo",
 ]
 
 

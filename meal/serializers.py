@@ -1,3 +1,5 @@
+import json
+
 from rest_framework import serializers
 from accounts.utils import generate_presigned_url  # S3の署名付きURLを生成
 from .models import MealItem, MealRecord, MealRecordItem
@@ -53,23 +55,51 @@ class MealRecordSerializer(serializers.ModelSerializer):
     """ 食事記録（ユーザーが登録） """
     meal_items = MealRecordItemSerializer(many=True)
     photo_url = serializers.SerializerMethodField()
+    # meal_items = serializers.ListSerializer(child=MealRecordItemSerializer(), write_only=True)
 
     class Meta:
         model = MealRecord
-        fields = ("id", "date", "time_of_day", "meal_items", "photo_url")
+        fields = ("id", "date", "time_of_day", "meal_items", "photo_key", "photo_url")
+
+    def to_internal_value(self, data):
+        """ meal_itemsをJSONパースして適切なフォーマットに変換 """
+        mutable_data = data.copy()
+
+        if "meal_items" in mutable_data and isinstance(mutable_data["meal_items"], str):
+            try:
+                mutable_data["meal_items"] = json.loads(mutable_data["meal_items"])
+            except json.JSONDecodeError:
+                raise serializers.ValidationError({"meal_items": "不正なJSON形式です。"})
+        return super().to_internal_value(mutable_data)
 
     def get_photo_url(self, obj):
         """ S3 の署名付きURLを返す(写真がある場合のみ) """
-        if obj.photo:
-            return generate_presigned_url(obj.photo.name)
+        if obj.photo_key:
+            return generate_presigned_url(obj.photo_key)
         return None
 
     def create(self, validated_data):
         """ 食事記録を作成（ネストされた `meal_items` も保存） """
-        meal_items_data = validated_data.pop("meal_items")
-        meal_record = MealRecord.objects.create(**validated_data)
+        request = self.context.get("request")
+
+        # `request.data` から `meal_items` を取得し、手動でパース
+        meal_items_data = request.data.get("meal_items")
+        if isinstance(meal_items_data, str):  # JSON 文字列の場合はデコード
+            meal_items_data = json.loads(meal_items_data)
+
+        meal_record = MealRecord.objects.create(
+            user=request.user,
+            date=validated_data["date"],
+            time_of_day=validated_data["time_of_day"],
+            photo_key=validated_data.get("photo_key"),
+        )
 
         for item_data in meal_items_data:
-            MealRecordItem.objects.create(meal_record=meal_record, **item_data)
+            MealRecordItem.objects.create(
+                meal_record=meal_record,
+                meal_item_id=item_data["meal_item_id"],
+                quantity=item_data["quantity"],
+                unit=item_data["unit"]
+            )
 
         return meal_record

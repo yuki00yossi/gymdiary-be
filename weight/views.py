@@ -19,7 +19,7 @@ class WeightRecordListCreateView(generics.ListCreateAPIView):
         user = self.request.user
         date = serializer.validated_data.get('record_date')
 
-        existing_record = WeightRecord.objects.filter(user=user, record_date=date).first()
+        existing_record = WeightRecord.objects.filter(user=user, record_date__date=date.date()).first()
 
         if existing_record:
             existing_record.weight = serializer.validated_data.get('weight', existing_record.weight)

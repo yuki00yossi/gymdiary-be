@@ -1,7 +1,15 @@
+import os, uuid
+
 from rest_framework import viewsets, permissions
+from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.parsers import MultiPartParser, FormParser
 from .models import MealRecord, MealItem, MealRecordItem
 from .serializers import MealRecordSerializer, MealItemSerializer
+from django.core.files.storage import default_storage
+from django.utils.text import slugify
+from accounts.utils import generate_presigned_url
+
 
 class MealRecordViewSet(viewsets.ModelViewSet):
     """ ユーザーの食事記録のCRUD API """
@@ -39,3 +47,23 @@ class MealItemViewSet(viewsets.ModelViewSet):
     def destroy(self, request, *args, **kwargs):
         """ 食品データの削除は禁止 """
         return Response({"detail": "食品データの削除はできません。"}, status=status.HTTP_403_FORBIDDEN)
+
+
+class PhotoUploadView(APIView):
+    """ 食事画像アップロード用API """
+    parser_classes = [MultiPartParser]
+
+    def post(self, request, *args, **kwargs):
+        """ POSTリクエスト """
+        photo = request.FILES.get('photo')
+        if not photo:
+            return Response({'error': '画像ファイルがありません。'}, status=400)
+        # 拡張子
+        ext = os.path.splitext(photo.name)[-1].lower()
+        sanitized_name = slugify(os.path.splitext(photo.name)[0])
+        # ユーザーID + UUID をファイル名に設定（同じユーザーのファイルでも重複しない）
+        unique_filename = f"{request.user.id}-{uuid.uuid4().hex[:8]}-{sanitized_name}{ext}"
+
+        file_path = default_storage.save(f"meals/{unique_filename}", photo)
+
+        return Response({"photo_url": file_path}, status=201)

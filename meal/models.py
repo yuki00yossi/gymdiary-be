@@ -35,7 +35,7 @@ class MealRecord(models.Model):
         max_length=10,
         choices=[("朝食", "朝食"), ("昼食", "昼食"), ("夕食", "夕食"), ("間食", "間食")]
     )
-    photo = models.ImageField(upload_to="meals/", null=True, blank=True)  # 画像はNULL許可
+    photo_key = models.CharField(null=True, blank=True, max_length=256)  # 画像はNULL許可
 
     class Meta:
         """ メタ情報 """

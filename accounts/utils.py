@@ -12,7 +12,7 @@ def generate_presigned_url(file_name, expiration=3600):
 
     url = s3_client.generate_presigned_url(
         "get_object",
-        Params={"Bucket": settings.AWS_STORAGE_BUCKET_NAME, "Key": file_name},
+        Params={"Bucket": settings.AWS_STORAGE_BUCKET_NAME, "Key": "media/images/" + file_name},
         ExpiresIn=expiration  # 署名の有効期限（秒）
     )
     return url

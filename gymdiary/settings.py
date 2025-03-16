@@ -31,7 +31,7 @@ environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env('DEBUG')
+DEBUG = env.bool('DEBUG', False)
 
 ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['localhost', '127.0.0.1', 'gymdiary.tokyo'])
 
@@ -119,7 +119,7 @@ SESSION_COOKIE_AGE = 60 * 60 * 24 * 90  # 90日有効
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-if env('USE_SQLITE'):
+if env.bool('USE_SQLITE', False):
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',

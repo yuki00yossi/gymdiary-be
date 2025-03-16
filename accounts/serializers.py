@@ -24,7 +24,7 @@ class UserRegisterSerializer(serializers.ModelSerializer):
     """ 新規会員登録用のシリアライザー """
     password = serializers.CharField(write_only=True, min_length=6)
     role = serializers.ChoiceField(
-        choices=UserRole.ROLE_CHOICES, write_only=True)
+        choices=UserRole.ROLE_CHOICES, write_only=True, required=False)
 
     class Meta:
         """ メタ情報 """
@@ -33,13 +33,14 @@ class UserRegisterSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         """ ユーザー作成し、選択したロールを割り当てる """
-        role = validated_data.pop('role')
+        # 役割はトレーナー用アプリを作る時に再度検討する
+        # role = validated_data.pop('role')
         user = CustomUser.objects.create_user(
             username=validated_data['username'],
             name=validated_data['name'],
             password=validated_data['password'],
         )
-        UserRole.objects.create(user=user, role=role)
+        # UserRole.objects.create(user=user, role=role)
         return user
 
 

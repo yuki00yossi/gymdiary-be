@@ -19,10 +19,7 @@ import environ
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-env = environ.Env(
-    DEBUG=(bool, False),
-    USE_SQLITE=(bool, False),
-)
+env = environ.Env()
 
 environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
@@ -53,6 +50,7 @@ INSTALLED_APPS = [
     'weight',  # 体重管理
     'training',  # トレーニング管理
     'meal',  # 食事管理
+    'trainers',
 
     'drf_spectacular',
     'corsheaders',
@@ -113,10 +111,7 @@ SPECTACULAR_SETTINGS = {
 
 SESSION_ENGINE = "django.contrib.sessions.backends.db"
 SESSION_COOKIE_NAME = "gymdiary_session"
-SESSION_COOKIE_HTTPONLY = False
-SESSION_COOKIE_SECURE = not DEBUG
-if DEBUG:
-    SESSION_COOKIE_DOMAIN = ".gymdiary.tokyo"
+
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 SESSION_COOKIE_AGE = 60 * 60 * 24 * 90  # 90日有効
 
@@ -202,7 +197,6 @@ CSRF_TRUSTED_ORIGINS = [
     "https://app.gymdiary.tokyo",
 ]
 
-CSRF_COOKIE_DOMAIN = ".gymdiary.tokyo"
 
 LOG_DIR = os.path.join(BASE_DIR, "logs")
 if not os.path.exists(LOG_DIR):
@@ -262,7 +256,6 @@ AWS_LOCATION = 'static'
 STATIC_ROOT = 'static'
 STATIC_URL = '/static/'
 
-MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_LOCATION}/media/'
 MEDIA_ROOT = 'media'
 
 if not DEBUG:
@@ -277,3 +270,31 @@ if not DEBUG:
             "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
         }
     }
+
+if DEBUG:
+    MEDIA_URL = '/media/'
+    SESSION_COOKIE_DOMAIN = None
+    CSRF_COOKIE_DOMAIN = None
+    SESSION_COOKIE_SECURE = False
+    CSRF_COOKIE_SECURE = False
+    SESSION_COOKIE_HTTPONLY = False
+    CSRF_COOKIE_HTTPONLY = False
+    SESSION_COOKIE_SAMESITE = "Lax"
+    CSRF_COOKIE_SAMESITE = "Lax"
+else:
+    MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_LOCATION}/media/'
+    SESSION_COOKIE_DOMAIN = ".gymdiary.tokyo"
+    CSRF_COOKIE_DOMAIN = ".gymdiary.tokyo"
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SESSION_COOKIE_HTTPONLY = True
+    CSRF_COOKIE_HTTPONLY = True
+    SESSION_COOKIE_SAMESITE = "Lax"
+    CSRF_COOKIE_SAMESITE = "Lax"
+
+
+# Stripe のAPIキー
+STRIPE_SECRET_KEY = env("STRIPE_SECRET_KEY")
+STRIPE_WEBHOOK_SECRET = env("STRIPE_WEBHOOK_SECRET")
+
+FRONTEND_URL = env("FRONTEND_URL")

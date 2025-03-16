@@ -30,6 +30,7 @@ urlpatterns = [
     path('api/weight/', include('weight.urls')),
     path('api/training/', include('training.urls')),
     path('api/meal/', include('meal.urls')),
+    path('api/trainers/', include('trainers.urls')),
 
     # APIドキュメント関連
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),

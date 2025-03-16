@@ -94,6 +94,30 @@ class MealRecordSerializer(serializers.ModelSerializer):
             photo_key=validated_data.get("photo_key"),
         )
 
+        self._update_meal_items(meal_record, meal_items_data)
+        return meal_record
+
+    def update(self, instance, validated_data):
+        """食事記録を更新(ネストされたmeal_itemsも更新)"""
+        # `request.data` から `meal_items` を取得し、手動でパース
+        request = self.context.get("request")
+        meal_items_data = request.data.get("meal_items")
+        if isinstance(meal_items_data, str):  # JSON 文字列の場合はデコード
+            meal_items_data = json.loads(meal_items_data)
+
+        # MealRecordの基本情報を更新
+        instance.data = validated_data.get("date", instance.date)
+        instance.time_of_day = validated_data.get("time_of_day", instance.time_of_day)
+        instance.photo_key = validated_data.get("photo_key", instance.photo_key)
+        instance.save()
+
+        # meal_itemsを更新(デリートインサート)
+        instance.meal_items.all().delete()
+        self._update_meal_items(instance, meal_items_data)
+        return instance
+
+    def _update_meal_items(self, meal_record, meal_items_data):
+        """meal_itemsを作成"""
         for item_data in meal_items_data:
             MealRecordItem.objects.create(
                 meal_record=meal_record,
@@ -101,5 +125,3 @@ class MealRecordSerializer(serializers.ModelSerializer):
                 quantity=item_data["quantity"],
                 unit=item_data["unit"]
             )
-
-        return meal_record

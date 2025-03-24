@@ -53,4 +53,4 @@ class TrainingApplication(models.Model):
     status = models.CharField(choices=STATUS_CHOICES, max_length=20, default="pending")
     stripe_subscription_id = models.CharField(max_length=255, blank=True, null=True)  # 月額用
     created_at = models.DateTimeField(auto_now_add=True)
-    expires_at = models.DateTimeField(default=timezone.now() + timezone.timedelta(days=2))
+    expires_at = models.DateTimeField(default=timezone.now)

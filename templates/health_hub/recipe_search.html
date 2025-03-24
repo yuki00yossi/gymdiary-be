@@ -1,0 +1,584 @@
+{% extends "health_hub/base.html" %}
+
+{% block title %}
+    Health Hub |
+        {% if selected_tags %}
+            {% for tag in selected_tags %}
+                {{ tag.name }}{% if not forloop.last %}, {% endif %}
+            {% endfor %}
+        {% endif %}
+        {% if query %}
+            {{ query }}
+        {% endif %}
+        のレシピ検索結果
+{% endblock %}
+
+{% block content %}
+<main>
+    <!-- ページヘッダー -->
+    <section class="page-header">
+        <div class="page-header-bg"></div>
+      <div class="container">
+        <h1>
+            {% if selected_tags %}
+                {% for tag in selected_tags %}
+                    {{ tag.name }}{% if not forloop.last %}, {% endif %}
+                {% endfor %}
+            {% endif %}
+            {% if query %}
+                {{ query }}
+            {% endif %}
+        のレシピ検索結果
+        </h1>
+        <p>健康的でおいしい食事レシピ。栄養バランスを考えた食事で、理想のカラダづくりをサポートします。</p>
+      </div>
+    </section>
+
+    <!-- レシピ検索・フィルター -->
+    <section class="recipe-filter">
+      <div class="container">
+        <form action="/health-hub/recipes/search/" class="search-container">
+          <div class="recipe-search">
+            <i class="fas fa-search"></i>
+            {% if query %}
+            <input name="q" type="search" placeholder="レシピを検索..." value="{{ query }}">
+            {% else %}
+            <input name="q" type="search" placeholder="レシピを検索...">
+            {% endif %}
+          </div>
+          <button class="recipe-search-button" style="padding: .5rem 1rem;">
+            検索
+          </button>
+        </form>
+
+        <div class="tag-filter" style="font-size: 0.75rem;">
+          <span class="tag-label" >タグ:</span>
+          <div class="tags">
+            {% for tag in tags %}
+                <a href="/health-hub/recipes/search/?tags={{ tag.slug }}" class="tag-btn" style="font-size: 0.75rem;" data-tag="quick">{{ tag.name }}</a>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- レシピ一覧 -->
+    <section class="recipe-list">
+      <div class="container">
+        <div class="recipe-grid">
+            {% for recipe in recipes %}
+                <div class="recipe-card" data-category="breakfast" data-tags="healthy,protein">
+                    <div class="recipe-image">
+                        <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}の画像">
+                        <div class="recipe-time"><i class="far fa-clock"></i> {{ recipe.prep_time }}分</div>
+                        </div>
+                        <div class="recipe-content">
+                        <div class="recipe-tags">
+                            {% for tag in recipe.tags.all %}
+                                <a href="/health-hub/recipes/search/?tags={{ tag.slug }}"><span class="recipe-tag">{{ tag.name }}</span></a>
+                            {% endfor %}
+                        </div>
+                        <h3><a href="/health-hub/recipes/{{ recipe.id }}" style="color: var(--text)">{{ recipe.title }}</a></h3>
+                        <p class="recipe-desc">{{ recipe.discription }}</p>
+                        <div class="recipe-meta">
+                            <span><i class="fas fa-fire"></i> {{ recipe.total_calories }}kcal</span>
+                        </div>
+                        <a href="/health-hub/recipes/{{ recipe.id }}" class="btn btn-outline btn-sm">詳細を見る</a>
+                    </div>
+                </div>
+            {% empty %}
+                <div style="width: 100%; text-align: center;">
+                    <h3>条件に一致するレシピが見つかりませんでした。</h3>
+                </div>
+            {% endfor %}
+
+        {% comment %} <div class="load-more">
+          <button class="btn btn-primary">もっと見る</button>
+        </div> {% endcomment %}
+      </div>
+    </section>
+  </main>
+  <style>
+    /* レシピページ専用スタイル */
+
+    /* ページヘッダー */
+    .page-header {
+      position: relative;
+      color: white;
+      padding: 60px 0;
+      text-align: center;
+    }
+
+    .page-header-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('/media/public/recipes_header_img.webp');
+      background-size: cover;
+      background-position: center;
+      filter: brightness(0.7);
+      z-index: -1;
+    }
+
+    .page-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    }
+
+    .page-header p {
+    max-width: 700px;
+    margin: 0 auto;
+    opacity: 0.9;
+    }
+
+    /* レシピ検索・フィルター */
+    .recipe-filter {
+    padding: 30px 0;
+    background-color: var(--background-alt);
+    border-bottom: 1px solid var(--border);
+    }
+
+    .search-container {
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .recipe-search {
+      display: flex;
+    {% comment %} position: relative; {% endcomment %}
+      max-width: 1020px;
+    {% comment %} margin: 0 auto; {% endcomment %}
+    }
+
+    .recipe-search input {
+    width: 100%;
+    padding: 12px 20px 12px 45px;
+    border-radius: 30px;
+    border: 1px solid var(--border);
+    background-color: var(--background);
+    color: var(--text);
+    font-size: 1rem;
+    transition: var(--transition);
+    }
+
+    .recipe-search i {
+    position: relative;
+    left: 35px;
+    {% comment %} top: 500%; {% endcomment %}
+    transform: translateY(35%);
+    color: var(--text-light);
+    }
+
+    .recipe-search input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px var(--primary-light);
+    }
+
+    .recipe-search-button {
+      outline: none;
+      border: none;
+      padding: 0.25rem 1rem;
+      background-color: var(--primary);
+      transition: var(--transition);
+      border-radius: 3px;
+      color: white;
+    }
+
+    .recipe-search-button button {
+      width: 100%;
+      height: 100%;
+    }
+
+    .category-filter {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    }
+
+    .category-btn {
+    padding: 8px 16px;
+    border-radius: 20px;
+    background-color: var(--background);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+    }
+
+    .category-btn:hover, .category-btn.active {
+    background-color: var(--primary);
+    border-color: var(--primary);
+    color: white;
+    }
+
+    .tag-filter {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    }
+
+    .tag-label {
+    font-weight: 500;
+    color: var(--text-light);
+    }
+
+    .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    }
+
+    .tag-btn {
+      padding: 5px 12px;
+      border-radius: 15px;
+      background-color: var(--primary-light);
+      border: 1px solid var(--border);
+      color: white;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .tag-btn:hover, .tag-btn.active {
+    background-color: var(--primary);
+    border-color: var(--primary);
+    color: white;
+    }
+
+    /* レシピ一覧 */
+    .recipe-list {
+    padding: 60px 0;
+    }
+
+    .recipe-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 30px;
+    margin-bottom: 40px;
+    }
+
+    .recipe-card {
+    background-color: var(--background);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: 0 3px 10px var(--shadow);
+    transition: var(--transition);
+    }
+
+    .recipe-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px var(--shadow);
+    }
+
+    .recipe-image {
+    position: relative;
+    overflow: hidden;
+    }
+
+    .recipe-image img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+    }
+
+    .recipe-card:hover .recipe-image img {
+    transform: scale(1.05);
+    }
+
+    .recipe-time {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    }
+
+    .recipe-content {
+    padding: 20px;
+    }
+
+    .recipe-card h3 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    line-height: 1.4;
+    transition: var(--transition);
+    }
+
+    .recipe-card:hover h3 {
+    color: var(--primary);
+    }
+
+    .recipe-desc {
+    color: var(--text-light);
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    }
+
+    .recipe-meta {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    color: var(--text-light);
+    font-size: 0.85rem;
+    }
+
+    .recipe-meta span {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    }
+
+    .btn-sm {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    width: 100%;
+    }
+
+    .load-more {
+    text-align: center;
+    margin-top: 20px;
+    }
+
+    /* レスポンシブデザイン */
+    @media (max-width: 992px) {
+    .recipe-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    }
+
+    @media (max-width: 768px) {
+    .page-header {
+        padding: 40px 0;
+    }
+
+    .page-header h1 {
+        font-size: 2rem;
+    }
+
+    .category-filter {
+        overflow-x: auto;
+        justify-content: flex-start;
+        padding-bottom: 10px;
+    }
+
+    .category-filter::-webkit-scrollbar {
+        height: 4px;
+    }
+
+    .category-filter::-webkit-scrollbar-thumb {
+        background-color: var(--border);
+        border-radius: 4px;
+    }
+
+    .category-btn {
+        white-space: nowrap;
+    }
+    }
+
+    @media (max-width: 576px) {
+    .recipe-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .tag-filter {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .tags {
+        width: 100%;
+        overflow-x: auto;
+        padding-bottom: 10px;
+        justify-content: flex-start;
+    }
+
+    .tags::-webkit-scrollbar {
+        height: 4px;
+    }
+
+    .tags::-webkit-scrollbar-thumb {
+        background-color: var(--border);
+        border-radius: 4px;
+    }
+
+    .tag-btn {
+        white-space: nowrap;
+    }
+    }
+  </style>
+
+  <script>
+    // レシピページ専用のJavaScript
+
+    document.addEventListener('DOMContentLoaded', function() {
+        // カテゴリーフィルター
+        const categoryButtons = document.querySelectorAll('.category-btn');
+        const tagButtons = document.querySelectorAll('.tag-btn');
+        const recipeCards = document.querySelectorAll('.recipe-card');
+
+        // カテゴリーボタンのクリックイベント
+        categoryButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            // アクティブクラスの切り替え
+            categoryButtons.forEach(btn => btn.classList.remove('active'));
+            this.classList.add('active');
+
+            const selectedCategory = this.getAttribute('data-category');
+            filterRecipes();
+        });
+        });
+
+        // タグボタンのクリックイベント
+        tagButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            // アクティブクラスの切り替え
+            this.classList.toggle('active');
+            filterRecipes();
+        });
+        });
+
+        // レシピ検索機能
+        const searchInput = document.querySelector('.recipe-search input');
+        searchInput.addEventListener('input', filterRecipes);
+
+        // レシピのフィルタリング関数
+        function filterRecipes() {
+        const selectedCategory = document.querySelector('.category-btn.active').getAttribute('data-category');
+        const activeTags = Array.from(document.querySelectorAll('.tag-btn.active')).map(tag => tag.getAttribute('data-tag'));
+        const searchTerm = searchInput.value.toLowerCase().trim();
+
+        recipeCards.forEach(card => {
+            const cardCategory = card.getAttribute('data-category');
+            const cardTags = card.getAttribute('data-tags') ? card.getAttribute('data-tags').split(',') : [];
+            const cardTitle = card.querySelector('h3').textContent.toLowerCase();
+            const cardDesc = card.querySelector('.recipe-desc').textContent.toLowerCase();
+
+            // カテゴリーフィルター
+            const matchesCategory = selectedCategory === 'all' || cardCategory === selectedCategory;
+
+            // タグフィルター
+            const matchesTags = activeTags.length === 0 || activeTags.every(tag => cardTags.includes(tag));
+
+            // 検索フィルター
+            const matchesSearch = searchTerm === '' || cardTitle.includes(searchTerm) || cardDesc.includes(searchTerm);
+
+            // すべての条件に一致する場合のみ表示
+            if (matchesCategory && matchesTags && matchesSearch) {
+            card.style.display = 'block';
+            } else {
+            card.style.display = 'none';
+            }
+        });
+
+        // 表示されているカードがない場合のメッセージ表示
+        const visibleCards = document.querySelectorAll('.recipe-card[style="display: block"]');
+        const noResultsMessage = document.querySelector('.no-results-message');
+
+        if (visibleCards.length === 0) {
+            if (!noResultsMessage) {
+            const message = document.createElement('div');
+            message.className = 'no-results-message';
+            message.textContent = '条件に一致するレシピが見つかりませんでした。';
+            message.style.textAlign = 'center';
+            message.style.padding = '30px';
+            message.style.color = 'var(--text-light)';
+
+            const recipeGrid = document.querySelector('.recipe-grid');
+            recipeGrid.parentNode.insertBefore(message, recipeGrid.nextSibling);
+            }
+        } else if (noResultsMessage) {
+            noResultsMessage.remove();
+        }
+        }
+
+        // もっと見るボタン
+        const loadMoreBtn = document.querySelector('.load-more .btn');
+        let currentPage = 1;
+
+        loadMoreBtn.addEventListener('click', function() {
+        // 実際のプロジェクトではここでAjaxリクエストを送信して追加のレシピを取得
+        // このデモでは単にボタンのテキストを変更
+        currentPage++;
+
+        if (currentPage >= 3) {
+            this.textContent = 'すべて表示しました';
+            this.disabled = true;
+            this.classList.add('btn-disabled');
+        } else {
+            this.textContent = 'もっと見る (' + currentPage + '/3)';
+        }
+
+        // ダミーの遅延を追加してローディング効果をシミュレート
+        this.textContent = '読み込み中...';
+        this.disabled = true;
+
+        setTimeout(() => {
+            // 新しいレシピカードを追加（実際のプロジェクトではAjaxレスポンスから生成）
+            const recipeGrid = document.querySelector('.recipe-grid');
+
+            // ダミーのレシピカードを追加
+            for (let i = 0; i < 6; i++) {
+            const clone = recipeGrid.children[i].cloneNode(true);
+            const title = clone.querySelector('h3');
+            title.textContent = title.textContent + ' (新着)';
+            recipeGrid.appendChild(clone);
+            }
+
+            this.textContent = 'もっと見る (' + currentPage + '/3)';
+            this.disabled = false;
+
+            // フィルターを再適用
+            filterRecipes();
+        }, 1000);
+        });
+
+        // アニメーション要素の表示
+        const animatedElements = document.querySelectorAll('.recipe-card');
+
+        if ('IntersectionObserver' in window) {
+        const elementObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+                elementObserver.unobserve(entry.target);
+            }
+            });
+        }, {
+            threshold: 0.1
+        });
+
+        animatedElements.forEach((element, index) => {
+            element.style.opacity = '0';
+            element.style.transform = 'translateY(20px)';
+            element.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            element.style.transitionDelay = `${index * 0.1}s`;
+            elementObserver.observe(element);
+        });
+        }
+    });
+  </script>
+{% endblock %}

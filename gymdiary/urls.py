@@ -24,13 +24,23 @@ from drf_spectacular.views import (
     SpectacularSwaggerView,
 )
 
+from wagtail.admin import urls as wagtailadmin_urls
+
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    # wagtail関連
+    path('health-hub/', include('health_hub.urls')),
+    path('admin/health-hub', include(wagtailadmin_urls)),
+
+
+    # 各種API
     path('api/account/', include('accounts.urls')),
     path('api/weight/', include('weight.urls')),
     path('api/training/', include('training.urls')),
     path('api/meal/', include('meal.urls')),
     path('api/trainers/', include('trainers.urls')),
+
+    # 管理画面
+    path('admin/', admin.site.urls),
 
     # APIドキュメント関連
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),

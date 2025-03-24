@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>{% block title %}Gym Diary | Health Hub - 健康で美しく、内面から輝くライフスタイルを目指す -{% endblock %}</title>
+
+        <meta name="description" content="{% block page_description %}正しく運動して綺麗な体を手に入れよう{% endblock %}" />
+
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <!-- Google Fonts -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+        {% if GOOGLE_ANALYTICS_TRACKING_ID %}
+            <!-- Google tag (gtag.js) -->
+            <script async src="https://www.googletagmanager.com/gtag/js?id={{ GOOGLE_ANALYTICS_TRACKING_ID }}"></script>
+            <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '{{  GOOGLE_ANALYTICS_TRACKING_ID }}');
+            </script>
+        {% endif %}
+    </head>
+
+    <body>
+        <!-- ヘッダー -->
+        <header class="header">
+            <div class="container">
+                <div class="header-content">
+                    <div class="logo">
+                    <a href="/health-hub">
+                        <img src="/media/public/logo_color.png" alt="Gym Diary Logo">
+                        <span>Health Hub</span>
+                    </a>
+                    </div>
+
+                    <nav class="main-nav">
+                    <ul>
+                        <li><a href="#fitness">フィットネス</a></li>
+                        <li><a href="/health-hub/recipes">レシピ</a></li>
+                        <li><a href="#lifehacks">ライフハック</a></li>
+                    </ul>
+                    </nav>
+
+                    <div class="header-right">
+                    <div class="search-bar">
+                        <i class="fas fa-search"></i>
+                        <input type="search" placeholder="検索...">
+                    </div>
+
+                    <button class="theme-toggle" aria-label="ダークモード切替">
+                        <i class="fas fa-moon"></i>
+                    </button>
+
+                    <button class="mobile-menu-btn" aria-label="メニュー">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- モバイルメニュー -->
+        <div class="mobile-menu">
+            <div class="container">
+            <ul>
+                <li><a href="#fitness">フィットネス</a></li>
+                <li><a href="/health-hub/recipes">レシピ</a></li>
+                <li><a href="#lifehacks">ライフハック</a></li>
+            </ul>
+            <div class="mobile-search">
+                <input type="search" placeholder="検索...">
+                <button><i class="fas fa-search"></i></button>
+            </div>
+            </div>
+        </div>
+        {% block content %}{% endblock %}
+
+        <!-- フッター -->
+        <footer class="footer">
+            <div class="container">
+            <div class="footer-content">
+                <div class="footer-about">
+                <div class="logo">
+                    <span>Health Hub</span>
+                </div>
+                <p>健康で美しく、内面から輝くライフスタイルを目指すすべての人のためのプラットフォーム</p>
+                </div>
+
+                <div class="footer-links">
+                <h3>リンク</h3>
+                <ul>
+                    <li><a href="/health-hub/fitness">フィットネス</a></li>
+                    <li><a href="/health-hub/recipes">レシピ</a></li>
+                </ul>
+                </div>
+
+                {% comment %} <div class="footer-support">
+                <h3>サポート</h3>
+                <ul>
+                    <li><a href="#">よくある質問</a></li>
+                    <li><a href="#">お問い合わせ</a></li>
+                    <li><a href="#">プライバシーポリシー</a></li>
+                    <li><a href="#">利用規約</a></li>
+                </ul>
+                </div> {% endcomment %}
+
+                <div class="footer-social">
+                <h3>フォローする</h3>
+                <div class="social-icons">
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2025 Studio Babe. All rights reserved.</p>
+            </div>
+            </div>
+        </footer>
+
+        <style>
+            /* ベーススタイル */
+            :root {
+            --primary: #ff7a00;
+            --primary-dark: #e56e00;
+            --primary-light: #ff9a3c;
+            --secondary: #333333;
+            --text: #333333;
+            --text-light: #666666;
+            --background: #ffffff;
+            --background-alt: #f5f5f5;
+            --border: #e0e0e0;
+            --shadow: rgba(0, 0, 0, 0.1);
+            --radius: 8px;
+            --transition: all 0.3s ease;
+            }
+
+            .dark {
+            --primary: #ff9a3c;
+            --primary-dark: #ff7a00;
+            --primary-light: #ffb366;
+            --secondary: #2a2a2a;
+            --text: #f0f0f0;
+            --text-light: #b0b0b0;
+            --background: #121212;
+            --background-alt: #1e1e1e;
+            --border: #2c2c2c;
+            --shadow: rgba(0, 0, 0, 0.3);
+            }
+
+            * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            }
+
+            body {
+            font-family: 'Noto Sans JP', sans-serif;
+            color: var(--text);
+            background-color: var(--background);
+            line-height: 1.6;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            }
+
+            /* パンくずリスト */
+            .breadcrumbs {
+                padding: 20px 0;
+                color: var(--text-light);
+                font-size: 0.9rem;
+            }
+
+            .breadcrumbs a {
+                color: var(--text-light);
+                transition: var(--transition);
+            }
+
+            .breadcrumbs a:hover {
+                color: var(--primary);
+            }
+
+            img {
+                max-width: 100%;
+                height: auto;
+            }
+
+            a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: var(--transition);
+            }
+
+            a:hover {
+            color: var(--primary-dark);
+            }
+
+            ul {
+            list-style: none;
+            }
+
+            .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            }
+
+            .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 2.5rem;
+            position: relative;
+            }
+
+            .text-center {
+            text-align: center;
+            }
+
+            /* ボタン */
+            .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            border-radius: var(--radius);
+            font-weight: 500;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            font-size: 1rem;
+            }
+
+            .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            }
+
+            .btn-primary:hover {
+            background-color: var(--primary-dark);
+            color: white;
+            }
+
+            .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            }
+
+            .btn-outline:hover {
+            background-color: var(--primary);
+            color: white;
+            }
+
+            /* ヘッダー */
+            .header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background-color: var(--background);
+            box-shadow: 0 2px 10px var(--shadow);
+            transition: var(--transition);
+            }
+
+            .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 70px;
+            }
+
+            .logo a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text);
+            }
+
+            .logo img {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius);
+            }
+
+            .logo span {
+            font-weight: 700;
+            font-size: 1.5rem;
+            }
+
+            .main-nav ul {
+            display: flex;
+            gap: 30px;
+            }
+
+            .main-nav a {
+            color: var(--text);
+            font-weight: 500;
+            position: relative;
+            }
+
+            .main-nav a:hover {
+            color: var(--primary);
+            }
+
+            .main-nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary);
+            transition: var(--transition);
+            }
+
+            .main-nav a:hover::after {
+            width: 100%;
+            }
+
+            .header-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            }
+
+            .search-bar {
+            position: relative;
+            width: 250px;
+            }
+
+            .search-bar input {
+            width: 100%;
+            padding: 10px 15px 10px 40px;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            background-color: var(--background-alt);
+            color: var(--text);
+            transition: var(--transition);
+            }
+
+            .search-bar i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+            }
+
+            .search-bar input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px var(--primary-light);
+            }
+
+            .theme-toggle, .mobile-menu-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--text);
+            font-size: 1.2rem;
+            padding: 5px;
+            transition: var(--transition);
+            }
+
+            .theme-toggle:hover, .mobile-menu-btn:hover {
+            color: var(--primary);
+            }
+
+            .mobile-menu-btn {
+            display: none;
+            }
+
+            /* モバイルメニュー */
+            .mobile-menu {
+            display: none;
+            background-color: var(--background);
+            padding: 20px 0;
+            box-shadow: 0 5px 10px var(--shadow);
+            }
+
+            .mobile-menu ul {
+            margin-bottom: 20px;
+            }
+
+            .mobile-menu li {
+            margin-bottom: 15px;
+            }
+
+            .mobile-menu a {
+            color: var(--text);
+            font-weight: 500;
+            display: block;
+            padding: 5px 0;
+            }
+
+            .mobile-search {
+            display: flex;
+            gap: 10px;
+            }
+
+            .mobile-search input {
+            flex: 1;
+            padding: 10px 15px;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            background-color: var(--background-alt);
+            color: var(--text);
+            }
+
+            .mobile-search button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: var(--radius);
+            padding: 0 15px;
+            cursor: pointer;
+            transition: var(--transition);
+            }
+
+            .mobile-search button:hover {
+            background-color: var(--primary-dark);
+            }
+
+            /* ヒーローセクション */
+            .hero {
+            position: relative;
+            height: 70vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            overflow: hidden;
+            }
+
+            .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('/media/public/image_fx.jpg');
+            background-size: cover;
+            background-position: center;
+            filter: brightness(0.7);
+            z-index: -1;
+            }
+
+            .hero-content {
+            text-align: center;
+            max-width: 800px;
+            padding: 0 20px;
+            z-index: 1;
+            }
+
+            .hero h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+            }
+
+            .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            }
+
+            .hero-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            }
+
+            /* アニメーション */
+            .fade-in {
+            animation: fadeIn 1s ease-in-out;
+            }
+
+            .fade-in-delay {
+            animation: fadeIn 1s ease-in-out 0.3s both;
+            }
+
+            .fade-in-delay-2 {
+            animation: fadeIn 1s ease-in-out 0.6s both;
+            }
+
+            @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            }
+
+            /* カテゴリーセクション */
+            .categories {
+            padding: 80px 0;
+            background-color: var(--background-alt);
+            }
+
+            .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            }
+
+            .card {
+            background-color: var(--background);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: 0 5px 15px var(--shadow);
+            transition: var(--transition);
+            }
+
+            .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px var(--shadow);
+            }
+
+            .card-image {
+            overflow: hidden;
+            }
+
+            .card-image img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+            }
+
+            .card:hover .card-image img {
+            transform: scale(1.05);
+            }
+
+            .card-body {
+            padding: 20px;
+            }
+
+            .card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: var(--text);
+            transition: var(--transition);
+            }
+
+            .card:hover h3 {
+            color: var(--primary);
+            }
+
+            .card p {
+            color: var(--text-light);
+            margin-bottom: 15px;
+            }
+
+            .read-more {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-weight: 500;
+            }
+
+            .read-more i {
+            font-size: 0.8rem;
+            transition: transform 0.3s ease;
+            }
+
+            .read-more:hover i {
+            transform: translateX(3px);
+            }
+
+            /* おすすめ記事セクション */
+            .recommended-articles {
+            padding: 80px 0;
+            }
+
+            .article-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+            }
+
+            .article-card {
+            cursor: pointer;
+            transition: var(--transition);
+            }
+
+            .article-card:hover {
+            transform: translateY(-5px);
+            }
+
+            .article-image {
+            border-radius: var(--radius);
+            overflow: hidden;
+            margin-bottom: 15px;
+            }
+
+            .article-image img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+            }
+
+            .article-card:hover .article-image img {
+            transform: scale(1.05);
+            }
+
+            .article-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            transition: var(--transition);
+            }
+
+            .article-card:hover h3 {
+            color: var(--primary);
+            }
+
+            .article-card p {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            }
+
+            /* 今日のヒントセクション */
+            .daily-tips {
+            padding: 80px 0;
+            background-color: var(--background-alt);
+            }
+
+            .tips-content {
+            display: flex;
+            align-items: center;
+            gap: 50px;
+            }
+
+            .tips-text {
+            flex: 1;
+            }
+
+            .tips-text h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            }
+
+            .tips-text p {
+            color: var(--text-light);
+            margin-bottom: 20px;
+            }
+
+            .tips-list {
+            margin-bottom: 30px;
+            }
+
+            .tips-list li {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 15px;
+            }
+
+            .tips-list i {
+            color: var(--primary);
+            margin-right: 10px;
+            margin-top: 3px;
+            }
+
+            .tips-image {
+            flex: 1;
+            }
+
+            .tips-image img {
+            border-radius: var(--radius);
+            width: 100%;
+            height: auto;
+            }
+
+            /* フッター */
+            .footer {
+            background-color: var(--secondary);
+            color: white;
+            padding: 60px 0 20px;
+            }
+
+            .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+            }
+
+            .footer-about {
+            grid-column: span 2;
+            }
+
+            .footer-about .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            }
+
+            .footer-about p {
+            color: rgba(255, 255, 255, 0.7);
+            max-width: 400px;
+            }
+
+            .footer h3 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            position: relative;
+            }
+
+            .footer h3::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background-color: var(--primary);
+            }
+
+            .footer-links ul, .footer-support ul {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            }
+
+            .footer-links a, .footer-support a {
+            color: rgba(255, 255, 255, 0.7);
+            transition: var(--transition);
+            }
+
+            .footer-links a:hover, .footer-support a:hover {
+            color: white;
+            }
+
+            .social-icons {
+            display: flex;
+            gap: 15px;
+            }
+
+            .social-icons a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: white;
+            transition: var(--transition);
+            }
+
+            .social-icons a:hover {
+            background-color: var(--primary);
+            transform: translateY(-3px);
+            }
+
+            .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+            }
+
+            /* レスポンシブデザイン */
+            @media (max-width: 992px) {
+            .tips-content {
+                flex-direction: column;
+            }
+
+            .tips-text, .tips-image {
+                width: 100%;
+            }
+            }
+
+            @media (max-width: 768px) {
+            .main-nav, .search-bar {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .footer-about {
+                grid-column: span 1;
+            }
+
+            .footer-content {
+                gap: 30px;
+            }
+            }
+
+            @media (max-width: 576px) {
+            .card-grid, .article-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section-title {
+                font-size: 1.8rem;
+            }
+
+            .container {
+                padding: 0 15px;
+            }
+            }
+
+            .recipe-tags {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 8px;
+                margin-bottom: 10px;
+                }
+
+                .recipe-tag {
+                background-color: var(--primary-light);
+                color: white;
+                padding: 3px 8px;
+                border-radius: 10px;
+                font-size: 0.75rem;
+                font-weight: 500;
+                }
+        </style>
+        <script>
+            // トースト通知
+  function showToast(message, type = 'success') {
+    // 既存のトーストを削除
+    const existingToast = document.querySelector('.toast');
+    if (existingToast) {
+      existingToast.remove();
+    }
+
+    // 新しいトーストを作成
+    const toast = document.createElement('div');
+    toast.className = `toast ${type}`;
+    toast.textContent = message;
+
+    document.body.appendChild(toast);
+
+    // アニメーション
+    setTimeout(() => {
+      toast.classList.add('show');
+    }, 10);
+
+    // 自動的に消える
+    setTimeout(() => {
+      toast.classList.remove('show');
+      setTimeout(() => {
+        toast.remove();
+      }, 300);
+    }, 3000);
+  }
+
+  // CSSをページに追加
+  const style = document.createElement('style');
+  style.textContent = `
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      padding: 12px 20px;
+      background-color: var(--primary);
+      color: white;
+      border-radius: var(--radius);
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+      z-index: 1000;
+      transform: translateY(100px);
+      opacity: 0;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .toast.error {
+      background-color: #e74c3c;
+    }
+
+    @media print {
+      header, footer, .recipe-actions, .review-section, .related-recipes, .breadcrumbs {
+        display: none !important;
+      }
+
+      .recipe-content {
+        display: block;
+      }
+
+      .recipe-detail {
+        padding: 0;
+      }
+    }
+  `;
+  document.head.appendChild(style);
+            // ヘッダースクロール効果
+            window.addEventListener('scroll', function() {
+                const header = document.querySelector('.header');
+                if (window.scrollY > 50) {
+                header.style.opacity = '0.9';
+                header.style.backdropFilter = 'blur(10px)';
+                } else {
+                header.style.backgroundColor = 'var(--background)';
+                header.style.backdropFilter = 'none';
+                }
+            });
+
+            // モバイルメニュートグル
+            const menuBtn = document.querySelector('.mobile-menu-btn');
+            const mobileMenu = document.querySelector('.mobile-menu');
+            let menuOpen = false;
+
+            menuBtn.addEventListener('click', function() {
+                if (!menuOpen) {
+                mobileMenu.style.display = 'block';
+                menuBtn.innerHTML = '<i class="fas fa-times"></i>';
+                menuOpen = true;
+                } else {
+                mobileMenu.style.display = 'none';
+                menuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+                menuOpen = false;
+                }
+            });
+
+            // ウィンドウリサイズ時にモバイルメニューを閉じる
+            window.addEventListener('resize', function() {
+                if (window.innerWidth > 768 && menuOpen) {
+                mobileMenu.style.display = 'none';
+                menuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+                menuOpen = false;
+                }
+            });
+
+            // ダークモードトグル
+            const themeToggle = document.querySelector('.theme-toggle');
+            const htmlElement = document.documentElement;
+            let isDarkMode = localStorage.getItem('darkMode') === 'true';
+
+            // 保存されたテーマを適用
+            if (isDarkMode) {
+                htmlElement.classList.add('dark');
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+            }
+
+            themeToggle.addEventListener('click', function() {
+                isDarkMode = !isDarkMode;
+
+                if (isDarkMode) {
+                    htmlElement.classList.add('dark');
+                    themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+                } else {
+                    htmlElement.classList.remove('dark');
+                    themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+                }
+
+                // テーマ設定を保存
+                localStorage.setItem('darkMode', isDarkMode);
+            });
+
+            // スムーススクロール
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                    top: targetElement.offsetTop - 80,
+                    behavior: 'smooth'
+                    });
+
+                    // モバイルメニューが開いていれば閉じる
+                    if (menuOpen) {
+                    mobileMenu.style.display = 'none';
+                    menuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+                    menuOpen = false;
+                    }
+                }
+                });
+            });
+
+            // 画像の遅延読み込み
+            document.addEventListener('DOMContentLoaded', function() {
+                const lazyImages = document.querySelectorAll('img');
+
+                if ('IntersectionObserver' in window) {
+                const imageObserver = new IntersectionObserver((entries, observer) => {
+                    entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const image = entry.target;
+                        image.src = image.src; // 実際のプロジェクトではdata-srcなどの属性を使用
+                        imageObserver.unobserve(image);
+                    }
+                    });
+                });
+
+                lazyImages.forEach(img => {
+                    imageObserver.observe(img);
+                });
+                }
+            });
+
+            // アニメーション要素の表示
+            document.addEventListener('DOMContentLoaded', function() {
+                const animatedElements = document.querySelectorAll('.card, .article-card, .tips-content');
+
+                if ('IntersectionObserver' in window) {
+                const elementObserver = new IntersectionObserver((entries, observer) => {
+                    entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                        elementObserver.unobserve(entry.target);
+                    }
+                    });
+                }, {
+                    threshold: 0.1
+                });
+
+                animatedElements.forEach(element => {
+                    element.style.opacity = '0';
+                    element.style.transform = 'translateY(20px)';
+                    element.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                    elementObserver.observe(element);
+                });
+                }
+            });
+        </script>
+    </body>
+</html>

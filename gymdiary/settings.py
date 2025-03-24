@@ -31,7 +31,7 @@ environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env.bool('DEBUG', False)
+DEBUG = env.bool('DEBUG', default=False)
 
 ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['localhost', '127.0.0.1', 'gymdiary.tokyo'])
 
@@ -50,11 +50,29 @@ INSTALLED_APPS = [
     'weight',  # 体重管理
     'training',  # トレーニング管理
     'meal',  # 食事管理
+    'recipe',
     'trainers',
 
     'drf_spectacular',
     'corsheaders',
     'storages',
+
+    # Wagtail関連のアプリを追加
+    'health_hub',
+    'wagtail.contrib.forms',
+    'wagtail.contrib.redirects',
+    'wagtail.embeds',
+    'wagtail.sites',
+    'wagtail.users',
+    'wagtail.snippets',
+    'wagtail.documents',
+    'wagtail.images',
+    'wagtail.search',
+    'wagtail.admin',
+    'wagtail',
+
+    'modelcluster',
+    'taggit',
 ]
 
 MIDDLEWARE = [
@@ -66,6 +84,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'wagtail.contrib.redirects.middleware.RedirectMiddleware',
 ]
 
 ROOT_URLCONF = 'gymdiary.urls'
@@ -73,7 +92,7 @@ ROOT_URLCONF = 'gymdiary.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -81,6 +100,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'health_hub.context_processors.google_analytics',
             ],
         },
     },
@@ -119,7 +139,7 @@ SESSION_COOKIE_AGE = 60 * 60 * 24 * 90  # 90日有効
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-if env.bool('USE_SQLITE', False):
+if env.bool('USE_SQLITE', default=False):
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
@@ -298,3 +318,14 @@ STRIPE_SECRET_KEY = env("STRIPE_SECRET_KEY")
 STRIPE_WEBHOOK_SECRET = env("STRIPE_WEBHOOK_SECRET")
 
 FRONTEND_URL = env("FRONTEND_URL")
+
+
+# wagtailの設定
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 10_000
+WAGTAIL_SITE_NAME = 'Gym Diary - Health Hub -'
+WAGTAILADMIN_BASE_URL = 'https://gymdiary.tokyo'
+WAGTAILDOCS_EXTENSIONS = ['csv', 'docx', 'key', 'odt', 'pdf', 'pptx', 'rtf', 'txt', 'xlsx', 'zip']
+
+
+# google analyticsの設定
+GOOGLE_ANALYTICS_TRACKING_ID = env("GOOGLE_ANALYTICS_TRACKING_ID")

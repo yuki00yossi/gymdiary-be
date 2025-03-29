@@ -47,13 +47,6 @@
             </div>
             {% endif %}
           <p class="recipe-subtitle">{{ object.description|linebreaksbr }}</p>
-          <div class="recipe-tags" style="margin-top: 1rem; margin-bottom: 1rem;">
-            {% for tag in object.tags.all %}
-              <span class="recipe-tag"><a href="/health-hub/recipes/search/?tags={{ tag.slug }}" style="color: white;">{{ tag.name }}</a></span>
-            {% endfor %}
-          </div>
-
-
           <div class="recipe-info">
             <div class="info-item">
               <i class="far fa-clock"></i>
@@ -83,6 +76,12 @@
                 <span class="info-value">{{ object.difficulty }}</span>
               </div>
             </div>
+          </div>
+
+          <div class="recipe-tags" style="margin-top: 1rem; margin-bottom: 1rem;">
+            {% for tag in object.tags.all %}
+              <span class="recipe-tag"><a href="/health-hub/recipes/search/?tags={{ tag.slug }}" style="color: white;">{{ tag.name }}</a></span>
+            {% endfor %}
           </div>
 
           <div class="recipe-content">
@@ -164,7 +163,7 @@
                       <div class="instruction-step">
                           <span class="step-number">{{ step.step_number }}</span>
                           <div class="step-content">
-                          <p>{{ step.description }}</p>
+                          <p>{{ step.description|linebreaksbr }}</p>
                           {% if step.image %}
                               <div class="step-image" style="max-height: 450px;">
                                   <img style="height: 100%;" src="{{ step.image.url }}" alt="手順の画像">
@@ -180,7 +179,7 @@
                 <h2>調理のコツ</h2>
                 <ul class="tips-list">
                   {% for tip in object.tips.all %}
-                      <li><i class="fas fa-lightbulb"></i> {{ tip.tip_text }}</li>
+                      <li><i class="fas fa-lightbulb"></i> {{ tip.tip_text|linebreaksbr }}</li>
                   {% endfor %}
                 </ul>
               </div>

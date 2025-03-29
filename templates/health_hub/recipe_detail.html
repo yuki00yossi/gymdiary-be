@@ -1,12 +1,12 @@
 {% extends "health_hub/base.html" %}
 
 {% block content %}
-<main style="padding-top: 2rem;">
+<main style="">
     <!-- レシピ詳細 -->
     <article class="recipe-detail">
       <div class="container">
         <!-- パンくずリスト -->
-        <div class="breadcrumbs" style="margin-bottom: 2rem;">
+        <div class="breadcrumbs" style="">
           <a href="/health-hub">ホーム</a> &gt;
           <a href="/health-hub/recipes">レシピ</a> &gt;
           <span>{{ object.title }}</span>
@@ -15,16 +15,7 @@
         <!-- レシピヘッダー -->
         <div class="recipe-header">
           <div class="recipe-title">
-            <div class="recipe-tags">
-              {% for tag in object.tags.all %}
-                <span class="recipe-tag"><a href="/health-hub/recipes/search/?tags={{ tag.slug }}" style="color: white;">{{ tag.name }}</a></span>
-              {% endfor %}
-              {% comment %} <span class="recipe-tag"><a href="/health-hub/recipes?tags=hoge" style="color: white;">朝食</a></span>
-
-              <span class="recipe-tag"><a href="/health-hub/recipes?tags=hoge" style="color: white;">高タンパク</a></span> {% endcomment %}
-            </div>
             <h1>{{ object.title }}</h1>
-            <p class="recipe-subtitle">{{ object.description }}</p>
           </div>
 
           <div class="recipe-actions">
@@ -54,7 +45,14 @@
             <div class="recipe-image-container">
               <img src="{{ object.image.url }}" alt="{{ object.title }}の画像" class="recipe-main-image">
             </div>
-          {% endif %}
+            {% endif %}
+          <p class="recipe-subtitle">{{ object.description|linebreaksbr }}</p>
+          <div class="recipe-tags" style="margin-top: 1rem; margin-bottom: 1rem;">
+            {% for tag in object.tags.all %}
+              <span class="recipe-tag"><a href="/health-hub/recipes/search/?tags={{ tag.slug }}" style="color: white;">{{ tag.name }}</a></span>
+            {% endfor %}
+          </div>
+
 
           <div class="recipe-info">
             <div class="info-item">
@@ -112,30 +110,31 @@
                 <div class="nutrition-table">
                   <div class="nutrition-row">
                     <span class="nutrition-name">カロリー</span>
-                    <span class="nutrition-value">320kcal</span>
+                    <span class="nutrition-value">{{ object.total_calories }}kcal</span>
                   </div>
                   <div class="nutrition-row">
                     <span class="nutrition-name">タンパク質</span>
-                    <span class="nutrition-value">25g</span>
+                    <span class="nutrition-value">{{ object.total_protein }}g</span>
                   </div>
                   <div class="nutrition-row">
                     <span class="nutrition-name">脂質</span>
-                    <span class="nutrition-value">10g</span>
+                    <span class="nutrition-value">{{ object.total_fat }}g</span>
                   </div>
                   <div class="nutrition-row">
                     <span class="nutrition-name">炭水化物</span>
-                    <span class="nutrition-value">35g</span>
+                    <span class="nutrition-value">{{ object.total_carbs }}g</span>
                   </div>
-                  <div class="nutrition-row">
-                    <span class="nutrition-name">食物繊維</span>
-                    <span class="nutrition-value">5g</span>
-                  </div>
-                  <div class="nutrition-row">
+                  {% comment %} <div class="nutrition-row" style="padding-left: 2rem;">
                     <span class="nutrition-name">糖質</span>
                     <span class="nutrition-value">15g</span>
                   </div>
+                  <div class="nutrition-row" style="padding-left: 2rem;">
+                    <span class="nutrition-name">食物繊維</span>
+                    <span class="nutrition-value">5g</span>
+                  </div> {% endcomment %}
+
                 </div>
-                <p class="nutrition-note">※1人分あたりの値です。トッピングは含まれていません。</p>
+                <p class="nutrition-note">※1人分あたりの概算値です。</p>
                 {% comment %} <div class="nutrition-chart">
                   <h3>PFCバランス</h3>
                   <div class="chart-container">
@@ -952,6 +951,23 @@
 
     /* レスポンシブデザイン */
     @media (max-width: 992px) {
+      .recipe-header {
+        flex-wrap: wrap;
+      }
+
+      .recipe-title h1 {
+        font-size: 1.5rem;
+      }
+
+      .recipe-subtitle {
+        font-size: 1rem;
+      }
+
+      .recipe-actions {
+        width: 100%;
+        justify-content: flex-start;
+        margin-top: 1rem;
+      }
     .recipe-content {
         grid-template-columns: 1fr;
         gap: 30px;

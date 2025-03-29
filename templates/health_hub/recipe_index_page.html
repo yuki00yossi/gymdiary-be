@@ -1,6 +1,13 @@
 {% extends "health_hub/base.html" %}
 
-{% block title %}Health Hub | レシピ一覧{% endblock %}
+{% block title %}Health Hub | レシピ{% endblock %}
+{% block page_description %}ダイエット・筋トレ・健康に役立つレシピを多数掲載中。目的別に探せます。{% endblock %}
+{% block metaInfo %}
+  <meta property="og:title" content="レシピ一覧 | Gym Diary">
+  <meta property="og:description" content="ダイエット・筋トレ・健康に役立つレシピを多数掲載中。目的別に探せます。">
+  <meta property="og:image" content="https://gymdiary-assets.s3.ap-northeast-1.amazonaws.com/public/recipes_header_img.webp">
+  <meta property="og:url" content="https://gymdiary.com/health-hub/recipes/">
+{% endblock %}
 
 {% block content %}
 <main>

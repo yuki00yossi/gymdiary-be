@@ -2,11 +2,17 @@
 <html lang="en">
     <head>
         <meta charset="utf-8" />
-        <title>{% block title %}Gym Diary | Health Hub - 健康で美しく、内面から輝くライフスタイルを目指す -{% endblock %}</title>
+        <title>{% block title %}Health Hub by GYM DIARY - 健康で美しく、内面から輝くライフスタイルを目指す -{% endblock %}</title>
 
         <meta name="description" content="{% block page_description %}正しく運動して綺麗な体を手に入れよう{% endblock %}" />
-
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="Health Hub by GYM DIARY" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <link rel="canonical" href="{{ request.build_absolute_uri }}" />
+        {% block metaInfo %}{% endblock %}
+
         <!-- Google Fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

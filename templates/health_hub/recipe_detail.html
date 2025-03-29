@@ -1,5 +1,17 @@
 {% extends "health_hub/base.html" %}
 
+{% comment %}SEO用のHTML head情報{% endcomment %}
+{% block title %}{{ object.title }} | Health Hub レシピ{% endblock %}
+{% block page_description %}{{ object.description }}{% endblock %}
+{% block metaInfo %}
+  <meta property="og:title" content="{{ object.title }} | Health Hub by GYM DIARY">
+  <meta property="og:description" content="{{ object.description|linebreaksbr|truncatewords:80 }}">
+  <meta property="og:image" content="{{ object.image.url }}">
+  <meta property="og:url" content="{{ request.build_absolute_uri }}">
+  <meta name="twitter:image" content="{{ object.image.url }}">
+{% endblock %}
+
+{% comment %}ページ内容{% endcomment %}
 {% block content %}
 <main style="">
     <!-- レシピ詳細 -->

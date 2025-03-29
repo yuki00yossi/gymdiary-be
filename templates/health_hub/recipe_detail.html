@@ -47,6 +47,11 @@
             </div>
             {% endif %}
           <p class="recipe-subtitle">{{ object.description|linebreaksbr }}</p>
+          <div class="recipe-tags" style="margin-top: 1rem; margin-bottom: 1rem;">
+            {% for tag in object.tags.all %}
+              <span class="recipe-tag"><a href="/health-hub/recipes/search/?tags={{ tag.slug }}" style="color: white;">{{ tag.name }}</a></span>
+            {% endfor %}
+          </div>
           <div class="recipe-info">
             <div class="info-item">
               <i class="far fa-clock"></i>
@@ -78,12 +83,6 @@
             </div>
           </div>
 
-          <div class="recipe-tags" style="margin-top: 1rem; margin-bottom: 1rem;">
-            {% for tag in object.tags.all %}
-              <span class="recipe-tag"><a href="/health-hub/recipes/search/?tags={{ tag.slug }}" style="color: white;">{{ tag.name }}</a></span>
-            {% endfor %}
-          </div>
-
           <div class="recipe-content">
             <div>
               <div class="ingredients-section">
@@ -105,7 +104,7 @@
               </div>
 
               <div class="nutrition-section">
-                <h2>栄養成分表示</h2>
+                <h2>栄養成分</h2>
                 <div class="nutrition-table">
                   <div class="nutrition-row">
                     <span class="nutrition-name">カロリー</span>

@@ -57,6 +57,16 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         verbose_name='ユーザー名', max_length=50,
         unique=True, validators=[validate_username,],)
     name = models.CharField(verbose_name='表示名', max_length=50)
+    sex = models.CharField(
+        verbose_name='性別',
+        max_length=10,
+        choices=[('male', '男性'), ('female', '女性')],
+        default='male'
+    )
+    birth_date = models.DateField(verbose_name='生年月日', null=True, blank=True)
+    height = models.FloatField(verbose_name='身長 (cm)', null=True, blank=True)
+    activity_level = models.FloatField(verbose_name='活動レベル', null=True, blank=True)
+
     is_active = models.BooleanField(verbose_name='有効', default=True)
     is_staff = models.BooleanField(verbose_name='スタッフ権限', default=False)
 
@@ -74,6 +84,15 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return str(self.username)
+
+    def calculate_age(self):
+        """ 年齢を計算する """
+        from datetime import date
+        today = date.today()
+        age = today.year - self.birth_date.year - (
+            (today.month, today.day) < (self.birth_date.month, self.birth_date.day)
+        )
+        return age
 
 
 class UserRole(models.Model):

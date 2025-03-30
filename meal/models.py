@@ -18,6 +18,37 @@ class MealItem(models.Model):
     base_quantity = models.FloatField(default=100)  # 100g, 1個, 200mlなど
     created_by = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="meal_items")
 
+    # --- 栄養素の拡張 ---
+    vitamin_a = models.FloatField("ビタミンA（μgRAE）", null=True, blank=True)
+    vitamin_d = models.FloatField("ビタミンD（μg）", null=True, blank=True)
+    vitamin_e = models.FloatField("ビタミンE（mg）", null=True, blank=True)
+    vitamin_k = models.FloatField("ビタミンK（μg）", null=True, blank=True)
+    vitamin_b1 = models.FloatField("ビタミンB1（mg）", null=True, blank=True)
+    vitamin_b2 = models.FloatField("ビタミンB2（mg）", null=True, blank=True)
+    niacin = models.FloatField("ナイアシン（mgNE）", null=True, blank=True)
+    vitamin_b6 = models.FloatField("ビタミンB6（mg）", null=True, blank=True)
+    vitamin_b12 = models.FloatField("ビタミンB12（μg）", null=True, blank=True)
+    folic_acid = models.FloatField("葉酸（μg）", null=True, blank=True)
+    pantothenic_acid = models.FloatField("パントテン酸（mg）", null=True, blank=True)
+    biotin = models.FloatField("ビオチン（μg）", null=True, blank=True)
+    vitamin_c = models.FloatField("ビタミンC（mg）", null=True, blank=True)
+    sodium = models.FloatField("ナトリウム（g）", null=True, blank=True)
+    potassium = models.FloatField("カリウム（mg）", null=True, blank=True)
+    calcium = models.FloatField("カルシウム（mg）", null=True, blank=True)
+    magnesium = models.FloatField("マグネシウム（mg）", null=True, blank=True)
+    phosphorus = models.FloatField("リン（mg）", null=True, blank=True)
+    iron = models.FloatField("鉄（mg）", null=True, blank=True)
+    zinc = models.FloatField("亜鉛（mg）", null=True, blank=True)
+    copper = models.FloatField("銅（mg）", null=True, blank=True)
+    manganese = models.FloatField("マンガン（mg）", null=True, blank=True)
+    iodine = models.FloatField("ヨウ素（μg）", null=True, blank=True)
+    selenium = models.FloatField("セレン（μg）", null=True, blank=True)
+    chromium = models.FloatField("クロム（μg）", null=True, blank=True)
+    molybdenum = models.FloatField("モリブデン（μg）", null=True, blank=True)
+    cholesterol = models.FloatField("コレステロール（mg）", null=True, blank=True)
+    dietary_fiber = models.FloatField("食物繊維（g）", null=True, blank=True)
+    salt_equivalent = models.FloatField("食塩相当量（g）", null=True, blank=True)
+
     class Meta:
         """ メタ情報 """
         verbose_name = '食品'

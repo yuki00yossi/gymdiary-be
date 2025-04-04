@@ -13,7 +13,7 @@ class CustomUserAdmin(UserAdmin):
     ordering = ('created_at', 'username',)
     search_fields = ('username',)
     fieldsets = (
-        ('ユーザー情報', {'fields': ('username', 'name', 'password')}),
+        ('ユーザー情報', {'fields': ('username', 'email', 'name', 'password')}),
         ("権限", {'fields': ('is_staff', 'is_superuser', 'groups', 'user_permissions')}),
         ('その他', {'fields': ('is_active', 'created_at')}),
     )

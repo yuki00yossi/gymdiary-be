@@ -9,9 +9,10 @@ class TrainerProfile(models.Model):
     """トレーナー情報"""
     id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    bio = models.TextField(blank=True)
-    experience = models.IntegerField(default=0)
-    certifications = models.TextField(blank=True)
+    introduction = models.TextField(verbose_name="自己紹介", blank=True)
+    bio = models.TextField(verbose_name="経歴", blank=True)
+    experience = models.IntegerField(verbose_name="経歴", default=0)
+    certifications = models.TextField(verbose_name="資格等", blank=True)
     rating = models.FloatField(default=0.0)
     created_at = models.DateTimeField(auto_now_add=True)
 

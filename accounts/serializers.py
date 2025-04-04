@@ -8,7 +8,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         """ メタ情報 """
         model = CustomUser
-        fields = ('id', 'username', 'name')
+        fields = ('id', 'username', 'email', 'name')
         read_only_fields = ('id',)
 
 
@@ -29,7 +29,7 @@ class UserRegisterSerializer(serializers.ModelSerializer):
     class Meta:
         """ メタ情報 """
         model = CustomUser
-        fields = ('username', 'name', 'password', 'role')
+        fields = ('username', 'email', 'name', 'password', 'role')
 
     def create(self, validated_data):
         """ ユーザー作成し、選択したロールを割り当てる """
@@ -37,9 +37,11 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         # role = validated_data.pop('role')
         user = CustomUser.objects.create_user(
             username=validated_data['username'],
+            email=validated_data['email'],
             name=validated_data['name'],
             password=validated_data['password'],
         )
+
         # UserRole.objects.create(user=user, role=role)
         return user
 

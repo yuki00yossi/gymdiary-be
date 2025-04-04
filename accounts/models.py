@@ -13,11 +13,12 @@ def validate_username(value):
 # Create your models here.
 class CustomUserManager(BaseUserManager):
     """ カスタムのユーザーマネージャー """
-    def create_user(self, username, name, password=None):
+    def create_user(self, username, email, name, password=None):
         """ユーザーを作成する
 
         Args:
             username (string): ユーザー名
+            email (string): メールアドレス
             password (string, optional): パスワード。デフォルトはNone
 
         Raises:
@@ -30,21 +31,24 @@ class CustomUserManager(BaseUserManager):
             raise ValueError('ユーザー名は必須です')
         user = self.model(username=username)
         user.name = name
+        user.email = self.normalize_email(email)
         user.set_password(password)
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, username, name, password):
+    def create_superuser(self, username, email, name, password):
         """ 管理者ユーザーを作成する
 
         Args:
             username (string): ユーザー名
+            email (string): メールアドレス
+            name (string): 表示名
             password (string): パスワード
 
         Returns:
             CustomUser: CustomUserインスタンス
         """
-        user = self.create_user(username, name, password)
+        user = self.create_user(username, email, name, password)
         user.is_superuser = True
         user.is_staff = True
         user.save(using=self._db)
@@ -53,9 +57,12 @@ class CustomUserManager(BaseUserManager):
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     """ Gym Diaryのカスタムユーザークラス """
+    email = models.EmailField(
+        verbose_name='メールアドレス', max_length=255, unique=True, null=True, blank=True)
     username = models.CharField(
         verbose_name='ユーザー名', max_length=50,
         unique=True, validators=[validate_username,],)
+    profile_image = models.ImageField(upload_to="public/profile", verbose_name="プロフィール画像", blank=True, null=True)
     name = models.CharField(verbose_name='表示名', max_length=50)
     sex = models.CharField(
         verbose_name='性別',
@@ -75,7 +82,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     objects = CustomUserManager()
 
     USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = ['name',]
+    REQUIRED_FIELDS = ['name', 'email']
 
     class Meta:
         """ メタ情報 """
@@ -115,4 +122,3 @@ class UserRole(models.Model):
 
     def __str__(self):
         return str(self.user.username+ ': ' + self.role)
-

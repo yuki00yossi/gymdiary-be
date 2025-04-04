@@ -1,267 +1,533 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gym Diary - 健康で美しく、内面から輝くライフスタイルを目指す</title>
-  <meta name="description" content="フィットネス、健康的なレシピ、ライフハックなど、健康的なライフスタイルに関する情報を提供するプラットフォーム">
-  <link rel="stylesheet" href="styles.css">
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-</head>
-<body>
-  <!-- ヘッダー -->
-  <header class="header">
-    <div class="container">
-      <div class="header-content">
-        <div class="logo">
-          <a href="index.html">
-            <img src="https://via.placeholder.com/40" alt="Gym Diary Logo">
-            <span>Gym Diary</span>
-          </a>
-        </div>
+{% extends "health_hub/base.html" %}
 
-        <nav class="main-nav">
-          <ul>
-            <li><a href="#fitness">フィットネス</a></li>
-            <li><a href="#recipes">レシピ</a></li>
-            <li><a href="#lifehacks">ライフハック</a></li>
-          </ul>
-        </nav>
+{% block title %}Health Hub | 記事一覧{% endblock %}
+{% block page_description %}ダイエット・筋トレ・健康に役立つレシピや記事を多数掲載中。目的別に探せます。{% endblock %}
+{% block metaInfo %}
+  <meta property="og:title" content="記事一覧 | Health Hub by GYM DIARY">
+  <meta property="og:description" content="ダイエット・筋トレ・健康に役立つレシピや記事を多数掲載中。目的別に探せます。">
+  <meta property="og:image" content="https://gymdiary-assets.s3.ap-northeast-1.amazonaws.com/public/recipes_header_img.webp">
+  <meta property="og:url" content="https://gymdiary.com/health-hub/recipes/">
+  <style>
+    a {
+        text-decoration: none;
+        color: #2a9d8f;
+    }
 
-        <div class="header-right">
-          <div class="search-bar">
-            <i class="fas fa-search"></i>
-            <input type="search" placeholder="検索...">
-          </div>
+    img {
+        max-width: 100%;
+    }
 
-          <button class="theme-toggle" aria-label="ダークモード切替">
-            <i class="fas fa-moon"></i>
-          </button>
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
 
-          <button class="mobile-menu-btn" aria-label="メニュー">
-            <i class="fas fa-bars"></i>
-          </button>
-        </div>
-      </div>
+    /* Main Content Layout */
+    .content-wrapper {
+        display: flex;
+        gap: 30px;
+        margin-bottom: 40px;
+    }
+
+    main {
+        flex: 1;
+        padding-top: 60px;
+    }
+
+    aside {
+        padding-top: 60px;
+        width: 300px;
+    }
+
+    /* Article Cards */
+    .articles-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 25px;
+    }
+
+    .article-card {
+        background: white;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .article-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+    }
+
+    .article-image {
+        height: 200px;
+        background-size: cover;
+        background-position: center;
+    }
+
+    .article-content {
+        padding: 20px;
+        padding-top: 0;
+    }
+
+    .article-category {
+        display: inline-block;
+        background-color: var(--primary-light);
+        color: white;
+        font-size: 12px;
+        font-weight: 600;
+        padding: 4px 10px;
+        border-radius: 20px;
+        margin-bottom: 10px;
+    }
+
+    .article-title {
+        font-size: 16px;
+        margin-bottom: 10px;
+        color: var(--text);
+    }
+
+    .article-excerpt {
+        color: #666;
+        font-size: 14px;
+        margin-bottom: 15px;
+    }
+
+    .article-meta {
+        display: flex;
+        justify-content: space-between;
+        font-size: 12px;
+        color: #888;
+    }
+
+    /* Sidebar */
+    .sidebar-section {
+        background: white;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 25px;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .sidebar-title {
+        font-size: 16px;
+        color: #264653;
+        margin-bottom: 15px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #eee;
+    }
+
+    .categories-list, .popular-list {
+        list-style: none;
+    }
+
+    .categories-list li, .popular-list li {
+        margin-bottom: 10px;
+    }
+
+    .categories-list a, .popular-list a {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .category-count {
+        background-color: #e9c46a;
+        color: #264653;
+        font-size: 12px;
+        padding: 2px 8px;
+        border-radius: 10px;
+    }
+
+    .popular-list img {
+        width: 60px;
+        height: 60px;
+        object-fit: cover;
+        border-radius: 4px;
+        margin-right: 10px;
+    }
+
+    .popular-list a {
+        display: flex;
+    }
+
+    .popular-content {
+        flex: 1;
+    }
+
+    .popular-title {
+        font-size: 14px;
+        font-weight: 500;
+        color: #264653;
+        margin-bottom: 5px;
+    }
+
+    .popular-date {
+        font-size: 12px;
+        color: #888;
+    }
+
+    /* Pagination */
+    .pagination {
+        display: flex;
+        justify-content: center;
+        margin-top: 40px;
+    }
+
+    .pagination a {
+        display: inline-block;
+        padding: 8px 16px;
+        margin: 0 5px;
+        border-radius: 4px;
+        background-color: white;
+        color: #2a9d8f;
+        font-weight: 500;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+    .pagination a:hover, .pagination a.active {
+        background-color: #2a9d8f;
+        color: white;
+    }
+
+    /* Footer */
+    footer {
+        background-color: #264653;
+        color: white;
+        padding: 40px 0;
+    }
+
+    .footer-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 30px;
+    }
+
+    .footer-section h3 {
+        font-size: 16px;
+        margin-bottom: 20px;
+    }
+
+    .footer-links {
+        list-style: none;
+    }
+
+    .footer-links li {
+        margin-bottom: 10px;
+    }
+
+    .footer-links a {
+        color: #e9c46a;
+    }
+
+    .footer-bottom {
+        text-align: center;
+        padding-top: 30px;
+        margin-top: 30px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        font-size: 14px;
+    }
+
+    .social-links {
+        display: flex;
+        gap: 15px;
+        margin-top: 15px;
+    }
+
+    .social-links a {
+        color: white;
+        font-size: 16px;
+    }
+
+    /* Responsive Styles */
+    @media (max-width: 900px) {
+        .content-wrapper {
+            flex-direction: column;
+        }
+
+        aside {
+            width: 100%;
+        }
+    }
+
+    @media (max-width: 768px) {
+        nav ul {
+            display: none;
+        }
+
+        .mobile-menu-btn {
+            display: block;
+        }
+
+        .mobile-menu-open nav ul {
+            display: flex;
+            flex-direction: column;
+            position: absolute;
+            top: 70px;
+            left: 0;
+            right: 0;
+            background: white;
+            padding: 20px;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .mobile-menu-open nav ul li {
+            margin: 10px 0;
+        }
+
+        .hero {
+            padding: 40px 0;
+        }
+
+        .hero h1 {
+            font-size: 28px;
+        }
+
+        .article-card {
+            display: flex;
+            padding: 15px;
+        }
+
+        .article-image {
+            width: 240px;
+            height: auto;
+        }
+
+        .article-excerpt {
+            display: none;
+        }
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+
+    <!-- Main Content -->
+    <div class="container content-wrapper">
+        <main>
+            <div class="articles-grid">
+                <!-- Article 1 -->
+                <article class="article-card">
+                    <div class="article-image" style="background-image: url('https://gymdiary-assets.s3.amazonaws.com/media/images/public/recipes/torihamusarada.webp')"></div>
+                    <div class="article-content">
+                        <span class="article-category">Workouts</span>
+                        <h2 class="article-title">10 Effective HIIT Workouts You Can Do at Home</h2>
+                        <p class="article-excerpt">High-intensity interval training that requires minimal equipment and can be done in your living room.</p>
+                        <div class="article-meta">
+                            <span>June 15, 2023</span>
+                            <span>5 min read</span>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Article 2 -->
+                <article class="article-card">
+                    <div class="article-image" style="background-image: url('/placeholder.svg?height=400&width=600')"></div>
+                    <div class="article-content">
+                        <span class="article-category">Nutrition</span>
+                        <h2 class="article-title">Protein-Packed Breakfast Ideas for Muscle Growth</h2>
+                        <p class="article-excerpt">Start your day right with these delicious high-protein breakfast recipes that support muscle development.</p>
+                        <div class="article-meta">
+                            <span>June 12, 2023</span>
+                            <span>4 min read</span>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Article 3 -->
+                <article class="article-card">
+                    <div class="article-image" style="background-image: url('/placeholder.svg?height=400&width=600')"></div>
+                    <div class="article-content">
+                        <span class="article-category">Wellness</span>
+                        <h2 class="article-title">How to Improve Your Sleep Quality for Better Recovery</h2>
+                        <p class="article-excerpt">Optimize your sleep habits to enhance muscle recovery and overall athletic performance.</p>
+                        <div class="article-meta">
+                            <span>June 10, 2023</span>
+                            <span>6 min read</span>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Article 4 -->
+                <article class="article-card">
+                    <div class="article-image" style="background-image: url('/placeholder.svg?height=400&width=600')"></div>
+                    <div class="article-content">
+                        <span class="article-category">Workouts</span>
+                        <h2 class="article-title">The Ultimate Guide to Progressive Overload</h2>
+                        <p class="article-excerpt">Learn how to properly implement progressive overload in your training for continuous gains.</p>
+                        <div class="article-meta">
+                            <span>June 8, 2023</span>
+                            <span>7 min read</span>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Article 5 -->
+                <article class="article-card">
+                    <div class="article-image" style="background-image: url('/placeholder.svg?height=400&width=600')"></div>
+                    <div class="article-content">
+                        <span class="article-category">Nutrition</span>
+                        <h2 class="article-title">Pre and Post-Workout Nutrition: What to Eat and When</h2>
+                        <p class="article-excerpt">Optimize your performance and recovery with the right nutrition timing and food choices.</p>
+                        <div class="article-meta">
+                            <span>June 5, 2023</span>
+                            <span>5 min read</span>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Article 6 -->
+                <article class="article-card">
+                    <div class="article-image" style="background-image: url('/placeholder.svg?height=400&width=600')"></div>
+                    <div class="article-content">
+                        <span class="article-category">Wellness</span>
+                        <h2 class="article-title">Mindfulness Techniques for Athletes: Improving Focus</h2>
+                        <p class="article-excerpt">Mental training strategies to enhance your athletic performance and workout quality.</p>
+                        <div class="article-meta">
+                            <span>June 3, 2023</span>
+                            <span>4 min read</span>
+                        </div>
+                    </div>
+                </article>
+            </div>
+
+            <!-- Pagination -->
+            <div class="pagination">
+                <a href="#" class="active">1</a>
+                <a href="#">2</a>
+                <a href="#">3</a>
+                <a href="#">4</a>
+                <a href="#">Next →</a>
+            </div>
+        </main>
+
+        <!-- Sidebar -->
+        <aside>
+            <!-- Categories Section -->
+            <div class="sidebar-section">
+                <h3 class="sidebar-title">Categories</h3>
+                <ul class="categories-list">
+                    <li><a href="#">Workouts <span class="category-count">24</span></a></li>
+                    <li><a href="#">Nutrition <span class="category-count">18</span></a></li>
+                    <li><a href="#">Wellness <span class="category-count">15</span></a></li>
+                    <li><a href="#">Equipment <span class="category-count">9</span></a></li>
+                    <li><a href="#">Success Stories <span class="category-count">12</span></a></li>
+                </ul>
+            </div>
+
+            <!-- Popular Posts Section -->
+            <div class="sidebar-section">
+                <h3 class="sidebar-title">Popular Posts</h3>
+                <ul class="popular-list">
+                    <li>
+                        <a href="#">
+                            <img src="https://gymdiary-assets.s3.amazonaws.com/media/images/public/recipes/torihamusarada.webp" alt="Popular post thumbnail">
+                            <div class="popular-content">
+                                <h4 class="popular-title">5 Common Squat Mistakes to Avoid</h4>
+                                <span class="popular-date">May 28, 2023</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <img src="/placeholder.svg?height=120&width=120" alt="Popular post thumbnail">
+                            <div class="popular-content">
+                                <h4 class="popular-title">How to Build a Home Gym on a Budget</h4>
+                                <span class="popular-date">May 25, 2023</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <img src="/placeholder.svg?height=120&width=120" alt="Popular post thumbnail">
+                            <div class="popular-content">
+                                <h4 class="popular-title">The Science Behind Muscle Growth</h4>
+                                <span class="popular-date">May 20, 2023</span>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Newsletter Section -->
+            <div class="sidebar-section">
+                <h3 class="sidebar-title">Subscribe to Our Newsletter</h3>
+                <p style="margin-bottom: 15px; font-size: 14px;">Get the latest fitness tips and articles delivered to your inbox.</p>
+                <form>
+                    <input type="email" placeholder="Your email address" style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 4px;">
+                    <button type="submit" style="width: 100%; padding: 10px; background-color: #2a9d8f; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 500;">Subscribe</button>
+                </form>
+            </div>
+        </aside>
     </div>
-  </header>
 
-  <!-- モバイルメニュー -->
-  <div class="mobile-menu">
-    <div class="container">
-      <ul>
-        <li><a href="#fitness">フィットネス</a></li>
-        <li><a href="#recipes">レシピ</a></li>
-        <li><a href="#lifehacks">ライフハック</a></li>
-      </ul>
-      <div class="mobile-search">
-        <input type="search" placeholder="検索...">
-        <button><i class="fas fa-search"></i></button>
-      </div>
-    </div>
-  </div>
-
-  <main>
-    <!-- ヒーローセクション -->
-    <section class="hero">
-      <div class="hero-bg"></div>
-      <div class="container">
-        <div class="hero-content">
-          <h1 class="fade-in">健康で美しく、内面から輝くライフスタイルを目指す</h1>
-          <p class="fade-in-delay">Gym Diaryで理想のカラダと心を手に入れましょう</p>
-          <div class="hero-buttons fade-in-delay-2">
-            <a href="#content" class="btn btn-primary">詳しく見る</a>
-            <a href="#" class="btn btn-outline">今すぐ始める</a>
-          </div>
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-container">
+                <div class="footer-section">
+                    <h3>Health Hub</h3>
+                    <p>Your trusted source for fitness, nutrition, and wellness information to help you achieve your health goals.</p>
+                    <div class="social-links">
+                        <a href="#">FB</a>
+                        <a href="#">IG</a>
+                        <a href="#">TW</a>
+                        <a href="#">YT</a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Categories</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Workouts</a></li>
+                        <li><a href="#">Nutrition</a></li>
+                        <li><a href="#">Wellness</a></li>
+                        <li><a href="#">Equipment</a></li>
+                        <li><a href="#">Success Stories</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Us</h3>
+                    <ul class="footer-links">
+                        <li>Email: info@healthhub.com</li>
+                        <li>Phone: (123) 456-7890</li>
+                        <li>Address: 123 Fitness St, Wellness City</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 Health Hub. All rights reserved.</p>
+            </div>
         </div>
-      </div>
-    </section>
+    </footer>
 
-    <!-- コンテンツセクション -->
-    <section id="content" class="categories">
-      <div class="container">
-        <h2 class="section-title">カテゴリー</h2>
-        <div class="card-grid">
-          <!-- フィットネスカード -->
-          <div id="fitness" class="card">
-            <div class="card-image">
-              <img src="https://via.placeholder.com/600x400" alt="フィットネス">
-            </div>
-            <div class="card-body">
-              <h3>フィットネス</h3>
-              <p>効果的なトレーニング方法や、初心者から上級者まで楽しめるエクササイズをご紹介します。</p>
-              <a href="#" class="read-more">もっと見る <i class="fas fa-chevron-right"></i></a>
-            </div>
-          </div>
+    <script>
+        // Mobile Menu Toggle
+        document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
+            document.body.classList.toggle('mobile-menu-open');
+        });
 
-          <!-- レシピカード -->
-          <div id="recipes" class="card">
-            <div class="card-image">
-              <img src="https://via.placeholder.com/600x400" alt="レシピ">
-            </div>
-            <div class="card-body">
-              <h3>レシピ</h3>
-              <p>健康的でおいしい食事レシピ。栄養バランスを考えた食事で、理想のカラダづくりをサポートします。</p>
-              <a href="#" class="read-more">もっと見る <i class="fas fa-chevron-right"></i></a>
-            </div>
-          </div>
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            if (!event.target.closest('header') && document.body.classList.contains('mobile-menu-open')) {
+                document.body.classList.remove('mobile-menu-open');
+            }
+        });
 
-          <!-- ライフハックカード -->
-          <div id="lifehacks" class="card">
-            <div class="card-image">
-              <img src="https://via.placeholder.com/600x400" alt="ライフハック">
-            </div>
-            <div class="card-body">
-              <h3>ライフハック</h3>
-              <p>日常生活をより健康的に、より効率的にするためのヒントやコツをご紹介します。</p>
-              <a href="#" class="read-more">もっと見る <i class="fas fa-chevron-right"></i></a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- おすすめ記事セクション -->
-    <section class="recommended-articles">
-      <div class="container">
-        <h2 class="section-title">おすすめ記事</h2>
-        <div class="article-grid">
-          <!-- 記事1 -->
-          <article class="article-card">
-            <div class="article-image">
-              <img src="https://via.placeholder.com/500x300?text=Article 1" alt="記事 1">
-            </div>
-            <h3>記事タイトルがここに入ります 1</h3>
-            <p>記事の概要がここに入ります。健康的な生活習慣やフィットネスに関する情報を提供します。</p>
-          </article>
-
-          <!-- 記事2 -->
-          <article class="article-card">
-            <div class="article-image">
-              <img src="https://via.placeholder.com/500x300?text=Article 2" alt="記事 2">
-            </div>
-            <h3>記事タイトルがここに入ります 2</h3>
-            <p>記事の概要がここに入ります。健康的な生活習慣やフィットネスに関する情報を提供します。</p>
-          </article>
-
-          <!-- 記事3 -->
-          <article class="article-card">
-            <div class="article-image">
-              <img src="https://via.placeholder.com/500x300?text=Article 3" alt="記事 3">
-            </div>
-            <h3>記事タイトルがここに入ります 3</h3>
-            <p>記事の概要がここに入ります。健康的な生活習慣やフィットネスに関する情報を提供します。</p>
-          </article>
-
-          <!-- 記事4 -->
-          <article class="article-card">
-            <div class="article-image">
-              <img src="https://via.placeholder.com/500x300?text=Article 4" alt="記事 4">
-            </div>
-            <h3>記事タイトルがここに入ります 4</h3>
-            <p>記事の概要がここに入ります。健康的な生活習慣やフィットネスに関する情報を提供します。</p>
-          </article>
-
-          <!-- 記事5 -->
-          <article class="article-card">
-            <div class="article-image">
-              <img src="https://via.placeholder.com/500x300?text=Article 5" alt="記事 5">
-            </div>
-            <h3>記事タイトルがここに入ります 5</h3>
-            <p>記事の概要がここに入ります。健康的な生活習慣やフィットネスに関する情報を提供します。</p>
-          </article>
-
-          <!-- 記事6 -->
-          <article class="article-card">
-            <div class="article-image">
-              <img src="https://via.placeholder.com/500x300?text=Article 6" alt="記事 6">
-            </div>
-            <h3>記事タイトルがここに入ります 6</h3>
-            <p>記事の概要がここに入ります。健康的な生活習慣やフィットネスに関する情報を提供します。</p>
-          </article>
-        </div>
-        <div class="text-center">
-          <a href="#" class="btn btn-outline">すべての記事を見る</a>
-        </div>
-      </div>
-    </section>
-
-    <!-- 今日のヒントセクション -->
-    <section class="daily-tips">
-      <div class="container">
-        <div class="tips-content">
-          <div class="tips-text">
-            <h2>今日のフィットネスのヒント</h2>
-            <p>毎日のトレーニングに取り入れたい、効果的なエクササイズや健康的な習慣についてのヒントをご紹介します。
-              継続は力なり。小さな習慣の積み重ねが、大きな変化をもたらします。</p>
-            <ul class="tips-list">
-              <li><i class="fas fa-check-circle"></i> 朝の15分間ストレッチで一日をスタート</li>
-              <li><i class="fas fa-check-circle"></i> 水分補給を忘れずに - トレーニング中は特に重要</li>
-              <li><i class="fas fa-check-circle"></i> 質の高い睡眠は筋肉の回復と成長に不可欠</li>
-            </ul>
-            <a href="#" class="btn btn-primary">もっと詳しく</a>
-          </div>
-          <div class="tips-image">
-            <img src="https://via.placeholder.com/800x600" alt="今日のヒント">
-          </div>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <!-- フッター -->
-  <footer class="footer">
-    <div class="container">
-      <div class="footer-content">
-        <div class="footer-about">
-          <div class="logo">
-            <img src="https://via.placeholder.com/40" alt="Gym Diary Logo">
-            <span>Gym Diary</span>
-          </div>
-          <p>健康で美しく、内面から輝くライフスタイルを目指すすべての人のためのプラットフォーム</p>
-        </div>
-
-        <div class="footer-links">
-          <h3>リンク</h3>
-          <ul>
-            <li><a href="#fitness">フィットネス</a></li>
-            <li><a href="#recipes">レシピ</a></li>
-            <li><a href="#lifehacks">ライフハック</a></li>
-            <li><a href="#">ブログ</a></li>
-          </ul>
-        </div>
-
-        <div class="footer-support">
-          <h3>サポート</h3>
-          <ul>
-            <li><a href="#">よくある質問</a></li>
-            <li><a href="#">お問い合わせ</a></li>
-            <li><a href="#">プライバシーポリシー</a></li>
-            <li><a href="#">利用規約</a></li>
-          </ul>
-        </div>
-
-        <div class="footer-social">
-          <h3>フォローする</h3>
-          <div class="social-icons">
-            <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-            <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-            <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-          </div>
-        </div>
-      </div>
-
-      <div class="footer-bottom">
-        <p>&copy; 2025 Gym Diary. All rights reserved.</p>
-      </div>
-    </div>
-  </footer>
-
-  <script src="script.js"></script>
-</body>
-</html>
+        // Prevent event propagation when clicking on the menu button
+        document.querySelector('.mobile-menu-btn').addEventListener('click', function(event) {
+            event.stopPropagation();
+        });
+    </script>
+{% endblock %}

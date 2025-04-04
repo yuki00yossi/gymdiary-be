@@ -1,11 +1,31 @@
 # health_hub/models.py
+from django import forms
 from wagtail.models import Page
 from wagtail.admin.panels import FieldPanel  # ここでFieldPanelを使う
-from wagtail.images.models import Image  # 画像を管理するためのモデル
+from wagtail.images.models import AbstractImage, AbstractRendition  # 画像を管理するためのモデル
 from wagtail.fields import RichTextField
 from django.db import models
+from modelcluster.fields import ParentalManyToManyField
+from modelcluster.contrib.taggit import ClusterTaggableManager
+from taggit.models import TaggedItemBase, Tag as TaggitTag
+from wagtail.snippets.models import register_snippet
 
 from recipe.models import Recipe, RecipeTag
+
+
+class CustomImage(AbstractImage):
+    """カスタム画像モデル"""
+    def get_upload_to(self, filename):
+        return 'public/images/%s' % filename
+
+
+class CustomRendition(AbstractRendition):
+    image = models.ForeignKey(
+        CustomImage, related_name='renditions', on_delete=models.CASCADE, editable=False
+    )
+
+    class Meta:
+        unique_together = (('image', 'filter_spec', 'focal_point_key'),)
 
 
 class HomePage(Page):
@@ -36,8 +56,12 @@ class RecipeIndexPage(Page):
 class ArticlePage(Page):
     """記事ページモデル"""
     intro = models.TextField(blank=True, help_text="記事のイントロを入力してください")
-    body = models.TextField(help_text="記事の本文を入力してください")
+    body = RichTextField(help_text="記事の本文を入力してください")
     published_at = models.DateTimeField(auto_now_add=True)
+
+    template = "health_hub/article_page.html"
+
+    categories = ParentalManyToManyField('health_hub.ArticleCategory', blank=True, related_name='articles')
 
     thumbnail = models.ForeignKey(
         'wagtailimages.Image', null=True, blank=True, on_delete=models.SET_NULL, related_name='+'
@@ -47,7 +71,24 @@ class ArticlePage(Page):
         FieldPanel('intro'),
         FieldPanel('body'),
         FieldPanel('thumbnail'),
+        FieldPanel('categories', widget=forms.CheckboxSelectMultiple),
     ]
+
+
+@register_snippet
+class ArticleCategory(models.Model):
+    """記事カテゴリ"""
+    name = models.CharField(max_length=255, unique=True)
+
+    panels = [
+        FieldPanel('name'),
+    ]
+
+    def __str__(self):
+        return self.name
+    class Meta:
+        verbose_name = "記事カテゴリ"
+        verbose_name_plural = "記事カテゴリ"
 
 
 class BlogIndexPage(Page):

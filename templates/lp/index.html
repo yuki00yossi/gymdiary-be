@@ -1,0 +1,918 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Gym Diary</title>
+    <meta name="keywords" content="オンラインパーソナル,アプリ,パーソナルトレーナー,ダイエット,筋トレ,トレーニング,ボディメイク,ボディビル">
+    <meta name="description" content="オンラインパーソナルトレーニングアプリ「Gym Diary」は、あなたのトレーニングをサポートします。">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel=”icon” href=“https://gymdiary-assets.s3.ap-northeast-1.amazonaws.com/media/images/public/favicon.ico”>
+    <!-- スマホ用アイコン -->
+    <link rel="apple-touch-icon" sizes="180x180"
+        href="https://gymdiary-assets.s3.ap-northeast-1.amazonaws.com/media/images/public/favicon.ico">
+</head>
+
+<body>
+    <div class="wrap">
+        <div class="container header">
+            <!-- <div class="header-logo">
+                <img src="images/logo_color.png" alt="Gym Diaryのロゴ画像">
+            </div> -->
+            <div class="header-block-wrap">
+                <div class="block header-block">
+                    <h2>きっと見つかる。<br>理想のトレーナー。</h2>
+                    <p>あなたのトレーニングをサポートします。</p>
+                </div>
+                <div class="block header-block">
+                    <img src="https://gymdiary-assets.s3.ap-northeast-1.amazonaws.com/media/images/public/lp/app_view.webp"
+                        alt="Gym Diaryのヘッダー画像">
+                </div>
+                <div class="block header-block" style="text-align: center; width: 100%;">
+                    <p>2025年5月初旬リリース予定!</p>
+                    <!-- <a class="button" href="#" class="btn">トレーナー事前登録受付中！</a> -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <section class="about-section">
+            <div class="accent-circle accent-circle-1"></div>
+            <div class="accent-circle accent-circle-2"></div>
+
+            <div class="about-content content">
+                <h2 class="section-title">Gym Diaryとは？</h2>
+
+                <p class="tagline">あなたの"続けたい"を支える、ウェルネスサポートアプリ</p>
+
+                <p class="description">
+                    Gym Diaryは、トレーニング・体重・食事の記録に加えて、<span
+                        class="highlight">AIによる献立・買い物リスト提案</span>、トレーナーとのマッチングまで、あなたのウェルネスライフを総合的にサポートするアプリです。忙しい毎日でも、手軽に、自分らしく、続けられる。<br><br>
+                    そんなフィットネス体験を、Gym Diaryが届けます。
+                </p>
+
+                <div class="feature-list">
+                    <div class="feature-item">
+                        <h3 class="feature-title">簡単記録</h3>
+                        <p class="feature-desc">トレーニング内容、体重変化、食事内容を直感的に記録できます。</p>
+                    </div>
+
+                    <div class="feature-item">
+                        <h3 class="feature-title">AI献立提案</h3>
+                        <p class="feature-desc">あなたの目標に合わせた食事プランと買い物リストを自動生成します。</p>
+                    </div>
+
+                    <div class="feature-item">
+                        <h3 class="feature-title">トレーナーマッチング</h3>
+                        <p class="feature-desc">あなたの目標に合ったプロのトレーナーとつながることができます。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- App Screens Section (New section) -->
+        <section class="app-screens-section">
+            <div class="accent-circle accent-circle-1"></div>
+
+            <div class="screens-content">
+                <h2 class="section-title">アプリ画面イメージ</h2>
+
+                <p class="tagline">使いやすさと、続けやすさを、画面から。</p>
+
+                <div class="screens-grid">
+                    <!-- Weight Record Screen -->
+                    <div class="screen-item">
+                        <div class="phone-frame">
+                            <div class="phone-notch"></div>
+                            <div class="phone-screen">
+                                <img src="https://gymdiary-assets.s3.ap-northeast-1.amazonaws.com/media/images/public/lp/screenshot_weight.webp" alt="体重記録画面" class="screen-image">
+                                <div class="screen-overlay">
+                                    <h3 class="screen-title">体重記録画面</h3>
+                                    <p class="screen-desc">体重を簡単に記録・管理</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Meal Record Screen -->
+                    <div class="screen-item">
+                        <div class="phone-frame">
+                            <div class="phone-notch"></div>
+                            <div class="phone-screen">
+                                <img src="https://gymdiary-assets.s3.ap-northeast-1.amazonaws.com/media/images/public/lp/screenshot_meals.webp" alt="食事管理画面" class="screen-image">
+                                <div class="screen-overlay">
+                                    <h3 class="screen-title">食事記録</h3>
+                                    <p class="screen-desc">毎日の食事を簡単に記録・管理</p>
+                                </div>
+                                <!-- <div class="premium-badge">プレミアム</div> -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Trainer List Screen -->
+                    <div class="screen-item">
+                        <div class="phone-frame">
+                            <div class="phone-notch"></div>
+                            <div class="phone-screen">
+                                <img src="https://gymdiary-assets.s3.ap-northeast-1.amazonaws.com/media/images/public/lp/screenshot_trainer.webp" alt="トレーナー検索画面" class="screen-image">
+                                <div class="screen-overlay">
+                                    <h3 class="screen-title">トレーナー一覧画面</h3>
+                                    <p class="screen-desc">あなたに合ったトレーナーを探す</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <p class="disclaimer">※開発中の画面で変更する場合があります。</p>
+            </div>
+        </section>
+
+        <!-- Trainer Section -->
+        <section class="section trainer-section">
+            <div class="accent-circle accent-circle-1"></div>
+            <div class="accent-circle accent-circle-2"></div>
+
+            <div class="section-content">
+                <h2 class="section-title">あなたの"知識"が、自由な働き方に変わる。</h2>
+
+                <p class="tagline">
+                    Gym Diaryで、トレーナーとしての第一歩を。
+                </p>
+
+                <p class="sub-tagline">
+                    開業の覚悟はいらない。<br>
+                    あなたの知識と経験を、副業から価値に変える。
+                </p>
+
+                <div class="trainer-grid">
+                    <div>
+                        <ul class="trainer-benefits">
+                            <li>契約内容・料金設定は自由</li>
+                            <li>登録無料、まずはプロフィールから</li>
+                            <li>副業OK、オンラインで完結</li>
+                            <li>活動開始前に30分の面談あり</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <img src="https://gymdiary-assets.s3.ap-northeast-1.amazonaws.com/media/images/public/lp/trainer.webp" alt="トレーナー活動イメージ" class="trainer-image">
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 50px; font-size: 1.5rem; color: #2c3e50;">トレーナー向け報酬モデル</h3>
+
+                <table class="pricing-table">
+                    <thead>
+                        <tr>
+                            <th>初期/月額費用</th>
+                            <th>売上手数料</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>完全無料</td>
+                            <td>20%</td>
+                        </tr>
+                        <!-- <tr class="pricing-highlight">
+                            <td><strong>プレミアム</strong></td>
+                            <td>¥980〜</td>
+                            <td>10%</td>
+                        </tr>
+                        <tr>
+                            <td>プロプラン</td>
+                            <td>¥1,980〜</td>
+                            <td>5%</td>
+                        </tr> -->
+                    </tbody>
+                </table>
+
+                <div class="cta-buttons">
+                    <a href="#" class="cta-primary">無料でトレーナー登録する</a>
+                    <a href="#" class="cta-secondary">トレーナー向け説明ページを見る</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Health Hub Section (New section) -->
+        <section class="section health-hub-section">
+            <div class="accent-circle accent-circle-1"></div>
+            <div class="accent-circle accent-circle-2"></div>
+
+            <div class="section-content">
+                <h2 class="section-title">Health Hub紹介</h2>
+
+                <p class="tagline">
+                    情報も、一緒に手に入れよう。<br>
+                    Gym Diaryのウェルネスメディア「Health Hub」
+                </p>
+
+                <p class="description">
+                    食事・運動・習慣改善のヒントを、わかりやすく解説。<br>
+                    ヘルシーレシピや献立例、トレーニングメニューなど、
+                    役立つ情報を毎週更新しています。<br>
+                    毎日のウェルネスライフに、知識のサポートもプラスしよう。
+                </p>
+
+                <div class="health-hub-grid">
+                    <!-- <div>
+                        <div class="article-cards">
+                            <div class="article-card">
+                                <img src="/placeholder.svg?height=150&width=300" alt="記事サムネイル" class="article-image">
+                                <div class="article-content">
+                                    <h3 class="article-title">効果的な筋トレの頻度とは？</h3>
+                                    <p class="article-desc">筋肉の成長に最適なトレーニング頻度を解説</p>
+                                    <span class="article-tag">トレーニング</span>
+                                </div>
+                            </div>
+                            <div class="article-card">
+                                <img src="/placeholder.svg?height=150&width=300" alt="記事サムネイル" class="article-image">
+                                <div class="article-content">
+                                    <h3 class="article-title">タンパク質の効果的な摂取方法</h3>
+                                    <p class="article-desc">筋肉づくりに欠かせないタンパク質の摂り方</p>
+                                    <span class="article-tag">栄養</span>
+                                </div>
+                            </div>
+                            <div class="article-card">
+                                <img src="/placeholder.svg?height=150&width=300" alt="記事サムネイル" class="article-image">
+                                <div class="article-content">
+                                    <h3 class="article-title">朝の習慣で1日が変わる</h3>
+                                    <p class="article-desc">健康的な1日をスタートさせる朝の習慣</p>
+                                    <span class="article-tag">ライフスタイル</span>
+                                </div>
+                            </div>
+                            <div class="article-card">
+                                <img src="/placeholder.svg?height=150&width=300" alt="記事サムネイル" class="article-image">
+                                <div class="article-content">
+                                    <h3 class="article-title">自宅でできる効果的なHIIT</h3>
+                                    <p class="article-desc">短時間で脂肪燃焼効果の高いトレーニング</p>
+                                    <span class="article-tag">トレーニング</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div> -->
+                    <div>
+                        <div class="cta-buttons" style="justify-content: center; margin-top: 20px;">
+                            <a href="https://gymdiary.tokyo/health-hub" class="cta-primary">Health Hubを読む</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div
+        style="position: sticky; bottom: 0; box-shadow: gray 2px 2px 15px; width: 100%; text-align: center; padding: 20px; background-color: #f8f9fa; z-index: 9999;">
+        <div style="padding-bottom: 15px;">
+            <p><b>トレーナー事前登録受付中！</b></p>
+            <p>あなたの知識を、価値に変える。</p>
+            <p>副業から始める、自由な働き方。</p>
+        </div>
+        <div class="cta-buttons" style="margin: 0;">
+            <a href="#" class="cta-secondary">トレーナー向け説明ページを見る</a>
+        </div>
+    </div>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: sans-serif, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f4f4f4;
+        }
+
+        #wrap {
+            width: 100%;
+            min-height: 100svh;
+        }
+
+        .header {
+            background-image: url('https://gymdiary-assets.s3.ap-northeast-1.amazonaws.com/media/images/public/lp/header_bg.webp');
+            background-size: cover;
+            padding: 30px 0;
+
+        }
+
+        .header-logo {
+            margin-bottom: 74px;
+            max-width: 1080px;
+            margin: 0 auto;
+        }
+
+        .header-logo img {
+            width: 100%;
+            max-width: 100px;
+        }
+
+        .header-block-wrap {
+            display: flex;
+            margin: 0 auto;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            align-items: center;
+            margin-bottom: 40px;
+            padding: 0 15px;
+            max-width: 1080px;
+        }
+
+        .block {
+            max-width: 1080px;
+        }
+
+        .header-block {
+            width: 50%;
+            text-align: center;
+            color: white;
+            text-shadow: oklch(0.646 0.222 41.116) 0px 0px 6px;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .header-block h2 {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: white;
+        }
+
+        .header-block img {
+            width: 100%;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: orange;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 36px;
+            font-weight: 700;
+            margin-top: 20px;
+            transition: 0.1s;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+        }
+
+        .button:hover {
+            background-color: orangered;
+            box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        section .block {
+            width: 50%;
+        }
+
+        @media only screen and (max-width: 768px) {
+
+            .header-logo {
+                width: 15%;
+                max-width: 50px;
+                margin-bottom: 24px;
+            }
+
+            .header-block {
+                width: 100%;
+            }
+
+            .header {
+                background-image: url('https://gymdiary-assets.s3.ap-northeast-1.amazonaws.com/media/images/public/lp/header_bg_sp.webp');
+                background-size: cover;
+                padding: 15px 0;
+                padding-top: 50px;
+            }
+
+            .header-block h2 {
+                font-size: 24px;
+            }
+
+            .button {
+                font-size: 24px;
+            }
+
+            section .block {
+                width: 100%;
+                margin-top: 20px;
+            }
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        /* Common section styling */
+        section {
+            /* max-width: 1200px; */
+            padding: 80px 0;
+            /* border-radius: 16px; */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            /* margin: 40px auto; */
+            padding: 40px 20px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        section::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: linear-gradient(90deg, #FF5722 0%, #FF9800 100%);
+        }
+
+        .content {
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .section-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 30px;
+            color: #2c3e50;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background-color: #FF5722;
+            border-radius: 2px;
+        }
+
+        .tagline {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 25px;
+            color: #FF5722;
+            line-height: 1.4;
+        }
+
+        .description {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 30px;
+            color: #555;
+        }
+
+        .highlight {
+            color: #FF5722;
+            font-weight: 600;
+        }
+
+        .accent-circle {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 87, 34, 0.1) 0%, rgba(255, 87, 34, 0) 70%);
+            z-index: 0;
+        }
+
+        .accent-circle-1 {
+            top: -100px;
+            right: -100px;
+        }
+
+        .accent-circle-2 {
+            bottom: -150px;
+            left: -150px;
+            width: 400px;
+            height: 400px;
+        }
+
+        /* About section specific */
+        .about-section {
+            background: linear-gradient(135deg, #ffffff 0%, #FFF3E0 100%);
+        }
+
+        .feature-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 30px;
+            width: 100%;
+        }
+
+        .feature-item {
+            background-color: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            flex: 1 1 calc(33.333% - 20px);
+            min-width: 200px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-left: 4px solid #FF5722;
+        }
+
+        .feature-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        .feature-desc {
+            font-size: 0.95rem;
+            color: #666;
+        }
+
+        /* App Screens Section specific */
+        .app-screens-section {
+            background: linear-gradient(135deg, #FFF3E0 0%, #ffffff 100%);
+        }
+
+        .screens-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .screen-item {
+            position: relative;
+        }
+
+        .screen-image {
+            width: 100%;
+            /* height: 500px; */
+            object-fit: cover;
+            border-bottom: 1px solid #eee;
+        }
+
+        .screen-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 70%, rgba(0, 0, 0, 0.7) 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 20px;
+            color: white;
+        }
+
+        .screen-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .screen-desc {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .premium-badge {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background-color: #FFD700;
+            color: #333;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            z-index: 9999;
+        }
+
+        .disclaimer {
+            text-align: center;
+            font-size: 0.8rem;
+            color: #777;
+            margin-top: 30px;
+            font-style: italic;
+        }
+
+        /* Phone frame styling */
+        .phone-frame {
+            position: relative;
+            padding: 10px;
+            border-radius: 30px;
+            background-color: #222;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            max-width: 280px;
+            margin: 0 auto;
+        }
+
+        .phone-screen {
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .phone-notch {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 25px;
+            background-color: #222;
+            border-bottom-left-radius: 15px;
+            border-bottom-right-radius: 15px;
+            z-index: 10;
+        }
+
+        /* Trainer Section specific */
+        .trainer-section {
+            background: linear-gradient(135deg, #FFF3E0 0%, #ffffff 100%);
+        }
+
+        .sub-tagline {
+            font-size: 1.3rem;
+            font-weight: 500;
+            margin-bottom: 30px;
+            color: #555;
+            line-height: 1.4;
+        }
+
+        .trainer-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-top: 40px;
+            align-items: center;
+        }
+
+        .trainer-benefits {
+            list-style: none;
+        }
+
+        .trainer-benefits li {
+            margin-bottom: 15px;
+            padding-left: 30px;
+            position: relative;
+            font-size: 1.1rem;
+        }
+
+        .trainer-benefits li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #FF5722;
+            font-weight: bold;
+        }
+
+        .trainer-image {
+            width: 100%;
+            height: auto;
+            border-radius: 12px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .trainer-image:hover {
+            transform: scale(1.02);
+        }
+
+        .pricing-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 40px 0;
+            background-color: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .pricing-table th,
+        .pricing-table td {
+            padding: 15px 20px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .pricing-table th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .pricing-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .pricing-table tr:hover td {
+            background-color: #f9f9f9;
+        }
+
+        .pricing-highlight {
+            background-color: #FFF3E0;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .cta-primary {
+            display: inline-block;
+            background: linear-gradient(90deg, #FF5722, #FF9800);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 30px;
+            font-weight: 600;
+            text-decoration: none;
+            box-shadow: 0 4px 10px rgba(255, 87, 34, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .cta-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(255, 87, 34, 0.4);
+        }
+
+        .cta-secondary {
+            display: inline-block;
+            background-color: white;
+            color: #FF5722;
+            padding: 12px 25px;
+            border-radius: 30px;
+            font-weight: 600;
+            text-decoration: none;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border: 1px solid #FF5722;
+        }
+
+        .cta-secondary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+            background-color: #f9f9f9;
+        }
+
+        /* Health Hub Section specific */
+        .health-hub-section {
+            background: linear-gradient(135deg, #ffffff 0%, #FFF3E0 100%);
+        }
+
+        .health-hub-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-top: 40px;
+            align-items: center;
+        }
+
+        .article-cards {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .article-card {
+            background-color: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .article-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .article-image {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+
+        .article-content {
+            padding: 15px;
+        }
+
+        .article-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #2c3e50;
+        }
+
+        .article-desc {
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .article-tag {
+            display: inline-block;
+            background-color: #FFF3E0;
+            color: #FF5722;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            max-width: 150px;
+            height: auto;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .section {
+                padding: 60px 0;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .tagline {
+                font-size: 1.3rem;
+            }
+
+            .sub-tagline {
+                font-size: 1.1rem;
+            }
+
+            .feature-item {
+                flex: 1 1 100%;
+            }
+
+            .screens-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .screen-image {
+                /* height: 400px; */
+            }
+
+            .trainer-grid,
+            .health-hub-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .article-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+            }
+
+            .cta-primary,
+            .cta-secondary {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</body>
+
+</html>

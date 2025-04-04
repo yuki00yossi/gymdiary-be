@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'lp',  # LP関連
     'rest_framework',
     'accounts',
     'weight',  # 体重管理
@@ -325,6 +326,7 @@ DATA_UPLOAD_MAX_NUMBER_FIELDS = 10_000
 WAGTAIL_SITE_NAME = 'Gym Diary - Health Hub -'
 WAGTAILADMIN_BASE_URL = 'https://gymdiary.tokyo'
 WAGTAILDOCS_EXTENSIONS = ['csv', 'docx', 'key', 'odt', 'pdf', 'pptx', 'rtf', 'txt', 'xlsx', 'zip']
+WAGTAILIMAGES_IMAGE_MODEL = 'health_hub.CustomImage'
 
 
 # google analyticsの設定

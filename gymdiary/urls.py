@@ -27,6 +27,7 @@ from drf_spectacular.views import (
 from wagtail.admin import urls as wagtailadmin_urls
 
 urlpatterns = [
+    path('', include('lp.urls')),
     # wagtail関連
     path('health-hub/', include('health_hub.urls')),
     path('admin/health-hub', include(wagtailadmin_urls)),

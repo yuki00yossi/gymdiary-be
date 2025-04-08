@@ -4,11 +4,11 @@ from .views import (
     UserLoginAPIView,
     UserLogoutAPIView,
     UserMeAPIView,
-    EmailVerificationAPIView, ensure_csrf_cookie)
+    EmailVerificationAPIView, get_csrf_token)
 
 
 urlpatterns = [
-    path('csrf/', ensure_csrf_cookie, name='api.csrf'),
+    path('csrf/', get_csrf_token, name='api.csrf'),
     path('register/', UserRegisterAPIView.as_view(), name='api.register'),
     path('login/', UserLoginAPIView.as_view(), name='api.login'),
     path('logout/', UserLogoutAPIView.as_view(), name='api.logout'),

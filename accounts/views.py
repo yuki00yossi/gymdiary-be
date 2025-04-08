@@ -110,4 +110,4 @@ class UserMeAPIView(APIView):
 @ensure_csrf_cookie
 def get_csrf_token(request):
     """ CSRFトークンをcookieにセットするAPI """
-    return Response({"csrfToken": request.META.get('CSRF_COOKIE')}, status=status.HTTP_200_OK)
+    return JsonResponse({"csrfToken": request.META.get('CSRF_COOKIE')})

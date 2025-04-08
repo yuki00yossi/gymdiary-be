@@ -46,6 +46,12 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         return user
 
 
+class EmailVerificationSerializer(serializers.Serializer):
+    """ メール認証用のシリアライザー """
+    username = serializers.CharField()
+    token = serializers.CharField()
+
+
 class UserLoginSerializer(serializers.Serializer):
     """ ログインAPI用のシリアライザー """
     username = serializers.CharField()
@@ -53,6 +59,11 @@ class UserLoginSerializer(serializers.Serializer):
 
     def validate(self, attrs):
         """ 認証チェック """
+        user = CustomUser.objects.filter(username=attrs['username']).first()
+        if user is None:
+            raise serializers.ValidationError('認証失敗： ユーザー名もしくはパスワードが正しくありません')
+        if not user.is_active:
+            return {'error': '認証失敗： メール認証が完了していません。'}
         user = authenticate(
             username=attrs['username'], password=attrs['password'])
         if not user:

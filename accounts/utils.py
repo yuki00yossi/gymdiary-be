@@ -1,4 +1,6 @@
 import boto3
+import string
+import secrets
 from django.conf import settings
 
 def generate_presigned_url(file_name, expiration=3600):
@@ -19,3 +21,10 @@ def generate_presigned_url(file_name, expiration=3600):
             ExpiresIn=expiration  # 署名の有効期限（秒）
         )
     return url
+
+
+def generate_token(length=6):
+    """ 大文字アルファベットと、数字ランダム文字列を生成する """
+    words = string.ascii_uppercase + string.digits
+    token = ''.join(secrets.choice(words) for i in range(length))
+    return token

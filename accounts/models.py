@@ -1,4 +1,7 @@
 import re
+from accounts.utils import generate_token
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import (
     AbstractBaseUser, BaseUserManager, PermissionsMixin)
@@ -14,7 +17,7 @@ def validate_username(value):
 class CustomUserManager(BaseUserManager):
     """ カスタムのユーザーマネージャー """
     def create_user(self, username, email, name, password=None):
-        """ユーザーを作成する
+        """ユーザーを作成し、メアド検証メールを送信する
 
         Args:
             username (string): ユーザー名
@@ -34,6 +37,11 @@ class CustomUserManager(BaseUserManager):
         user.email = self.normalize_email(email)
         user.set_password(password)
         user.save(using=self._db)
+
+        # メール認証のためのトークンを生成し、メール送信する
+        verification = EmailVerification.objects.create(user=user, token=generate_token())
+        verification.send_verification_email()
+
         return user
 
     def create_superuser(self, username, email, name, password):
@@ -51,6 +59,7 @@ class CustomUserManager(BaseUserManager):
         user = self.create_user(username, email, name, password)
         user.is_superuser = True
         user.is_staff = True
+        user.is_active = True
         user.save(using=self._db)
         return user
 
@@ -74,7 +83,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     height = models.FloatField(verbose_name='身長 (cm)', null=True, blank=True)
     activity_level = models.FloatField(verbose_name='活動レベル', null=True, blank=True)
 
-    is_active = models.BooleanField(verbose_name='有効', default=True)
+    is_active = models.BooleanField(verbose_name='有効', default=False)
     is_staff = models.BooleanField(verbose_name='スタッフ権限', default=False)
 
     created_at = models.DateTimeField(verbose_name='登録日', auto_now_add=True)
@@ -122,3 +131,19 @@ class UserRole(models.Model):
 
     def __str__(self):
         return str(self.user.username+ ': ' + self.role)
+
+
+class EmailVerification(models.Model):
+    """ メール認証用トークン """
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='verification')
+    token = models.CharField(max_length=255)
+    is_verified = models.BooleanField(default=False)
+
+    def send_verification_email(self):
+        """ メール認証用のメールを送信する """
+        subject = 'メールアドレス認証'
+        message = render_to_string('email/account/verification_email.html', {
+            'user': self.user,
+            'token': self.token,
+        })
+        send_mail(subject, message, None, [self.user.email])

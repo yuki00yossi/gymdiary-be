@@ -2,6 +2,8 @@ from django.shortcuts import render
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import ensure_csrf_cookie
+from django.http import JsonResponse
 from rest_framework import generics, status, permissions
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -103,3 +105,9 @@ class UserMeAPIView(APIView):
         """ ログイン中ユーザーの情報を返す """
         serializer = UserSerializer(request.user)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@ensure_csrf_cookie
+def get_csrf_token(request):
+    """ CSRFトークンをcookieにセットするAPI """
+    return JsonResponse({"detail": "CSRF cookie set"})

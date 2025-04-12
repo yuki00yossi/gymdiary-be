@@ -22,7 +22,7 @@ class RecipeSearchView(ListView):
 
     def get_queryset(self):
         queryset = Recipe.objects.all().prefetch_related(
-            'tags', 'ingredients__meal_item').distinct()
+            'tags', 'ingredients__meal_item').distinct().order_by('-id')
         query = self.request.GET.get('q', '').strip()
         tag_slugs = self.request.GET.getlist('tags')
 

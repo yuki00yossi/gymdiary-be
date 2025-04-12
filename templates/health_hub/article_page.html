@@ -1,3 +1,452 @@
 {% extends "health_hub/base.html" %}
 
-{% block content %}aa{% endblock %}
+{% block title %}{{ page.title }} | Health Hub{% endblock %}
+{% block page_description %}ダイエット・筋トレ・健康に役立つレシピや記事を多数掲載中。目的別に探せます。{% endblock %}
+{% block metaInfo %}
+  <meta property="og:title" content="{{ page.title }} | Health Hub by GYM DIARY">
+  <meta property="og:description" content="ダイエット・筋トレ・健康に役立つレシピや記事を多数掲載中。目的別に探せます。">
+  <meta property="og:image" content="{{ page.thumbnail.url }}">
+  <meta property="og:url" content="{{ page.full_url }}">
+  <style>
+    a {
+        text-decoration: none;
+        color: #2a9d8f;
+    }
+
+    img {
+        max-width: 100%;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
+
+    /* Main Content Layout */
+    .content-wrapper {
+        display: flex;
+        gap: 30px;
+        margin-bottom: 40px;
+    }
+
+    main {
+        flex: 1;
+        padding-top: 60px;
+    }
+
+    aside {
+        padding-top: 60px;
+        width: 300px;
+    }
+
+    /* Article Cards */
+    .articles-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 25px;
+    }
+
+    .article-card {
+        background: white;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .article-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+    }
+
+    .article-image {
+        height: 200px;
+        background-size: cover;
+        background-position: center;
+    }
+
+    .article-content {
+        padding: 20px;
+        padding-top: 0;
+    }
+
+    .article-category {
+        display: inline-block;
+        background-color: #2a9d8f;
+        color: white;
+        font-size: 12px;
+        font-weight: 600;
+        padding: 4px 10px;
+        border-radius: 20px;
+        margin-bottom: 10px;
+    }
+
+    .article-title {
+        font-size: 16px;
+        margin-bottom: 10px;
+        color: var(--text);
+    }
+
+    .article-excerpt {
+        color: #666;
+        font-size: 14px;
+        margin-bottom: 15px;
+    }
+
+    .article-meta {
+        display: flex;
+        justify-content: space-between;
+        font-size: 12px;
+        color: #888;
+    }
+
+    /* Sidebar */
+    .sidebar-section {
+        background: white;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 25px;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .sidebar-title {
+        font-size: 16px;
+        color: #264653;
+        margin-bottom: 15px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #eee;
+    }
+
+    .categories-list, .popular-list {
+        list-style: none;
+    }
+
+    .categories-list li, .popular-list li {
+        margin-bottom: 10px;
+    }
+
+    .categories-list a, .popular-list a {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: #2a9d8f;
+    }
+
+    .category-count {
+        background-color: #e9c46a;
+        color: #264653;
+        font-size: 12px;
+        padding: 2px 8px;
+        border-radius: 10px;
+    }
+
+    .popular-list img {
+        width: 60px;
+        height: 60px;
+        object-fit: cover;
+        border-radius: 4px;
+        margin-right: 10px;
+    }
+
+    .popular-list a {
+        display: flex;
+    }
+
+    .popular-content {
+        flex: 1;
+    }
+
+    .popular-title {
+        font-size: 14px;
+        font-weight: 500;
+        color: #264653;
+        margin-bottom: 5px;
+    }
+
+    .popular-date {
+        font-size: 12px;
+        color: #888;
+    }
+
+    /* Pagination */
+    .pagination {
+        display: flex;
+        justify-content: center;
+        margin-top: 40px;
+    }
+
+    .pagination a {
+        display: inline-block;
+        padding: 8px 16px;
+        margin: 0 5px;
+        border-radius: 4px;
+        background-color: white;
+        color: #2a9d8f;
+        font-weight: 500;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+    .pagination a:hover, .pagination a.active {
+        background-color: #2a9d8f;
+        color: white;
+    }
+
+    /* Footer */
+    footer {
+        background-color: #264653;
+        color: white;
+        padding: 40px 0;
+    }
+
+    .footer-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 30px;
+    }
+
+    .footer-section h3 {
+        font-size: 16px;
+        margin-bottom: 20px;
+    }
+
+    .footer-links {
+        list-style: none;
+    }
+
+    .footer-links li {
+        margin-bottom: 10px;
+    }
+
+    .footer-links a {
+        color: #e9c46a;
+    }
+
+    .footer-bottom {
+        text-align: center;
+        padding-top: 30px;
+        margin-top: 30px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        font-size: 14px;
+    }
+
+    .social-links {
+        display: flex;
+        gap: 15px;
+        margin-top: 15px;
+    }
+
+    .social-links a {
+        color: white;
+        font-size: 16px;
+    }
+
+    /* Responsive Styles */
+    @media (max-width: 900px) {
+        .content-wrapper {
+            flex-direction: column;
+        }
+
+        aside {
+            width: 100%;
+        }
+    }
+
+    @media (max-width: 768px) {
+        nav ul {
+            display: none;
+        }
+
+        .mobile-menu-btn {
+            display: block;
+        }
+
+        .mobile-menu-open nav ul {
+            display: flex;
+            flex-direction: column;
+            position: absolute;
+            top: 70px;
+            left: 0;
+            right: 0;
+            background: white;
+            padding: 20px;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .mobile-menu-open nav ul li {
+            margin: 10px 0;
+        }
+
+        .hero {
+            padding: 40px 0;
+        }
+
+        .hero h1 {
+            font-size: 28px;
+        }
+
+        .article-card {
+            display: flex;
+            padding: 15px;
+        }
+
+        .article-image {
+            width: 240px;
+            height: auto;
+        }
+
+        .article-excerpt {
+            display: none;
+        }
+    }
+  </style>
+{% endblock %}
+
+{% load wagtailcore_tags %}
+{% block content %}
+
+    <!-- Main Content -->
+    <div class="container content-wrapper" style="margin-bottom: 40px;">
+        <main style="padding-top: 20px;">
+            <h1>{{ page.title }}</h1>
+            <img src="{{ page.thumbnail.url }}" alt="{{ page.title }}" style="width: 100%; max-width: 800px; margin-bottom: 20px; border-radius: 8px;">
+            <div style="margin-top: 20px;">
+                {{page.body|richtext}}
+            </div>
+            <!-- Pagination -->
+            {% comment %} <div class="pagination">
+                <a href="#" class="active">1</a>
+                <a href="#">2</a>
+                <a href="#">3</a>
+                <a href="#">4</a>
+                <a href="#">Next →</a>
+            </div> {% endcomment %}
+        </main>
+
+        <!-- Sidebar -->
+        <aside>
+            <!-- Categories Section -->
+            <div class="sidebar-section">
+                <h3 class="sidebar-title">Categories</h3>
+                <ul class="categories-list">
+                    {% for category in categories %}
+                        <li><a href="/health-hub/articles/?category={{ category.slug }}">{{ category.name }} <span class="category-count">{{ category.article_count }}</span></a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <!-- Popular Posts Section -->
+            {% comment %} <div class="sidebar-section">
+                <h3 class="sidebar-title">Popular Posts</h3>
+                <ul class="popular-list">
+                    <li>
+                        <a href="#">
+                            <img src="https://gymdiary-assets.s3.amazonaws.com/media/images/public/recipes/torihamusarada.webp" alt="Popular post thumbnail">
+                            <div class="popular-content">
+                                <h4 class="popular-title">5 Common Squat Mistakes to Avoid</h4>
+                                <span class="popular-date">May 28, 2023</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <img src="/placeholder.svg?height=120&width=120" alt="Popular post thumbnail">
+                            <div class="popular-content">
+                                <h4 class="popular-title">How to Build a Home Gym on a Budget</h4>
+                                <span class="popular-date">May 25, 2023</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <img src="/placeholder.svg?height=120&width=120" alt="Popular post thumbnail">
+                            <div class="popular-content">
+                                <h4 class="popular-title">The Science Behind Muscle Growth</h4>
+                                <span class="popular-date">May 20, 2023</span>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </div> {% endcomment %}
+
+            <!-- Newsletter Section -->
+            {% comment %} <div class="sidebar-section">
+                <h3 class="sidebar-title">Subscribe to Our Newsletter</h3>
+                <p style="margin-bottom: 15px; font-size: 14px;">Get the latest fitness tips and articles delivered to your inbox.</p>
+                <form>
+                    <input type="email" placeholder="Your email address" style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 4px;">
+                    <button type="submit" style="width: 100%; padding: 10px; background-color: #2a9d8f; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 500;">Subscribe</button>
+                </form>
+            </div> {% endcomment %}
+        </aside>
+    </div>
+
+    <!-- Footer -->
+    {% comment %} <footer>
+        <div class="container">
+            <div class="footer-container">
+                <div class="footer-section">
+                    <h3>Health Hub</h3>
+                    <p>Your trusted source for fitness, nutrition, and wellness information to help you achieve your health goals.</p>
+                    <div class="social-links">
+                        <a href="#">FB</a>
+                        <a href="#">IG</a>
+                        <a href="#">TW</a>
+                        <a href="#">YT</a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Categories</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Workouts</a></li>
+                        <li><a href="#">Nutrition</a></li>
+                        <li><a href="#">Wellness</a></li>
+                        <li><a href="#">Equipment</a></li>
+                        <li><a href="#">Success Stories</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Us</h3>
+                    <ul class="footer-links">
+                        <li>Email: info@healthhub.com</li>
+                        <li>Phone: (123) 456-7890</li>
+                        <li>Address: 123 Fitness St, Wellness City</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 Health Hub. All rights reserved.</p>
+            </div>
+        </div>
+    </footer> {% endcomment %}
+
+    <script>
+        // Mobile Menu Toggle
+        document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
+            document.body.classList.toggle('mobile-menu-open');
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            if (!event.target.closest('header') && document.body.classList.contains('mobile-menu-open')) {
+                document.body.classList.remove('mobile-menu-open');
+            }
+        });
+
+        // Prevent event propagation when clicking on the menu button
+        document.querySelector('.mobile-menu-btn').addEventListener('click', function(event) {
+            event.stopPropagation();
+        });
+    </script>
+{% endblock %}

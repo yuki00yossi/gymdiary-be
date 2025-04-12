@@ -16,7 +16,55 @@
       </div>
     </section>
 
-    <!-- コンテンツセクション -->
+    <!-- 新着レシピセクション -->
+    <section class="recommended-articles">
+      <div class="container">
+        <h2 class="section-title">新着レシピ</h2>
+        <div class="article-grid">
+
+          {% for recipe in new_recipes %}
+            <article class="article-card">
+              <a href="/health-hub/recipes/{{ recipe.id }}" style="color: black;">
+                <div class="article-image">
+                  <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}">
+                </div>
+                <h3>{{ recipe.title }}</h3>
+                <p>{{ recipe.description|truncatechars:58 }}</p>
+              </a>
+            </article>
+          {% endfor %}
+        </div>
+        <div class="text-center">
+          <a href="/health-hub/articles/" class="btn btn-outline">レシピをもっと見る</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 新着記事セクション -->
+    <section class="recommended-articles" style="background-color: var(--background-alt);">
+      <div class="container">
+        <h2 class="section-title">最新記事</h2>
+        <div class="article-grid">
+
+          {% for article in new_articles %}
+            <article class="article-card">
+              <a href="{{ article.url }}" style="color: black;">
+                <div class="article-image">
+                  <img src="{{ article.thumbnail.url }}" alt="{{ article.title }}">
+                </div>
+                <h3>{{ article.title }}</h3>
+                <p>{{ article.search_description|truncatechars:58 }}</p>
+              </a>
+            </article>
+          {% endfor %}
+        </div>
+        <div class="text-center">
+          <a href="/health-hub/articles/" class="btn btn-outline">記事をもっと見る</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- カテゴリセクション -->
     <section id="content" class="categories">
       <div class="container">
         <h2 class="section-title">カテゴリー</h2>
@@ -27,9 +75,9 @@
               <img src="https://gymdiary-assets.s3.ap-northeast-1.amazonaws.com/public/fitness_woman.webp" alt="フィットネス">
             </div>
             <div class="card-body">
-              <h3>フィットネス</h3>
+              <h3>ダイエット</h3>
               <p>効果的なトレーニング方法や、初心者から上級者まで楽しめるエクササイズをご紹介します。</p>
-              <a href="#" class="read-more">もっと見る <i class="fas fa-chevron-right"></i></a>
+              <a href="/health-hub/articles/?category=diet" class="read-more">もっと見る <i class="fas fa-chevron-right"></i></a>
             </div>
           </div>
 
@@ -53,74 +101,9 @@
             <div class="card-body">
               <h3>ライフハック</h3>
               <p>日常生活をより健康的に、より効率的にするためのヒントやコツをご紹介します。</p>
-              <a href="#" class="read-more">もっと見る <i class="fas fa-chevron-right"></i></a>
+              <a href="/health-hub/articles/?category=lifestyle" class="read-more">もっと見る <i class="fas fa-chevron-right"></i></a>
             </div>
           </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- おすすめ記事セクション -->
-    <section class="recommended-articles">
-      <div class="container">
-        <h2 class="section-title">おすすめ記事</h2>
-        <div class="article-grid">
-          <!-- 記事1 -->
-          <article class="article-card">
-            <div class="article-image">
-              <img src="https://gymdiary-assets.s3.ap-northeast-1.amazonaws.com/public/fitness_woman.webp" alt="記事 1">
-            </div>
-            <h3>記事タイトルがここに入ります 1</h3>
-            <p>記事の概要がここに入ります。健康的な生活習慣やフィットネスに関する情報を提供します。</p>
-          </article>
-
-          <!-- 記事2 -->
-          <article class="article-card">
-            <div class="article-image">
-              <img src="https://gymdiary-assets.s3.ap-northeast-1.amazonaws.com/public/fitness_woman.webp" alt="記事 2">
-            </div>
-            <h3>記事タイトルがここに入ります 2</h3>
-            <p>記事の概要がここに入ります。健康的な生活習慣やフィットネスに関する情報を提供します。</p>
-          </article>
-
-          <!-- 記事3 -->
-          <article class="article-card">
-            <div class="article-image">
-              <img src="https://gymdiary-assets.s3.ap-northeast-1.amazonaws.com/public/fitness_woman.webp" alt="記事 3">
-            </div>
-            <h3>記事タイトルがここに入ります 3</h3>
-            <p>記事の概要がここに入ります。健康的な生活習慣やフィットネスに関する情報を提供します。</p>
-          </article>
-
-          <!-- 記事4 -->
-          <article class="article-card">
-            <div class="article-image">
-              <img src="https://gymdiary-assets.s3.ap-northeast-1.amazonaws.com/public/fitness_woman.webp" alt="記事 4">
-            </div>
-            <h3>記事タイトルがここに入ります 4</h3>
-            <p>記事の概要がここに入ります。健康的な生活習慣やフィットネスに関する情報を提供します。</p>
-          </article>
-
-          <!-- 記事5 -->
-          <article class="article-card">
-            <div class="article-image">
-              <img src="https://gymdiary-assets.s3.ap-northeast-1.amazonaws.com/public/fitness_woman.webp" alt="記事 5">
-            </div>
-            <h3>記事タイトルがここに入ります 5</h3>
-            <p>記事の概要がここに入ります。健康的な生活習慣やフィットネスに関する情報を提供します。</p>
-          </article>
-
-          <!-- 記事6 -->
-          <article class="article-card">
-            <div class="article-image">
-              <img src="https://gymdiary-assets.s3.ap-northeast-1.amazonaws.com/public/fitness_woman.webp" alt="記事 6">
-            </div>
-            <h3>記事タイトルがここに入ります 6</h3>
-            <p>記事の概要がここに入ります。健康的な生活習慣やフィットネスに関する情報を提供します。</p>
-          </article>
-        </div>
-        <div class="text-center">
-          <a href="/health-hub/articles/" class="btn btn-outline">すべての記事を見る</a>
         </div>
       </div>
     </section>
@@ -138,7 +121,7 @@
               <li><i class="fas fa-check-circle"></i> 水分補給を忘れずに - トレーニング中は特に重要</li>
               <li><i class="fas fa-check-circle"></i> 質の高い睡眠は筋肉の回復と成長に不可欠</li>
             </ul>
-            <a href="#" class="btn btn-primary">もっと詳しく</a>
+            <a href="/health-hub/articles/" class="btn btn-primary">もっと詳しく</a>
           </div>
           <div class="tips-image">
             <img src="https://gymdiary-assets.s3.ap-northeast-1.amazonaws.com/public/fitness_woman.webp" alt="今日のヒント">

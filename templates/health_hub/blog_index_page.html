@@ -73,7 +73,7 @@
 
     .article-category {
         display: inline-block;
-        background-color: var(--primary-light);
+        background-color: #2a9d8f;
         color: white;
         font-size: 12px;
         font-weight: 600;
@@ -130,6 +130,7 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
+        color: #2a9d8f;
     }
 
     .category-count {
@@ -291,7 +292,7 @@
         }
 
         .article-image {
-            width: 240px;
+            width: 120px;
             height: auto;
         }
 
@@ -305,102 +306,54 @@
 {% block content %}
 
     <!-- Main Content -->
-    <div class="container content-wrapper">
-        <main>
+    <div class="container content-wrapper" style="margin-bottom: 40px;">
+        <main style="padding-top: 30px;">
+            <!-- パンくずリスト -->
+            <div class="breadcrumbs" style="padding-top: 0;">
+                <a href="/health-hub">ホーム</a> &gt;
+                <a href="/health-hub/articles/">記事</a>
+                {% if selected_category %}
+                    &gt;
+                    <a href="/health-hub/articles/?category={{ selected_category.slug }}">{{ selected_category.name }} の記事一覧</a>
+                {% endif %}
+                <span>{{ object.title }}</span>
+            </div>
+            <div style="margin-bottom: 20px; font-size: 18px; font-weight: 600;">
+                {% if selected_category %}
+                    {{ selected_category.name }} の記事一覧<br>
+                {% endif %}
+                {{ articles|length }}件の記事が見つかりました。
+            </div>
             <div class="articles-grid">
-                <!-- Article 1 -->
-                <article class="article-card">
-                    <div class="article-image" style="background-image: url('https://gymdiary-assets.s3.amazonaws.com/media/images/public/recipes/torihamusarada.webp')"></div>
-                    <div class="article-content">
-                        <span class="article-category">Workouts</span>
-                        <h2 class="article-title">10 Effective HIIT Workouts You Can Do at Home</h2>
-                        <p class="article-excerpt">High-intensity interval training that requires minimal equipment and can be done in your living room.</p>
-                        <div class="article-meta">
-                            <span>June 15, 2023</span>
-                            <span>5 min read</span>
-                        </div>
-                    </div>
-                </article>
+                <!-- Article -->
+                {% for article in articles %}
+                    <article class="article-card">
+                        <div class="article-image" style="background-image: url('{{ article.thumbnail.url }}')"></div>
+                        <div class="article-content">
+                            {% for category in article.categories.all %}
+                                <a href="/health-hub/articles/?category={{ category.slug }}"><span class="article-category">{{ category.name }}</span></a>
+                            {% endfor %}
 
-                <!-- Article 2 -->
-                <article class="article-card">
-                    <div class="article-image" style="background-image: url('/placeholder.svg?height=400&width=600')"></div>
-                    <div class="article-content">
-                        <span class="article-category">Nutrition</span>
-                        <h2 class="article-title">Protein-Packed Breakfast Ideas for Muscle Growth</h2>
-                        <p class="article-excerpt">Start your day right with these delicious high-protein breakfast recipes that support muscle development.</p>
-                        <div class="article-meta">
-                            <span>June 12, 2023</span>
-                            <span>4 min read</span>
+                            {% comment %} <img src="{{ article.image.url }}" alt="{{ article.title }} thumbnail"> {% endcomment %}
+                            <h2 class="article-title"><a href="{{ article.url }}" style="color: black;">{{ article.title }}</a></h2>
+                            <p class="article-excerpt">{{ article.search_description | truncatechars:60 }}</p>
+                            <div class="article-meta">
+                                <span>{{ article.published_at|date:"Y年m月d日" }}</span>
+                                {% comment %} <span> min read</span> {% endcomment %}
+                            </div>
                         </div>
-                    </div>
-                </article>
-
-                <!-- Article 3 -->
-                <article class="article-card">
-                    <div class="article-image" style="background-image: url('/placeholder.svg?height=400&width=600')"></div>
-                    <div class="article-content">
-                        <span class="article-category">Wellness</span>
-                        <h2 class="article-title">How to Improve Your Sleep Quality for Better Recovery</h2>
-                        <p class="article-excerpt">Optimize your sleep habits to enhance muscle recovery and overall athletic performance.</p>
-                        <div class="article-meta">
-                            <span>June 10, 2023</span>
-                            <span>6 min read</span>
-                        </div>
-                    </div>
-                </article>
-
-                <!-- Article 4 -->
-                <article class="article-card">
-                    <div class="article-image" style="background-image: url('/placeholder.svg?height=400&width=600')"></div>
-                    <div class="article-content">
-                        <span class="article-category">Workouts</span>
-                        <h2 class="article-title">The Ultimate Guide to Progressive Overload</h2>
-                        <p class="article-excerpt">Learn how to properly implement progressive overload in your training for continuous gains.</p>
-                        <div class="article-meta">
-                            <span>June 8, 2023</span>
-                            <span>7 min read</span>
-                        </div>
-                    </div>
-                </article>
-
-                <!-- Article 5 -->
-                <article class="article-card">
-                    <div class="article-image" style="background-image: url('/placeholder.svg?height=400&width=600')"></div>
-                    <div class="article-content">
-                        <span class="article-category">Nutrition</span>
-                        <h2 class="article-title">Pre and Post-Workout Nutrition: What to Eat and When</h2>
-                        <p class="article-excerpt">Optimize your performance and recovery with the right nutrition timing and food choices.</p>
-                        <div class="article-meta">
-                            <span>June 5, 2023</span>
-                            <span>5 min read</span>
-                        </div>
-                    </div>
-                </article>
-
-                <!-- Article 6 -->
-                <article class="article-card">
-                    <div class="article-image" style="background-image: url('/placeholder.svg?height=400&width=600')"></div>
-                    <div class="article-content">
-                        <span class="article-category">Wellness</span>
-                        <h2 class="article-title">Mindfulness Techniques for Athletes: Improving Focus</h2>
-                        <p class="article-excerpt">Mental training strategies to enhance your athletic performance and workout quality.</p>
-                        <div class="article-meta">
-                            <span>June 3, 2023</span>
-                            <span>4 min read</span>
-                        </div>
-                    </div>
-                </article>
+                    </article>
+                {% endfor %}
             </div>
 
             <!-- Pagination -->
-            <div class="pagination">
+            {% comment %} <div class="pagination">
                 <a href="#" class="active">1</a>
                 <a href="#">2</a>
                 <a href="#">3</a>
                 <a href="#">4</a>
                 <a href="#">Next →</a>
-            </div>
+            </div> {% endcomment %}
         </main>
 
         <!-- Sidebar -->
@@ -409,16 +362,14 @@
             <div class="sidebar-section">
                 <h3 class="sidebar-title">Categories</h3>
                 <ul class="categories-list">
-                    <li><a href="#">Workouts <span class="category-count">24</span></a></li>
-                    <li><a href="#">Nutrition <span class="category-count">18</span></a></li>
-                    <li><a href="#">Wellness <span class="category-count">15</span></a></li>
-                    <li><a href="#">Equipment <span class="category-count">9</span></a></li>
-                    <li><a href="#">Success Stories <span class="category-count">12</span></a></li>
+                    {% for category in categories %}
+                        <li><a href="/health-hub/articles/?category={{ category.slug }}">{{ category.name }} <span class="category-count">{{ category.article_count }}</span></a></li>
+                    {% endfor %}
                 </ul>
             </div>
 
             <!-- Popular Posts Section -->
-            <div class="sidebar-section">
+            {% comment %} <div class="sidebar-section">
                 <h3 class="sidebar-title">Popular Posts</h3>
                 <ul class="popular-list">
                     <li>
@@ -449,22 +400,22 @@
                         </a>
                     </li>
                 </ul>
-            </div>
+            </div> {% endcomment %}
 
             <!-- Newsletter Section -->
-            <div class="sidebar-section">
+            {% comment %} <div class="sidebar-section">
                 <h3 class="sidebar-title">Subscribe to Our Newsletter</h3>
                 <p style="margin-bottom: 15px; font-size: 14px;">Get the latest fitness tips and articles delivered to your inbox.</p>
                 <form>
                     <input type="email" placeholder="Your email address" style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 4px;">
                     <button type="submit" style="width: 100%; padding: 10px; background-color: #2a9d8f; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 500;">Subscribe</button>
                 </form>
-            </div>
+            </div> {% endcomment %}
         </aside>
     </div>
 
     <!-- Footer -->
-    <footer>
+    {% comment %} <footer>
         <div class="container">
             <div class="footer-container">
                 <div class="footer-section">
@@ -510,7 +461,7 @@
                 <p>&copy; 2023 Health Hub. All rights reserved.</p>
             </div>
         </div>
-    </footer>
+    </footer> {% endcomment %}
 
     <script>
         // Mobile Menu Toggle

@@ -8,15 +8,27 @@ from django.db import models
 from modelcluster.fields import ParentalManyToManyField
 from modelcluster.contrib.taggit import ClusterTaggableManager
 from taggit.models import TaggedItemBase, Tag as TaggitTag
+from django.db.models import Count
 from wagtail.snippets.models import register_snippet
+from django.utils.text import slugify
 
 from recipe.models import Recipe, RecipeTag
 
 
 class CustomImage(AbstractImage):
     """カスタム画像モデル"""
+    admin_form_fields = (
+        'file',
+        'title',
+        'description',
+    )
+
     def get_upload_to(self, filename):
         return 'public/images/%s' % filename
+
+    @property
+    def url(self):
+        return self.file.url if self.file else None
 
 
 class CustomRendition(AbstractRendition):
@@ -35,6 +47,13 @@ class HomePage(Page):
     content_panels = Page.content_panels + [
         FieldPanel('body'),
     ]
+
+    def get_context(self, request):
+        context = super().get_context(request)
+        context['new_articles'] = ArticlePage.objects.live().order_by('-published_at')[:3]
+        context['new_recipes'] = Recipe.objects.all().order_by('-id')[:3]
+
+        return context
 
 
 class RecipeIndexPage(Page):
@@ -64,7 +83,7 @@ class ArticlePage(Page):
     categories = ParentalManyToManyField('health_hub.ArticleCategory', blank=True, related_name='articles')
 
     thumbnail = models.ForeignKey(
-        'wagtailimages.Image', null=True, blank=True, on_delete=models.SET_NULL, related_name='+'
+        'health_hub.CustomImage', null=True, blank=True, on_delete=models.SET_NULL, related_name='+'
     )
 
     content_panels = Page.content_panels + [
@@ -74,18 +93,35 @@ class ArticlePage(Page):
         FieldPanel('categories', widget=forms.CheckboxSelectMultiple),
     ]
 
+    def get_context(self, request):
+        context = super().get_context(request)
+        # 記事カテゴリごとの記事数を取得して渡す
+        context['categories'] = ArticleCategory.objects.annotate(
+            article_count=Count('articles', filter=models.Q(articles__live=True))
+        ).order_by('-article_count')
+
+        return context
+
 
 @register_snippet
 class ArticleCategory(models.Model):
     """記事カテゴリ"""
     name = models.CharField(max_length=255, unique=True)
+    slug = models.SlugField(max_length=255, unique=True)
 
     panels = [
         FieldPanel('name'),
+        FieldPanel('slug'),
     ]
 
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
+
     def __str__(self):
-        return self.name
+        return str(self.name)
+
     class Meta:
         verbose_name = "記事カテゴリ"
         verbose_name_plural = "記事カテゴリ"
@@ -101,5 +137,18 @@ class BlogIndexPage(Page):
 
     def get_context(self, request):
         context = super().get_context(request)
-        context['articles'] = ArticlePage.objects.live().order_by('-published_at')
+        # 記事カテゴリごとの記事数を取得して渡す
+        context['categories'] = ArticleCategory.objects.annotate(
+            article_count=Count('articles', filter=models.Q(articles__live=True))
+        ).order_by('-article_count')
+
+        # カテゴリ検索のためのクエリパラメータを取得
+        selected_category = request.GET.get('category')
+        if selected_category:
+            context['articles'] = ArticlePage.objects.live().filter(categories__slug=selected_category).order_by('-published_at')
+            selected_category = ArticleCategory.objects.filter(slug=selected_category).first()
+        else:
+            context['articles'] = ArticlePage.objects.live().order_by('-published_at')
+        context['selected_category'] = selected_category or None
+
         return context

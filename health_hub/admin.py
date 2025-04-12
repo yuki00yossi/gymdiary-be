@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import ArticlePage
+from .models import ArticlePage, ArticleCategory
 
 class ArticlePageAdmin(admin.ModelAdmin):
     list_display = ('title', 'published_at')
@@ -7,3 +7,4 @@ class ArticlePageAdmin(admin.ModelAdmin):
 
 
 admin.site.register(ArticlePage, ArticlePageAdmin)
+admin.site.register(ArticleCategory)

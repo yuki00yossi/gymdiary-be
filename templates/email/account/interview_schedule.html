@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>面談日程のご案内 | Gym Diary</title>
+</head>
+<body style="font-family: 'Helvetica Neue', sans-serif; line-height: 1.8; color: #333; background-color: #f9f9f9; padding: 20px;">
+  <div style="max-width: 600px; margin: 0 auto; background-color: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+
+    <p>{{ user.name }} 様</p>
+
+    <p>この度は <strong>Gym Diary</strong> にトレーナーとしてご登録いただき、誠にありがとうございます。</p>
+
+    <hr style="border: none; border-top: 1px solid #ddd; margin: 30px 0;">
+
+    <p>
+      さて下記の通り、<strong>初回面談の日程が確定しました</strong>のでご案内いたします。
+    </p>
+
+    <table style="width: 100%; background-color: #f4f4f4; padding: 15px; border-radius: 5px;">
+      <tr>
+        <td style="font-weight: bold;">日時</td>
+        <td>{{ date }} {{ time }}〜</td>
+      </tr>
+      <tr>
+        <td style="font-weight: bold;">会議URL</td>
+        <td><a href="{{ meets_url }}" target="_blank">{{ meets_url }}</a></td>
+      </tr>
+    </table>
+
+    <p style="margin-top: 20px;">
+      面談は Google Meet を使用して行います。<br>
+      予定時刻になりましたら、上記URLよりご参加ください。<br>
+      もし、面談開始から10分以上経過してもお越しいただけない場合は、キャンセル扱いとさせていただきますのでご了承ください。<br>
+      面談中はカメラをONにしていただけますと、よりスムーズに進行できますのでご協力をお願いいたします。<br>
+      なお、面談は約30分を予定しております。
+    </p>
+
+    <p>
+      面談では、以下の内容をご説明予定です：
+    </p>
+
+    <ul style="padding-left: 20px;">
+      <li>ご本人様確認</li>
+      <li>Gym Diary のご利用ガイドラインと注意事項</li>
+      <li>契約・集客・サポート体制について</li>
+    </ul>
+
+    <p>
+      ご不明な点や日程変更をご希望の場合は、以下のサポート宛にご連絡ください。
+    </p>
+
+    <p>
+        皆さまのフィットネス経験やスキルを、より多くのユーザーに届けられるよう、全力でサポートしてまいります。<br>
+        ぜひ、私たちと一緒に素晴らしいフィットネス体験を提供していきましょう！<br>
+        今後とも、どうぞよろしくお願いいたします。
+    </p>
+
+    <p>
+      <strong>Gym Diary運営事務局</strong><br>
+      📧 <a href="mailto:support@gymdiary.tokyo">support@gymdiary.tokyo</a>
+    </p>
+
+  </div>
+</body>
+</html>

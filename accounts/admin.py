@@ -14,6 +14,7 @@ class CustomUserAdmin(UserAdmin):
     search_fields = ('username',)
     fieldsets = (
         ('ユーザー情報', {'fields': ('username', 'email', 'name', 'password')}),
+        ('プロフィール', {'fields': ('profile_image', 'sex', 'birth_date', 'height', 'activity_level', )}),
         ("権限", {'fields': ('is_staff', 'is_superuser', 'groups', 'user_permissions')}),
         ('その他', {'fields': ('is_active', 'created_at')}),
     )

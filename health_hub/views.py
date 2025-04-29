@@ -27,11 +27,9 @@ class RecipeSearchView(ListView):
         tag_slugs = self.request.GET.getlist('tags')
 
         if tag_slugs:
-            print('tag_slugs: ', tag_slugs)
             queryset = queryset.filter(tags__slug__in=tag_slugs)
 
         if query:
-            print('query: ', query)
             keywords = query.split()
             q_objects = Q()
             for word in keywords:
@@ -41,7 +39,6 @@ class RecipeSearchView(ListView):
                     Q(ingredients__meal_item__name__icontains=word)
                 )
             queryset = queryset.filter(q_objects)
-        print('queryset: ', queryset)
         return queryset
 
     def get_context_data(self, **kwargs):
@@ -50,6 +47,5 @@ class RecipeSearchView(ListView):
         context['tags'] = RecipeTag.objects.all()
         selected_slugs = self.request.GET.getlist('tags')
 
-        print('query: ', context['query'])
         context['selected_tags'] = RecipeTag.objects.filter(slug__in=selected_slugs)
         return context

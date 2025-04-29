@@ -28,7 +28,6 @@ class TrainerProfileView(APIView):
     def post(self, request):
         data = request.data.copy()
         data['user'] = request.user  # ユーザーIDをセット
-        print(data)  # デバッグ用
         try:
             profile = request.user.trainer_profile
             serializer = TrainerProfileSerializer(profile, data=data)

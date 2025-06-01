@@ -1,5 +1,6 @@
 from django.urls import path
 from .views import (
+    GoogleLoginAPIView,
     UserRegisterAPIView,
     UserLoginAPIView,
     UserLogoutAPIView,
@@ -15,4 +16,7 @@ urlpatterns = [
     path('verify-email/', EmailVerificationAPIView.as_view(), name='api.email.verify'),
     path('verify-email/resend/', EmailVerificationAPIView.as_view(), name='api.email.verify.resend'),
     path('me/', UserMeAPIView.as_view(), name='api.me'),
+
+    # ソーシャルログイン用のURL
+    path('social/google/login/', GoogleLoginAPIView.as_view(), name='api.social.google.login'),
 ]

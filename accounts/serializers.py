@@ -63,7 +63,7 @@ class UserLoginSerializer(serializers.Serializer):
         if user is None:
             raise serializers.ValidationError('認証失敗： ユーザー名もしくはパスワードが正しくありません')
         if not user.is_active:
-            return {'error': '認証失敗： メール認証が完了していません。'}
+            raise serializers.ValidationError('認証失敗： メール認証が完了していません。')
         user = authenticate(
             username=attrs['username'], password=attrs['password'])
         if not user:

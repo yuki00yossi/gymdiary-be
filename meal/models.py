@@ -17,6 +17,7 @@ class MealItem(models.Model):
 
     base_quantity = models.FloatField(default=100)  # 100g, 1個, 200mlなど
     created_by = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="meal_items")
+    official_id = models.IntegerField(null=True, blank=True, unique=True, verbose_name="公式食品ID")
     is_official = models.BooleanField(verbose_name="公式フラグ", default=True)
 
     # --- 栄養素の拡張 ---

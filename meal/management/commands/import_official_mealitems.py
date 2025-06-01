@@ -56,7 +56,7 @@ class Command(BaseCommand):
         for item in items:
             # --- 公式MealItemを作成 or 更新 ---
             try:
-                mealItem = MealItem.objects.get(pk=item['食品ID'])
+                mealItem = MealItem.objects.get(official_id=item['食品ID'])
             except MealItem.DoesNotExist:
                 mealItem = None
 
@@ -116,7 +116,7 @@ class Command(BaseCommand):
                 mealItem.save()
                 updated += 1
             else:
-                data["id"] = item["食品ID"]
+                data["official_id"] = item["食品ID"]
                 print(f"Creating new item: {data}")
                 # 作成
                 MealItem.objects.create(**data)

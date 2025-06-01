@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 import os
 
+from datetime import timedelta
 from pathlib import Path
 
 import environ
@@ -33,7 +34,9 @@ SECRET_KEY = env('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool('DEBUG', default=False)
 
-ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['localhost', '127.0.0.1', 'gymdiary.tokyo'])
+
+# ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['localhost', '127.0.0.1', 'gymdiary.tokyo'])
+ALLOWED_HOSTS = ['localhost', '192.168.10.102', 'gymdiary.tokyo']
 
 
 # Application definition
@@ -47,6 +50,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'lp',  # LP関連
     'rest_framework',
+    'rest_framework_simplejwt',
     'accounts',
     'weight',  # 体重管理
     'training',  # トレーニング管理
@@ -113,6 +117,7 @@ WSGI_APPLICATION = 'gymdiary.wsgi.application'
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework.authentication.SessionAuthentication",
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
     ],
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.IsAuthenticated",
@@ -258,6 +263,12 @@ LOGGING = {
             "propagate": True,
         },
     },
+}
+
+# JWTの設定
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=7),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=90),
 }
 
 # if DEBUG:

@@ -1,14 +1,18 @@
+from datetime import date
+from itertools import chain
 import os, uuid
 
 from rest_framework import viewsets, permissions
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.decorators import action
 from rest_framework.parsers import MultiPartParser, FormParser
 from .models import MealRecord, MealItem, MealRecordItem
 from .serializers import MealRecordSerializer, MealItemSerializer
 from django.core.files.storage import default_storage
 from django.utils.text import slugify
 from accounts.utils import generate_presigned_url
+from django.db.models import Prefetch
 
 
 class MealRecordViewSet(viewsets.ModelViewSet):
@@ -25,6 +29,36 @@ class MealRecordViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         """ 食事記録を作成（ユーザーを紐づける）"""
         serializer.save(user=self.request.user)
+
+    @action(methods=['get'], detail=False, url_path='summary', url_name='summary')
+    def summary(self, request):
+        """ 食事記録のサマリーを取得 """
+        records = MealRecord.objects.filter(
+            user=request.user,
+            date=date.today()
+        ).prefetch_related(
+            Prefetch('meal_items', queryset=MealRecordItem.objects.select_related('meal_item'))
+        )
+
+        if not records.exists():
+            return Response({})
+
+        # MealRecordごとのmeal_itemsをすべて合体（フラットにする）
+        meal_items = list(chain.from_iterable(record.meal_items.all() for record in records))
+
+        # 栄養素を集計（MealItemのカロリー等を使う場合）
+        total_calories = sum(item.meal_item.calories * item.quantity for item in meal_items)
+        total_protein = sum(item.meal_item.protein * item.quantity for item in meal_items)
+        total_fat = sum(item.meal_item.fat * item.quantity for item in meal_items)
+        total_carbs = sum(item.meal_item.carbs * item.quantity for item in meal_items)
+
+        return Response({
+            "total_calories": total_calories,
+            "total_protein": total_protein,
+            "total_fat": total_fat,
+            "total_carbs": total_carbs,
+            "record_count": records.count()
+        })
 
 
 class MealItemViewSet(viewsets.ModelViewSet):

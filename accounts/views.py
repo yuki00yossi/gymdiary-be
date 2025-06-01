@@ -1,3 +1,6 @@
+import requests
+
+
 from django.shortcuts import render
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
@@ -7,6 +10,7 @@ from django.http import JsonResponse
 from rest_framework import generics, status, permissions
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework_simplejwt.tokens import RefreshToken
 
 from accounts.utils import generate_token
 from .models import CustomUser, EmailVerification
@@ -81,10 +85,18 @@ class UserLoginAPIView(APIView):
         if isinstance(validated_data, dict):
             return Response(
                 validated_data, status=status.HTTP_403_FORBIDDEN)
-        login(request, validated_data)
-        return Response(
-            {'message': 'ログイン成功', 'username': validated_data.username},
-            status=status.HTTP_200_OK)
+        refresh = RefreshToken.for_user(validated_data)
+
+        return Response({
+            'refresh': str(refresh),
+            'access': str(refresh.access_token),
+            'user': {
+                'username': validated_data.username,
+                'email': validated_data.email,
+                'name': validated_data.name,
+                'profile_image': validated_data.profile_image.url if validated_data.profile_image else None,
+            }
+        }, status=status.HTTP_200_OK)
 
 
 class UserLogoutAPIView(APIView):
@@ -111,3 +123,59 @@ class UserMeAPIView(APIView):
 def get_csrf_token(request):
     """ CSRFトークンをcookieにセットするAPI """
     return JsonResponse({"csrfToken": request.META.get('CSRF_COOKIE')})
+
+
+class GoogleLoginAPIView(APIView):
+    """ GoogleログインAPI """
+    permission_classes = [permissions.AllowAny,]
+
+    def post(self, request):
+        access_token = request.data.get('access_token')
+        if not access_token:
+            return Response({"error": "Access token is required."}, status=status.HTTP_400_BAD_REQUEST)
+
+        # GoogleのAPIを使ってユーザー情報を取得
+        user_info_url = "https://www.googleapis.com/oauth2/v3/userinfo"
+        res = requests.get(
+            user_info_url,
+            headers={"Authorization": f"Bearer {access_token}"},
+            timeout=10
+        )
+        if res.status_code != 200:
+            return Response({"error": "Failed to fetch user info from Google."}, status=status.HTTP_400_BAD_REQUEST)
+
+        profile = res.json()
+        google_id = profile.get("sub")
+        email = profile.get("email")
+        name = profile.get("name")
+        picture = profile.get("picture")
+        if not google_id or not email:
+            return Response({"error": "Invalid user info from Google."}, status=status.HTTP_400_BAD_REQUEST)
+
+        print("===================================")
+        print(f"User profile: {profile}")
+        print("===================================")
+
+        user, created = CustomUser.objects.get_or_create(
+            email=email,
+            defaults={
+                "email": email,
+                "name": name,
+                "profile_image": picture,
+                "is_active": True,
+                "username": f"google_{google_id}"  # ユーザー名はGoogle IDをベースに生成
+            }
+        )
+
+        # JWTトークンを生成
+        refresh = RefreshToken.for_user(user)
+        return Response({
+            "refresh": str(refresh),
+            "access": str(refresh.access_token),
+            "user": {
+                "username": user.username,
+                "email": user.email,
+                "name": user.name,
+                "profile_image": user.profile_image.url if user.profile_image else None,
+            }
+        }, status=status.HTTP_200_OK)

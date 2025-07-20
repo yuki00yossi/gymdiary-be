@@ -10,24 +10,60 @@ from .serializers import (
     MySetSessionListSerializer,
     MySetSessionDetailSerializer)
 
+from drf_spectacular.utils import extend_schema, extend_schema_view, OpenApiParameter, OpenApiExample
+from drf_spectacular.types import OpenApiTypes
+
 
 # Create your views here.
+@extend_schema_view(
+    get=extend_schema(
+        summary="トレーニング記録一覧取得",
+        description="ログインユーザーのトレーニング記録一覧を取得します。",
+        tags=["トレーニング記録"]
+    ),
+    post=extend_schema(
+        summary="トレーニング記録作成",
+        description="新しいトレーニング記録を作成します。ユーザーは自動的に紐づけられます。",
+        tags=["トレーニング記録"]
+    )
+)
 class TrainingSessionListCreateView(generics.ListCreateAPIView):
-    """ トレーニング記録の取得＆作成 """
+    """
+    トレーニング記録の取得・作成API
+
+    ユーザーのトレーニング記録を一覧取得・作成するためのAPIです。
+    認証が必要で、ログインユーザーのトレーニング記録のみを操作できます。
+    """
     serializer_class = TrainingSessionSerializer
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
-        """ 自分のトレーニング記録のみ記録 """
+        """自分のトレーニング記録のみ取得"""
         return TrainingSession.objects.filter(user=self.request.user)
 
     def perform_create(self, serializer):
-        """ トレーニング記録を作成(ログインユーザーに紐づけ) """
+        """トレーニング記録を作成(ログインユーザーに紐づけ)"""
         serializer.save(user=self.request.user)
 
 
+@extend_schema_view(
+    get=extend_schema(
+        summary="トレーニング記録詳細取得",
+        description="指定したIDのトレーニング記録の詳細を取得します。",
+        tags=["トレーニング記録"]
+    ),
+    delete=extend_schema(
+        summary="トレーニング記録削除",
+        description="指定したIDのトレーニング記録を削除します。",
+        tags=["トレーニング記録"]
+    )
+)
 class TrainingSessionDetailView(generics.RetrieveDestroyAPIView):
-    """ トレーニング記録の詳細取得・削除 """
+    """
+    トレーニング記録詳細・削除API
+
+    指定したトレーニング記録の詳細取得および削除を行います。
+    """
     serializer_class = TrainingSessionSerializer
     permission_classes = [permissions.IsAuthenticated]
 
@@ -35,7 +71,61 @@ class TrainingSessionDetailView(generics.RetrieveDestroyAPIView):
         return TrainingSession.objects.filter(user=self.request.user)
 
 
+@extend_schema_view(
+    list=extend_schema(
+        summary="マイセット一覧取得",
+        description="ログインユーザーのマイセット一覧を取得します。",
+        tags=["マイセット"]
+    ),
+    create=extend_schema(
+        summary="マイセット作成",
+        description="新しいマイセットを作成します。作成者とユーザーは自動的に紐づけられます。",
+        tags=["マイセット"]
+    ),
+    retrieve=extend_schema(
+        summary="マイセット詳細取得",
+        description="指定したIDのマイセットの詳細を取得します。",
+        tags=["マイセット"]
+    ),
+    update=extend_schema(
+        summary="マイセット更新",
+        description="指定したIDのマイセットを更新します。",
+        tags=["マイセット"]
+    ),
+    partial_update=extend_schema(
+        summary="マイセット部分更新",
+        description="指定したIDのマイセットを部分的に更新します。",
+        tags=["マイセット"]
+    ),
+    destroy=extend_schema(
+        summary="マイセット削除",
+        description="指定したIDのマイセットを削除します。削除権限チェックが行われます。",
+        responses={
+            200: {
+                "type": "object",
+                "properties": {
+                    "message": {"type": "string", "description": "削除完了メッセージ"}
+                },
+                "example": {"message": "マイセットを削除しました！"}
+            },
+            403: {
+                "type": "object",
+                "properties": {
+                    "detail": {"type": "string", "description": "エラーメッセージ"}
+                },
+                "example": {"detail": "あなたには削除権限がありません。"}
+            }
+        },
+        tags=["マイセット"]
+    )
+)
 class MySetViewSet(viewsets.ModelViewSet):
+    """
+    マイセット管理API
+
+    トレーニングのマイセット（メニューセット）を管理するAPIです。
+    ユーザーごとに個別のマイセットを作成・管理できます。
+    """
     queryset = MySet.objects.all()
     serializer_class = MySetSerializer
     permission_classes = [IsAuthenticated]
@@ -59,9 +149,47 @@ class MySetViewSet(viewsets.ModelViewSet):
 
 
 class MySetRecordView(APIView):
+    """
+    マイセット記録管理API
+
+    マイセットに基づくトレーニング記録の取得・作成を行います。
+    """
     permission_classes = [IsAuthenticated]
 
+    @extend_schema(
+        summary="マイセット最新記録取得",
+        description="指定したマイセットの最新のトレーニング記録を取得します。",
+        parameters=[
+            OpenApiParameter(
+                name='myset_id',
+                type=OpenApiTypes.INT,
+                location=OpenApiParameter.PATH,
+                description='マイセットID'
+            ),
+        ],
+        responses={
+            200: MySetSessionDetailSerializer,
+            404: {
+                "type": "object",
+                "properties": {
+                    "detail": {"type": "string", "description": "エラーメッセージ"}
+                },
+                "examples": {
+                    "myset_not_found": {
+                        "summary": "マイセットが見つからない",
+                        "value": {"detail": "マイセットが見つかりません"}
+                    },
+                    "record_not_found": {
+                        "summary": "記録が存在しない",
+                        "value": {"detail": "記録が存在しません"}
+                    }
+                }
+            }
+        },
+        tags=["マイセット記録"]
+    )
     def get(self, request, myset_id):
+        """マイセットの最新記録を取得"""
         try:
             myset = MySet.objects.get(id=myset_id, user=request.user)
         except MySet.DoesNotExist:
@@ -75,7 +203,42 @@ class MySetRecordView(APIView):
         serializer = MySetSessionDetailSerializer(latest_session)
         return Response(serializer.data)
 
+    @extend_schema(
+        summary="マイセット記録作成",
+        description="指定したマイセットに基づいて新しいトレーニング記録を作成します。",
+        parameters=[
+            OpenApiParameter(
+                name='myset_id',
+                type=OpenApiTypes.INT,
+                location=OpenApiParameter.PATH,
+                description='マイセットID'
+            ),
+        ],
+        request=MySetSessionCreateSerializer,
+        responses={
+            201: {
+                "type": "object",
+                "properties": {
+                    "id": {"type": "integer", "description": "作成されたセッションID"},
+                    "message": {"type": "string", "description": "成功メッセージ"}
+                },
+                "example": {
+                    "id": 123,
+                    "message": "マイセットから記録を作成しました！"
+                }
+            },
+            404: {
+                "type": "object",
+                "properties": {
+                    "detail": {"type": "string", "description": "エラーメッセージ"}
+                },
+                "example": {"detail": "対象のマイセットが見つかりません。"}
+            }
+        },
+        tags=["マイセット記録"]
+    )
     def post(self, request, myset_id):
+        """マイセットから記録を作成"""
         try:
             myset = MySet.objects.get(id=myset_id, user=request.user)
         except MySet.DoesNotExist:
@@ -115,8 +278,17 @@ class MySetRecordView(APIView):
         return Response({"id": session.id, "message": "マイセットから記録を作成しました！"}, status=status.HTTP_201_CREATED)
 
 
-# --- 記録一覧 ---
+@extend_schema(
+    summary="マイセット記録一覧取得",
+    description="ログインユーザーのマイセット記録一覧を日付の降順で取得します。",
+    tags=["マイセット記録"]
+)
 class MySetSessionListView(generics.ListAPIView):
+    """
+    マイセット記録一覧取得API
+
+    ユーザーのマイセット記録の一覧を取得します。
+    """
     serializer_class = MySetSessionListSerializer
     permission_classes = [IsAuthenticated]
 
@@ -124,9 +296,17 @@ class MySetSessionListView(generics.ListAPIView):
         return MySetSession.objects.filter(user=self.request.user).order_by('-date')
 
 
-
-# --- 記録詳細 ---
+@extend_schema(
+    summary="マイセット記録詳細取得",
+    description="指定したIDのマイセット記録の詳細を取得します。",
+    tags=["マイセット記録"]
+)
 class MySetSessionDetailView(generics.RetrieveAPIView):
+    """
+    マイセット記録詳細取得API
+
+    指定したマイセット記録の詳細情報を取得します。
+    """
     serializer_class = MySetSessionDetailSerializer
     permission_classes = [IsAuthenticated]
     lookup_field = 'id'

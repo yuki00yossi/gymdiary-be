@@ -36,7 +36,7 @@ DEBUG = env.bool('DEBUG', default=False)
 
 
 # ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['localhost', '127.0.0.1', 'gymdiary.tokyo'])
-ALLOWED_HOSTS = ['localhost', '192.168.10.102', 'gymdiary.tokyo']
+ALLOWED_HOSTS = ['localhost', '192.168.10.101', 'gymdiary.tokyo']
 
 
 # Application definition
@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'lp',  # LP関連
     'rest_framework',
     'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist',  # トークン認証用
     'accounts',
     'weight',  # 体重管理
     'training',  # トレーニング管理
@@ -267,8 +268,9 @@ LOGGING = {
 
 # JWTの設定
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(days=7),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=90),
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=2),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=365),
+    'ROTATE_REFRESH_TOKENS': True,
 }
 
 # if DEBUG:

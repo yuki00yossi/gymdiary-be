@@ -8,8 +8,12 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         """ メタ情報 """
         model = CustomUser
-        fields = ('id', 'username', 'email', 'name')
-        read_only_fields = ('id',)
+        fields = (
+            'id', 'username', 'email', 'name',
+            'profile_image', 'sex', 'birth_date',
+            'height', 'activity_level'
+        )
+        read_only_fields = ('id', 'username', 'email')
 
 
 class UserRoleSerializer(serializers.ModelSerializer):

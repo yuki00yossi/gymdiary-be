@@ -16,8 +16,30 @@ from accounts.utils import generate_token
 from .models import CustomUser, EmailVerification
 from .serializers import EmailVerificationSerializer, UserRegisterSerializer, UserLoginSerializer, UserSerializer
 
+from drf_spectacular.utils import extend_schema, extend_schema_view, OpenApiParameter, OpenApiExample
+from drf_spectacular.types import OpenApiTypes
+
 
 # Create your views here.
+@extend_schema(
+    summary="会員登録",
+    description="新しいユーザーアカウントを作成します。メンバーまたはトレーナーとして登録できます。",
+    request=UserRegisterSerializer,
+    responses={
+        201: UserRegisterSerializer,
+        400: {
+            "type": "object",
+            "properties": {
+                "field_name": {
+                    "type": "array",
+                    "items": {"type": "string"},
+                    "description": "バリデーションエラーメッセージ"
+                }
+            }
+        }
+    },
+    tags=["認証"]
+)
 class UserRegisterAPIView(generics.CreateAPIView):
     """ 会員登録API (メンバー or トレーナー選択可能) """
     queryset = CustomUser.objects.all()
@@ -29,6 +51,28 @@ class EmailVerificationAPIView(APIView):
     """ メール認証API """
     permission_classes = [permissions.AllowAny,]
 
+    @extend_schema(
+        summary="メール認証トークン送信",
+        description="指定したユーザー名のユーザーにメール認証トークンを送信します。既存のトークンがある場合は削除して新しく発行します。",
+        request=EmailVerificationSerializer,
+        responses={
+            200: {
+                "type": "object",
+                "properties": {
+                    "message": {"type": "string", "description": "成功メッセージ"}
+                },
+                "example": {"message": "メール認証用のトークンを送信しました"}
+            },
+            400: {
+                "type": "object",
+                "properties": {
+                    "message": {"type": "string", "description": "エラーメッセージ"}
+                },
+                "example": {"message": "不正なリクエストです。"}
+            }
+        },
+        tags=["認証"]
+    )
     def put(self, request):
         """ メール認証トークンを送信する
 
@@ -51,6 +95,37 @@ class EmailVerificationAPIView(APIView):
 
         return Response({'message': 'メール認証用のトークンを送信しました'}, status=status.HTTP_200_OK)
 
+    @extend_schema(
+        summary="メール認証トークン検証",
+        description="メール認証トークンを検証してユーザーアカウントを有効化します。",
+        request=EmailVerificationSerializer,
+        responses={
+            200: {
+                "type": "object",
+                "properties": {
+                    "message": {"type": "string", "description": "成功メッセージ"}
+                },
+                "example": {"message": "メール認証が完了しました"}
+            },
+            400: {
+                "type": "object",
+                "properties": {
+                    "message": {"type": "string", "description": "エラーメッセージ"}
+                },
+                "examples": {
+                    "invalid_request": {
+                        "summary": "不正なリクエスト",
+                        "value": {"message": "不正なリクエストです。"}
+                    },
+                    "invalid_token": {
+                        "summary": "無効なトークン",
+                        "value": {"message": "無効なトークンです"}
+                    }
+                }
+            }
+        },
+        tags=["認証"]
+    )
     def post(self, request):
         """ メール認証トークンを検証する """
         serializer = EmailVerificationSerializer(data=request.data)
@@ -72,8 +147,48 @@ class EmailVerificationAPIView(APIView):
             return Response({'message': '無効なトークンです'}, status=status.HTTP_400_BAD_REQUEST)
 
 
+@extend_schema(
+    summary="ログイン",
+    description="ユーザー認証を行い、JWTトークン（access/refresh）を取得します。",
+    request=UserLoginSerializer,
+    responses={
+        200: {
+            "type": "object",
+            "properties": {
+                "refresh": {"type": "string", "description": "リフレッシュトークン"},
+                "access": {"type": "string", "description": "アクセストークン"},
+                "user": {
+                    "type": "object",
+                    "properties": {
+                        "username": {"type": "string", "description": "ユーザー名"},
+                        "email": {"type": "string", "description": "メールアドレス"},
+                        "name": {"type": "string", "description": "表示名"},
+                        "profile_image": {"type": "string", "description": "プロフィール画像URL", "nullable": True}
+                    }
+                }
+            },
+            "example": {
+                "refresh": "eyJ0eXAiOiJKV1QiLCJhbGc...",
+                "access": "eyJ0eXAiOiJKV1QiLCJhbGc...",
+                "user": {
+                    "username": "testuser",
+                    "email": "test@example.com",
+                    "name": "テストユーザー",
+                    "profile_image": "https://example.com/profile.jpg"
+                }
+            }
+        },
+        403: {
+            "type": "object",
+            "properties": {
+                "message": {"type": "string", "description": "エラーメッセージ"}
+            }
+        }
+    },
+    tags=["認証"]
+)
 class UserLoginAPIView(APIView):
-    """ ログインAPI(セッション認証) """
+    """ ログインAPI(JWT認証) """
     permission_classes = [permissions.AllowAny,]
 
     def post(self, request):
@@ -99,6 +214,20 @@ class UserLoginAPIView(APIView):
         }, status=status.HTTP_200_OK)
 
 
+@extend_schema(
+    summary="ログアウト",
+    description="ユーザーをログアウトします。",
+    responses={
+        200: {
+            "type": "object",
+            "properties": {
+                "message": {"type": "string", "description": "成功メッセージ"}
+            },
+            "example": {"message": "ログアウトしました"}
+        }
+    },
+    tags=["認証"]
+)
 class UserLogoutAPIView(APIView):
     """ ログアウトAPI """
     permission_classes = [permissions.IsAuthenticated,]
@@ -113,9 +242,22 @@ class UserMeAPIView(APIView):
     """ ログインユーザーの情報を取得するAPI """
     permission_classes = [permissions.IsAuthenticated]
 
+    @extend_schema(
+        summary="ログインユーザー情報取得",
+        description="現在ログイン中のユーザーの詳細情報を取得します。",
+        responses={200: UserSerializer},
+        tags=["ユーザー"]
+    )
     def get(self, request):
         """ ログイン中ユーザーの情報を返す """
         serializer = UserSerializer(request.user)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def patch(self, request):
+        """ ログイン中ユーザーの情報を更新する """
+        serializer = UserSerializer(request.user, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
@@ -125,6 +267,66 @@ def get_csrf_token(request):
     return JsonResponse({"csrfToken": request.META.get('CSRF_COOKIE')})
 
 
+@extend_schema(
+    summary="Googleログイン",
+    description="GoogleのOAuth2アクセストークンを使用してログインし、JWTトークンを取得します。",
+    request={
+        "type": "object",
+        "properties": {
+            "access_token": {"type": "string", "description": "GoogleのOAuth2アクセストークン"}
+        },
+        "required": ["access_token"]
+    },
+    responses={
+        200: {
+            "type": "object",
+            "properties": {
+                "refresh": {"type": "string", "description": "リフレッシュトークン"},
+                "access": {"type": "string", "description": "アクセストークン"},
+                "user": {
+                    "type": "object",
+                    "properties": {
+                        "username": {"type": "string", "description": "ユーザー名"},
+                        "email": {"type": "string", "description": "メールアドレス"},
+                        "name": {"type": "string", "description": "表示名"},
+                        "profile_image": {"type": "string", "description": "プロフィール画像URL", "nullable": True}
+                    }
+                }
+            },
+            "example": {
+                "refresh": "eyJ0eXAiOiJKV1QiLCJhbGc...",
+                "access": "eyJ0eXAiOiJKV1QiLCJhbGc...",
+                "user": {
+                    "username": "google_123456789",
+                    "email": "user@gmail.com",
+                    "name": "Google User",
+                    "profile_image": "https://lh3.googleusercontent.com/..."
+                }
+            }
+        },
+        400: {
+            "type": "object",
+            "properties": {
+                "error": {"type": "string", "description": "エラーメッセージ"}
+            },
+            "examples": {
+                "missing_token": {
+                    "summary": "アクセストークンなし",
+                    "value": {"error": "Access token is required."}
+                },
+                "invalid_token": {
+                    "summary": "無効なトークン",
+                    "value": {"error": "Failed to fetch user info from Google."}
+                },
+                "invalid_user_info": {
+                    "summary": "無効なユーザー情報",
+                    "value": {"error": "Invalid user info from Google."}
+                }
+            }
+        }
+    },
+    tags=["認証"]
+)
 class GoogleLoginAPIView(APIView):
     """ GoogleログインAPI """
     permission_classes = [permissions.AllowAny,]

@@ -19,6 +19,7 @@ class MealItem(models.Model):
     created_by = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="meal_items")
     official_id = models.IntegerField(null=True, blank=True, unique=True, verbose_name="公式食品ID")
     is_official = models.BooleanField(verbose_name="公式フラグ", default=True)
+    search_keywords = models.TextField(blank=True, null=True, help_text='カンマ区切りの検索用キーワード')
 
     # --- 栄養素の拡張 ---
     vitamin_a = models.FloatField("ビタミンA（μgRAE）", null=True, blank=True)
@@ -58,6 +59,10 @@ class MealItem(models.Model):
 
     def __str__(self):
         return str(self.name)
+
+    def get_all_keywords(self):
+        """ 検索キーワードを取得 """
+        return self.name + self.search_keywords if self.search_keywords else self.name
 
 
 class MealRecord(models.Model):

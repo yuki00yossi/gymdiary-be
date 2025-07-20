@@ -3,11 +3,11 @@
 {% block title %}{{ page.title }} | Health Hub{% endblock %}
 {% block page_description %}ダイエット・筋トレ・健康に役立つレシピや記事を多数掲載中。目的別に探せます。{% endblock %}
 {% block metaInfo %}
-  <meta property="og:title" content="{{ page.title }} | Health Hub by GYM DIARY">
-  <meta property="og:description" content="ダイエット・筋トレ・健康に役立つレシピや記事を多数掲載中。目的別に探せます。">
-  <meta property="og:image" content="{{ page.thumbnail.url }}">
-  <meta property="og:url" content="{{ page.full_url }}">
-  <style>
+<meta property="og:title" content="{{ page.title }} | Health Hub by GYM DIARY">
+<meta property="og:description" content="ダイエット・筋トレ・健康に役立つレシピや記事を多数掲載中。目的別に探せます。">
+<meta property="og:image" content="{{ page.thumbnail.url }}">
+<meta property="og:url" content="{{ page.full_url }}">
+<style>
     a {
         text-decoration: none;
         color: #2a9d8f;
@@ -118,15 +118,18 @@
         border-bottom: 1px solid #eee;
     }
 
-    .categories-list, .popular-list {
+    .categories-list,
+    .popular-list {
         list-style: none;
     }
 
-    .categories-list li, .popular-list li {
+    .categories-list li,
+    .popular-list li {
         margin-bottom: 10px;
     }
 
-    .categories-list a, .popular-list a {
+    .categories-list a,
+    .popular-list a {
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -188,7 +191,8 @@
         transition: background-color 0.3s, color 0.3s;
     }
 
-    .pagination a:hover, .pagination a.active {
+    .pagination a:hover,
+    .pagination a.active {
         background-color: #2a9d8f;
         color: white;
     }
@@ -240,6 +244,258 @@
     .social-links a {
         color: white;
         font-size: 16px;
+    }
+
+    /* Article Content Styles */
+    .article-content {
+        max-width: 800px;
+        margin: 30px 0;
+        line-height: 1.8;
+        font-size: 16px;
+        color: #333;
+    }
+
+    .article-content h1,
+    .article-content h2,
+    .article-content h3,
+    .article-content h4,
+    .article-content h5,
+    .article-content h6 {
+        margin: 2em 0 1em 0;
+        line-height: 1.3;
+        color: #264653;
+        font-weight: 600;
+    }
+
+    .article-content h1 {
+        font-size: 2.2em;
+        border-bottom: 3px solid #2a9d8f;
+        padding-bottom: 0.5em;
+    }
+
+    .article-content h2 {
+        font-size: 1.8em;
+        border-left: 4px solid #2a9d8f;
+        padding-left: 1em;
+        background: linear-gradient(90deg, rgba(42, 157, 143, 0.1) 0%, transparent 100%);
+        padding: 0.5em 0 0.5em 1em;
+        margin-left: -1em;
+    }
+
+    .article-content h3 {
+        font-size: 1.5em;
+        color: #2a9d8f;
+        position: relative;
+    }
+
+    .article-content h3::before {
+        content: "■";
+        color: #e9c46a;
+        margin-right: 0.5em;
+    }
+
+    .article-content h4 {
+        font-size: 1.3em;
+        color: #264653;
+    }
+
+    .article-content p {
+        margin: 1.5em 0;
+        text-align: justify;
+    }
+
+    .article-content p:first-child {
+        font-size: 1.1em;
+        font-weight: 500;
+        color: #2a9d8f;
+        border-left: 4px solid #e9c46a;
+        padding-left: 1em;
+        background: rgba(233, 196, 106, 0.1);
+        padding: 1em;
+        margin: 2em 0;
+    }
+
+    .article-content ul,
+    .article-content ol {
+        margin: 1.5em 0;
+        padding-left: 2em;
+    }
+
+    .article-content ul li,
+    .article-content ol li {
+        margin: 0.8em 0;
+        line-height: 1.7;
+    }
+
+    .article-content ul li::marker {
+        color: #2a9d8f;
+    }
+
+    .article-content ol li::marker {
+        color: #2a9d8f;
+        font-weight: bold;
+    }
+
+    .article-content blockquote {
+        background: #f8f9fa;
+        border-left: 5px solid #2a9d8f;
+        margin: 2em 0;
+        padding: 1.5em 2em;
+        font-style: italic;
+        color: #555;
+        position: relative;
+    }
+
+    .article-content blockquote::before {
+        content: "\201C";
+        font-size: 4em;
+        color: #2a9d8f;
+        position: absolute;
+        top: -10px;
+        left: 10px;
+        opacity: 0.3;
+    }
+
+    .article-content img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+        margin: 2em auto;
+        display: block;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .article-content figure {
+        margin: 2em 0;
+        text-align: center;
+    }
+
+    .article-content figcaption {
+        font-size: 0.9em;
+        color: #666;
+        margin-top: 0.5em;
+        font-style: italic;
+    }
+
+    .article-content a {
+        color: #2a9d8f;
+        text-decoration: none;
+        border-bottom: 1px solid transparent;
+        transition: all 0.3s ease;
+    }
+
+    .article-content a:hover {
+        color: #264653;
+        border-bottom-color: #2a9d8f;
+    }
+
+    .article-content code {
+        background: #f4f4f4;
+        padding: 0.2em 0.4em;
+        border-radius: 3px;
+        font-family: 'Courier New', monospace;
+        font-size: 0.9em;
+        color: #e74c3c;
+    }
+
+    .article-content pre {
+        background: #2c3e50;
+        color: #ecf0f1;
+        padding: 1.5em;
+        border-radius: 8px;
+        overflow-x: auto;
+        margin: 2em 0;
+        line-height: 1.4;
+    }
+
+    .article-content pre code {
+        background: none;
+        padding: 0;
+        color: inherit;
+        font-size: 0.85em;
+    }
+
+    .article-content table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 2em 0;
+        background: white;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    .article-content th,
+    .article-content td {
+        padding: 12px 15px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .article-content th {
+        background: #2a9d8f;
+        color: white;
+        font-weight: 600;
+    }
+
+    .article-content tr:nth-child(even) {
+        background: #f8f9fa;
+    }
+
+    .article-content tr:hover {
+        background: #e8f5e8;
+    }
+
+    .article-content strong {
+        color: #264653;
+        font-weight: 600;
+    }
+
+    .article-content em {
+        color: #2a9d8f;
+        font-style: italic;
+    }
+
+    .article-content hr {
+        border: none;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, #2a9d8f, transparent);
+        margin: 3em 0;
+    }
+
+    /* Article Meta Info */
+    .article-meta {
+        background: #f8f9fa;
+        padding: 1.5em;
+        border-radius: 8px;
+        margin: 2em 0;
+        border-left: 4px solid #e9c46a;
+    }
+
+    .article-meta h4 {
+        color: #264653;
+        margin: 0 0 1em 0;
+        font-size: 1.1em;
+    }
+
+    .article-meta ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .article-meta li {
+        margin: 0.5em 0;
+        padding-left: 1.5em;
+        position: relative;
+    }
+
+    .article-meta li::before {
+        content: "✓";
+        color: #2a9d8f;
+        font-weight: bold;
+        position: absolute;
+        left: 0;
     }
 
     /* Responsive Styles */
@@ -299,154 +555,205 @@
         .article-excerpt {
             display: none;
         }
+
+        .article-content {
+            font-size: 15px;
+            line-height: 1.7;
+            padding: 0 10px;
+        }
+
+        .article-content h1 {
+            font-size: 1.8em;
+        }
+
+        .article-content h2 {
+            font-size: 1.5em;
+            margin-left: 0;
+            padding-left: 0.8em;
+        }
+
+        .article-content h3 {
+            font-size: 1.3em;
+        }
+
+        .article-content p:first-child {
+            padding: 0.8em;
+            font-size: 1em;
+        }
+
+        .article-content ul,
+        .article-content ol {
+            padding-left: 1.5em;
+        }
+
+        .article-content blockquote {
+            padding: 1em;
+            margin: 1.5em 0;
+        }
+
+        .article-content table {
+            font-size: 0.9em;
+        }
+
+        .article-content th,
+        .article-content td {
+            padding: 8px 10px;
+        }
     }
-  </style>
+</style>
 {% endblock %}
 
 {% load wagtailcore_tags %}
 {% block content %}
 
-    <!-- Main Content -->
-    <div class="container content-wrapper" style="margin-bottom: 40px;">
-        <main style="padding-top: 20px;">
-            <h1>{{ page.title }}</h1>
-            <img src="{{ page.thumbnail.url }}" alt="{{ page.title }}" style="width: 100%; max-width: 800px; margin-bottom: 20px; border-radius: 8px;">
-            <div style="margin-top: 20px;">
-                {{page.body|richtext}}
-            </div>
-            <!-- Pagination -->
-            {% comment %} <div class="pagination">
-                <a href="#" class="active">1</a>
-                <a href="#">2</a>
-                <a href="#">3</a>
-                <a href="#">4</a>
-                <a href="#">Next →</a>
-            </div> {% endcomment %}
-        </main>
+<!-- Main Content -->
+<div class="container content-wrapper" style="margin-bottom: 40px;">
+    <main style="padding-top: 20px;">
+        <h1>{{ page.title }}</h1>
+        <img src="{{ page.thumbnail.url }}" alt="{{ page.title }}"
+            style="width: 100%; max-width: 800px; margin-bottom: 20px; border-radius: 8px;">
+        <article class="article-content">
+            {{page.body|richtext}}
+        </article>
+        <!-- Pagination -->
+        {% comment %} <div class="pagination">
+            <a href="#" class="active">1</a>
+            <a href="#">2</a>
+            <a href="#">3</a>
+            <a href="#">4</a>
+            <a href="#">Next →</a>
+        </div> {% endcomment %}
+    </main>
 
-        <!-- Sidebar -->
-        <aside>
-            <!-- Categories Section -->
-            <div class="sidebar-section">
-                <h3 class="sidebar-title">Categories</h3>
-                <ul class="categories-list">
-                    {% for category in categories %}
-                        <li><a href="/health-hub/articles/?category={{ category.slug }}">{{ category.name }} <span class="category-count">{{ category.article_count }}</span></a></li>
-                    {% endfor %}
+    <!-- Sidebar -->
+    <aside>
+        <!-- Categories Section -->
+        <div class="sidebar-section">
+            <h3 class="sidebar-title">Categories</h3>
+            <ul class="categories-list">
+                {% for category in categories %}
+                <li><a href="/health-hub/articles/?category={{ category.slug }}">{{ category.name }} <span
+                            class="category-count">{{ category.article_count }}</span></a></li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <!-- Popular Posts Section -->
+        {% comment %} <div class="sidebar-section">
+            <h3 class="sidebar-title">Popular Posts</h3>
+            <ul class="popular-list">
+                <li>
+                    <a href="#">
+                        <img src="https://gymdiary-assets.s3.amazonaws.com/media/images/public/recipes/torihamusarada.webp"
+                            alt="Popular post thumbnail">
+                        <div class="popular-content">
+                            <h4 class="popular-title">5 Common Squat Mistakes to Avoid</h4>
+                            <span class="popular-date">May 28, 2023</span>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <img src="/placeholder.svg?height=120&width=120" alt="Popular post thumbnail">
+                        <div class="popular-content">
+                            <h4 class="popular-title">How to Build a Home Gym on a Budget</h4>
+                            <span class="popular-date">May 25, 2023</span>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <img src="/placeholder.svg?height=120&width=120" alt="Popular post thumbnail">
+                        <div class="popular-content">
+                            <h4 class="popular-title">The Science Behind Muscle Growth</h4>
+                            <span class="popular-date">May 20, 2023</span>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+        </div> {% endcomment %}
+
+        <!-- Newsletter Section -->
+        {% comment %} <div class="sidebar-section">
+            <h3 class="sidebar-title">Subscribe to Our Newsletter</h3>
+            <p style="margin-bottom: 15px; font-size: 14px;">Get the latest fitness tips and articles delivered to your
+                inbox.</p>
+            <form>
+                <input type="email" placeholder="Your email address"
+                    style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 4px;">
+                <button type="submit"
+                    style="width: 100%; padding: 10px; background-color: #2a9d8f; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 500;">Subscribe</button>
+            </form>
+        </div> {% endcomment %}
+    </aside>
+</div>
+
+<!-- Footer -->
+{% comment %} <footer>
+    <div class="container">
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>Health Hub</h3>
+                <p>Your trusted source for fitness, nutrition, and wellness information to help you achieve your health
+                    goals.</p>
+                <div class="social-links">
+                    <a href="#">FB</a>
+                    <a href="#">IG</a>
+                    <a href="#">TW</a>
+                    <a href="#">YT</a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
                 </ul>
             </div>
-
-            <!-- Popular Posts Section -->
-            {% comment %} <div class="sidebar-section">
-                <h3 class="sidebar-title">Popular Posts</h3>
-                <ul class="popular-list">
-                    <li>
-                        <a href="#">
-                            <img src="https://gymdiary-assets.s3.amazonaws.com/media/images/public/recipes/torihamusarada.webp" alt="Popular post thumbnail">
-                            <div class="popular-content">
-                                <h4 class="popular-title">5 Common Squat Mistakes to Avoid</h4>
-                                <span class="popular-date">May 28, 2023</span>
-                            </div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <img src="/placeholder.svg?height=120&width=120" alt="Popular post thumbnail">
-                            <div class="popular-content">
-                                <h4 class="popular-title">How to Build a Home Gym on a Budget</h4>
-                                <span class="popular-date">May 25, 2023</span>
-                            </div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <img src="/placeholder.svg?height=120&width=120" alt="Popular post thumbnail">
-                            <div class="popular-content">
-                                <h4 class="popular-title">The Science Behind Muscle Growth</h4>
-                                <span class="popular-date">May 20, 2023</span>
-                            </div>
-                        </a>
-                    </li>
+            <div class="footer-section">
+                <h3>Categories</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Workouts</a></li>
+                    <li><a href="#">Nutrition</a></li>
+                    <li><a href="#">Wellness</a></li>
+                    <li><a href="#">Equipment</a></li>
+                    <li><a href="#">Success Stories</a></li>
                 </ul>
-            </div> {% endcomment %}
-
-            <!-- Newsletter Section -->
-            {% comment %} <div class="sidebar-section">
-                <h3 class="sidebar-title">Subscribe to Our Newsletter</h3>
-                <p style="margin-bottom: 15px; font-size: 14px;">Get the latest fitness tips and articles delivered to your inbox.</p>
-                <form>
-                    <input type="email" placeholder="Your email address" style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 4px;">
-                    <button type="submit" style="width: 100%; padding: 10px; background-color: #2a9d8f; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 500;">Subscribe</button>
-                </form>
-            </div> {% endcomment %}
-        </aside>
-    </div>
-
-    <!-- Footer -->
-    {% comment %} <footer>
-        <div class="container">
-            <div class="footer-container">
-                <div class="footer-section">
-                    <h3>Health Hub</h3>
-                    <p>Your trusted source for fitness, nutrition, and wellness information to help you achieve your health goals.</p>
-                    <div class="social-links">
-                        <a href="#">FB</a>
-                        <a href="#">IG</a>
-                        <a href="#">TW</a>
-                        <a href="#">YT</a>
-                    </div>
-                </div>
-                <div class="footer-section">
-                    <h3>Quick Links</h3>
-                    <ul class="footer-links">
-                        <li><a href="#">Home</a></li>
-                        <li><a href="#">About Us</a></li>
-                        <li><a href="#">Contact</a></li>
-                        <li><a href="#">Privacy Policy</a></li>
-                        <li><a href="#">Terms of Service</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h3>Categories</h3>
-                    <ul class="footer-links">
-                        <li><a href="#">Workouts</a></li>
-                        <li><a href="#">Nutrition</a></li>
-                        <li><a href="#">Wellness</a></li>
-                        <li><a href="#">Equipment</a></li>
-                        <li><a href="#">Success Stories</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h3>Contact Us</h3>
-                    <ul class="footer-links">
-                        <li>Email: info@healthhub.com</li>
-                        <li>Phone: (123) 456-7890</li>
-                        <li>Address: 123 Fitness St, Wellness City</li>
-                    </ul>
-                </div>
             </div>
-            <div class="footer-bottom">
-                <p>&copy; 2023 Health Hub. All rights reserved.</p>
+            <div class="footer-section">
+                <h3>Contact Us</h3>
+                <ul class="footer-links">
+                    <li>Email: info@healthhub.com</li>
+                    <li>Phone: (123) 456-7890</li>
+                    <li>Address: 123 Fitness St, Wellness City</li>
+                </ul>
             </div>
         </div>
-    </footer> {% endcomment %}
+        <div class="footer-bottom">
+            <p>&copy; 2023 Health Hub. All rights reserved.</p>
+        </div>
+    </div>
+</footer> {% endcomment %}
 
-    <script>
-        // Mobile Menu Toggle
-        document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
-            document.body.classList.toggle('mobile-menu-open');
-        });
+<script>
+    // Mobile Menu Toggle
+    document.querySelector('.mobile-menu-btn').addEventListener('click', function () {
+        document.body.classList.toggle('mobile-menu-open');
+    });
 
-        // Close mobile menu when clicking outside
-        document.addEventListener('click', function(event) {
-            if (!event.target.closest('header') && document.body.classList.contains('mobile-menu-open')) {
-                document.body.classList.remove('mobile-menu-open');
-            }
-        });
+    // Close mobile menu when clicking outside
+    document.addEventListener('click', function (event) {
+        if (!event.target.closest('header') && document.body.classList.contains('mobile-menu-open')) {
+            document.body.classList.remove('mobile-menu-open');
+        }
+    });
 
-        // Prevent event propagation when clicking on the menu button
-        document.querySelector('.mobile-menu-btn').addEventListener('click', function(event) {
-            event.stopPropagation();
-        });
-    </script>
+    // Prevent event propagation when clicking on the menu button
+    document.querySelector('.mobile-menu-btn').addEventListener('click', function (event) {
+        event.stopPropagation();
+    });
+</script>
 {% endblock %}

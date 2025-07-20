@@ -1,4 +1,6 @@
 from django.urls import path
+from rest_framework_simplejwt.views import TokenRefreshView
+
 from .views import (
     GoogleLoginAPIView,
     UserRegisterAPIView,
@@ -16,6 +18,9 @@ urlpatterns = [
     path('verify-email/', EmailVerificationAPIView.as_view(), name='api.email.verify'),
     path('verify-email/resend/', EmailVerificationAPIView.as_view(), name='api.email.verify.resend'),
     path('me/', UserMeAPIView.as_view(), name='api.me'),
+
+    # JWTトークンのリフレッシュ用URL
+    path('token/refresh/', TokenRefreshView.as_view(), name='api.token.refresh'),
 
     # ソーシャルログイン用のURL
     path('social/google/login/', GoogleLoginAPIView.as_view(), name='api.social.google.login'),

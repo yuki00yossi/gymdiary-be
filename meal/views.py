@@ -265,7 +265,78 @@ class MealRecordViewSet(viewsets.ModelViewSet):
     ),
     create=extend_schema(
         summary="カスタム食品作成",
-        description="新しいカスタム食品データを作成します。",
+        description="新しいカスタム食品データを作成します。基本的な栄養素（カロリー、タンパク質、脂質、炭水化物）は必須で、その他の栄養素（ビタミン、ミネラルなど）はオプションです。",
+        request=MealItemSerializer,
+        responses={
+            201: MealItemSerializer,
+            400: {
+                "type": "object",
+                "properties": {
+                    "name": {"type": "array", "items": {"type": "string"}},
+                    "calories": {"type": "array", "items": {"type": "string"}},
+                    "protein": {"type": "array", "items": {"type": "string"}},
+                    "fat": {"type": "array", "items": {"type": "string"}},
+                    "carbs": {"type": "array", "items": {"type": "string"}},
+                    "unit": {"type": "array", "items": {"type": "string"}},
+                    "base_quantity": {"type": "array", "items": {"type": "string"}}
+                },
+                "example": {
+                    "name": ["この項目は必須です。"],
+                    "calories": ["カロリーは0以上にしてください。"],
+                    "protein": ["タンパク質は0以上にしてください。"],
+                    "fat": ["脂質は0以上にしてください。"],
+                    "carbs": ["炭水化物は0以上にしてください。"],
+                    "unit": ["有効な選択肢を選んでください。"],
+                    "base_quantity": ["有効な数値を入力してください。"]
+                }
+            }
+        },
+        examples=[
+            OpenApiExample(
+                '基本栄養素のみの食品作成例',
+                value={
+                    "name": "鶏むね肉",
+                    "calories": 165.0,
+                    "protein": 31.0,
+                    "fat": 3.6,
+                    "carbs": 0.0,
+                    "unit": "g",
+                    "base_quantity": 100.0
+                },
+                request_only=True,
+                description='基本的な栄養素のみを含む食品の作成例'
+            ),
+            OpenApiExample(
+                '詳細栄養素を含む食品作成例',
+                value={
+                    "name": "ブロッコリー",
+                    "calories": 33.0,
+                    "protein": 4.3,
+                    "fat": 0.4,
+                    "carbs": 7.2,
+                    "unit": "g",
+                    "base_quantity": 100.0,
+                    "vitamin_a": 800.0,
+                    "vitamin_c": 120.0,
+                    "vitamin_k": 160.0,
+                    "vitamin_b1": 0.07,
+                    "vitamin_b2": 0.12,
+                    "niacin": 0.6,
+                    "vitamin_b6": 0.18,
+                    "folic_acid": 63.0,
+                    "calcium": 47.0,
+                    "iron": 0.7,
+                    "magnesium": 21.0,
+                    "phosphorus": 66.0,
+                    "potassium": 316.0,
+                    "sodium": 0.033,
+                    "zinc": 0.4,
+                    "dietary_fiber": 2.6
+                },
+                request_only=True,
+                description='ビタミンやミネラルなどの詳細栄養素を含む食品の作成例'
+            )
+        ],
         tags=["食品データ"]
     ),
     retrieve=extend_schema(

@@ -613,7 +613,8 @@
         <img src="{{ page.thumbnail.url }}" alt="{{ page.title }}"
             style="width: 100%; max-width: 800px; margin-bottom: 20px; border-radius: 8px;">
         <article class="article-content">
-            {{page.body|richtext}}
+            {% load wagtailmarkdown %}
+            {{page.body|markdown}}
         </article>
         <!-- Pagination -->
         {% comment %} <div class="pagination">

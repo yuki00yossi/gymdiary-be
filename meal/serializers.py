@@ -6,12 +6,65 @@ from .models import MealItem, MealRecord, MealRecordItem
 
 
 class MealItemSerializer(serializers.ModelSerializer):
-    """ 食品データ（ユーザーが追加可能） """
+    """
+    食品データシリアライザー（ユーザーが追加可能）
+
+    食品の基本情報と栄養素データを管理します。
+    基本的な栄養素（カロリー、タンパク質、脂質、炭水化物）は必須で、
+    その他の栄養素（ビタミン、ミネラルなど）はオプションです。
+
+    Fields:
+        id (int): 食品の一意識別子（読み取り専用）
+        name (str): 食品名、必須
+        calories (float): カロリー（kcal）、必須、0以上
+        protein (float): タンパク質（g）、必須、0以上
+        fat (float): 脂質（g）、必須、0以上
+        carbs (float): 炭水化物（g）、必須、0以上
+        unit (str): 単位（g, ml, 個, 杯, 枚, 本, カップ, 人前）、必須
+        base_quantity (float): 基準量（デフォルト: 100）、必須
+        jan_ean_code (str): JAN/EANコード（商品バーコード番号）、オプション
+        vitamin_a (float): ビタミンA（μgRAE）、オプション
+        vitamin_d (float): ビタミンD（μg）、オプション
+        vitamin_e (float): ビタミンE（mg）、オプション
+        vitamin_k (float): ビタミンK（μg）、オプション
+        vitamin_b1 (float): ビタミンB1（mg）、オプション
+        vitamin_b2 (float): ビタミンB2（mg）、オプション
+        niacin (float): ナイアシン（mgNE）、オプション
+        vitamin_b6 (float): ビタミンB6（mg）、オプション
+        vitamin_b12 (float): ビタミンB12（μg）、オプション
+        folic_acid (float): 葉酸（μg）、オプション
+        pantothenic_acid (float): パントテン酸（mg）、オプション
+        biotin (float): ビオチン（μg）、オプション
+        vitamin_c (float): ビタミンC（mg）、オプション
+        sodium (float): ナトリウム（g）、オプション
+        potassium (float): カリウム（mg）、オプション
+        calcium (float): カルシウム（mg）、オプション
+        magnesium (float): マグネシウム（mg）、オプション
+        phosphorus (float): リン（mg）、オプション
+        iron (float): 鉄（mg）、オプション
+        zinc (float): 亜鉛（mg）、オプション
+        copper (float): 銅（mg）、オプション
+        manganese (float): マンガン（mg）、オプション
+        iodine (float): ヨウ素（μg）、オプション
+        selenium (float): セレン（μg）、オプション
+        chromium (float): クロム（μg）、オプション
+        molybdenum (float): モリブデン（μg）、オプション
+        cholesterol (float): コレステロール（mg）、オプション
+        dietary_fiber (float): 食物繊維（g）、オプション
+        salt_equivalent (float): 食塩相当量（g）、オプション
+    """
 
     class Meta:
         model = MealItem
-        fields = ("id", "name", "calories", "protein", "fat", "carbs", "unit", "base_quantity")
-        read_only_fields = ('created_by',)
+        fields = (
+            "id", "name", "calories", "protein", "fat", "carbs", "unit", "base_quantity",
+            "jan_ean_code", "vitamin_a", "vitamin_d", "vitamin_e", "vitamin_k", "vitamin_b1", "vitamin_b2",
+            "niacin", "vitamin_b6", "vitamin_b12", "folic_acid", "pantothenic_acid",
+            "biotin", "vitamin_c", "sodium", "potassium", "calcium", "magnesium",
+            "phosphorus", "iron", "zinc", "copper", "manganese", "iodine", "selenium",
+            "chromium", "molybdenum", "cholesterol", "dietary_fiber", "salt_equivalent"
+        )
+        read_only_fields = ('created_by', "is_official")
 
     def validate_calories(self, value):
         if value < 0:

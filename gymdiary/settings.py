@@ -54,10 +54,13 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt.token_blacklist',  # トークン認証用
     'accounts',
     'weight',  # 体重管理
-    'training',  # トレーニング管理
     'meal',  # 食事管理
     'recipe',
     'trainers',
+    'myset',  # マイセット管理
+    'workout',  # ワークアウト管理
+    'exercise',  # エクササイズ管理
+
 
     'drf_spectacular',
     'corsheaders',
@@ -76,7 +79,7 @@ INSTALLED_APPS = [
     'wagtail.search',
     'wagtail.admin',
     'wagtail',
-
+    "wagtailmarkdown",
     'modelcluster',
     'taggit',
 ]
@@ -340,6 +343,16 @@ WAGTAIL_SITE_NAME = 'Gym Diary - Health Hub -'
 WAGTAILADMIN_BASE_URL = 'https://gymdiary.tokyo'
 WAGTAILDOCS_EXTENSIONS = ['csv', 'docx', 'key', 'odt', 'pdf', 'pptx', 'rtf', 'txt', 'xlsx', 'zip']
 WAGTAILIMAGES_IMAGE_MODEL = 'health_hub.CustomImage'
+
+WAGTAILMARKDOWN = {
+    "allowed_tags": [],  # optional. a list of HTML tags. e.g. ['div', 'p', 'a']
+    "allowed_styles": [],  # optional. a list of styles
+    "allowed_attributes": {},  # optional. a dict with HTML tag as key and a list of attributes as value
+    "allowed_settings_mode": "extend",  # optional. Possible values: "extend" or "override". Defaults to "extend".
+    "extensions": [],  # optional. a list of python-markdown supported extensions
+    "extension_configs": {},  # optional. a dictionary with the extension name as key, and its configuration as value
+    "extensions_settings_mode": "extend",  # optional. Possible values: "extend" or "override". Defaults to "extend".
+}
 
 
 # google analyticsの設定

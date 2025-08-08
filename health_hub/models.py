@@ -13,6 +13,7 @@ from wagtail.snippets.models import register_snippet
 from django.utils.text import slugify
 
 from recipe.models import Recipe, RecipeTag
+from wagtailmarkdown.fields import MarkdownField
 
 
 class CustomImage(AbstractImage):
@@ -75,7 +76,7 @@ class RecipeIndexPage(Page):
 class ArticlePage(Page):
     """記事ページモデル"""
     intro = models.TextField(blank=True, help_text="記事のイントロを入力してください")
-    body = RichTextField(help_text="記事の本文を入力してください")
+    body = MarkdownField()
     published_at = models.DateTimeField(auto_now_add=True)
 
     template = "health_hub/article_page.html"

@@ -36,9 +36,12 @@ urlpatterns = [
     # 各種API
     path('api/account/', include('accounts.urls')),
     path('api/weight/', include('weight.urls')),
-    path('api/training/', include('training.urls')),
+    # path('api/training/', include('training.urls')),
     path('api/meal/', include('meal.urls')),
     path('api/trainers/', include('trainers.urls')),
+    path('api/mysets/', include('myset.urls')),
+    path('api/workouts/', include('workout.urls')),
+    path('api/exercises/', include('exercise.urls')),
 
     # 管理画面
     path('admin/', admin.site.urls),

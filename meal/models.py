@@ -20,6 +20,7 @@ class MealItem(models.Model):
     official_id = models.IntegerField(null=True, blank=True, unique=True, verbose_name="公式食品ID")
     is_official = models.BooleanField(verbose_name="公式フラグ", default=True)
     search_keywords = models.TextField(blank=True, null=True, help_text='カンマ区切りの検索用キーワード')
+    jan_ean_code = models.CharField(max_length=20, null=True, blank=True, verbose_name="JAN/EANコード", help_text="商品のバーコード番号")
 
     # --- 栄養素の拡張 ---
     vitamin_a = models.FloatField("ビタミンA（μgRAE）", null=True, blank=True)
